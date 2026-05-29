@@ -1,4 +1,4 @@
-## 목차
+# 목차
 - [[#Step 1: 개념 | Step 1: 개념]]
 - [[#Step 2: RTL | Step 2: RTL]]
 - [[#Step 3: C모델| Step 3: C모델 ]]
@@ -78,7 +78,7 @@
 	- Icarus에서 **always_comb** 비트 슬라이싱 미지원 문제로 assign 사용. 동작 동일.
 
 ## 구현 코드
--  [sync_fifo.sv](./rtl/sync_fifo.sv)
+- [[sync_fifo.sv]]
 
 ```systemverilog
     always_ff @(posedge clk or negedge rst_n) begin
@@ -120,7 +120,7 @@ endmodule
 	- Extra bit 포함 유지 ->  ((1 << (PTR_WIDTH + 1)) - 1)
 
 ## 구현 코드
-- [sync_fifo.c](./model/sync_fifo.c)
+- [[sync_fifo.c]]
 
 ```c
 typedef struct {
@@ -165,7 +165,8 @@ void fifo_read(sync_fifo_t *f) {
 # Step 4: TB
 
 ## ## 구현 코드
--  [tb_sync_fifo.sv](./tb/tb_sync_fifo.sv)
+- [[tb_sync_fifo.sv]]
+
 ## 검증 결과
 
 - C 모델 출력과 RTL TB 출력 일치 
@@ -193,3 +194,10 @@ READ FAIL (empty)
 - C 모델에서 랜덤 입력 + stimulus.txt 생성
 - TB에서 stimulus.txt 읽어 RTL 구동
 - rtl_output.txt vs golden_output.txt 자동 비교 → PASS/FAIL 출력
+
+---
+
+# 관련 문서
+- [[sync_fifo.sv]]
+- [[sync_fifo.c]]
+- [[tb_sync_fifo.sv]]
