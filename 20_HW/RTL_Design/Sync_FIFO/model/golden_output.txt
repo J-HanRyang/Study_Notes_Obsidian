@@ -1,0 +1,10 @@
+WRITE: data=10, wr_ptr=1, rd_ptr=0, full=0, empty=0
+WRITE: data=20, wr_ptr=2, rd_ptr=0, full=0, empty=0
+WRITE: data=30, wr_ptr=3, rd_ptr=0, full=0, empty=0
+WRITE: data=40, wr_ptr=4, rd_ptr=0, full=1, empty=0
+WRITE FAIL (full): data=50
+READ: data=10, wr_ptr=4, rd_ptr=0, full=1, empty=0
+READ: data=20, wr_ptr=4, rd_ptr=1, full=0, empty=0
+READ: data=30, wr_ptr=4, rd_ptr=2, full=0, empty=0
+READ: data=40, wr_ptr=4, rd_ptr=3, full=0, empty=0
+READ FAIL (empty)
