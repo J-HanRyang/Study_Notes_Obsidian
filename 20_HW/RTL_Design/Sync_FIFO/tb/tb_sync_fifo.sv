@@ -1,4 +1,8 @@
 module tb_sync_fifo;
+    // Parameters & Signals
+    localparam DATA_WIDTH = 32;
+    localparam FIFO_DEPTH = 4;
+
     logic clk;
     logic rst_n;
     logic wr_en;
@@ -7,10 +11,6 @@ module tb_sync_fifo;
     logic [DATA_WIDTH-1:0] rdata;
     logic full;
     logic empty;
-
-    // Parameters
-    localparam DATA_WIDTH = 32;
-    localparam FIFO_DEPTH = 4;
 
     // DUT Instance
     sync_fifo #(
@@ -45,16 +45,55 @@ module tb_sync_fifo;
         @(posedge clk);
         #1;  // Setup Time 
         rst_n = 1;
+
+        // write
+        fifo_write(10);
+        fifo_write(20);
+        fifo_write(30);
+        fifo_write(40);
+        fifo_write(50);
+
+        // read
+        fifo_read();
+        fifo_read();
+        fifo_read();
+        fifo_read();
+        fifo_read();
+
+        $finish;
     end
 
     task fifo_write(input logic [DATA_WIDTH-1:0] data);
-        if (!fifo_full) begin
-			wdata = data;
-			wr_en = 1;
-		end
+        if (!full) begin
+            @(posedge clk);
+            #1;
+            wdata = data;
+            wr_en = 1;
+            @(posedge clk);
+            #1;
+            wr_en = 0;
+            $display(
+                "WRITE: data=%0d, wr_ptr=%0d, rd_ptr=%0d, full=%0b, empty=%0b",
+                data, dut.wr_ptr, dut.rd_ptr, full, empty);
+        end else begin
+            $display("WRITE FAIL (full): data=%0d", data);
+        end
     endtask
 
     task fifo_read();
-        if (!fifo_empty)
+        if (!empty) begin
+            @(posedge clk);
+            #1;
+            rd_en = 1;
+            @(posedge clk);
+            #1;
+            rd_en = 0;
+            $display(
+                "READ: data=%0d, wr_ptr=%0d, rd_ptr=%0d, full=%0b, empty=%0b",
+                rdata, dut.wr_ptr, dut.rd_ptr, full, empty);
+            @(posedge clk);
+        end else begin
+            $display("READ FAIL (empty)");
+        end
     endtask
 endmodule

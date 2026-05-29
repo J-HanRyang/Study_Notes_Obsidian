@@ -40,9 +40,7 @@ module sync_fifo #(
     end
 
     // full and empty flags
-    always_comb begin
-        empty = (wr_ptr == rd_ptr);
-        full  = (wr_ptr == {~rd_ptr[PTR_WIDTH], rd_ptr[PTR_WIDTH-1:0]});
-    end
+    assign empty = (wr_ptr == rd_ptr);
+    assign full  = (wr_ptr == {~rd_ptr[PTR_WIDTH], rd_ptr[PTR_WIDTH-1:0]});
 
 endmodule
