@@ -20,6 +20,41 @@ int fifo_empty(async_fifo_t *f);				  // always_comb - empty 판별
 void fifo_write(async_fifo_t *f, uint32_t wdata); // wr_en 처리
 void fifo_read(async_fifo_t *f);				  // rd_en 처리
 
-int fifo_full(async_fifo_t *f){
-	
+int fifo_full(async_fifo_t *f)
+{
+	if (f->wr_ptr_gray == (f->rd_ptr_gray ^ (3 << PTR_WIDTH - 1)))
+		return 1; // fifo full
+	else
+		return 0; // fifo not full
+}
+
+int fifo_empty(async_fifo_t *f)
+{
+	if (f->wr_ptr_gray == f->rd_ptr_gray)
+		return 1; // fifo empty
+	else
+		return 0; // fifo not empty
+}
+
+void fifo_write(async_fifo_t *f, uint32_t wdata)
+{
+	if (!fifo_full(f))
+	{
+		f->fifo_mem[f->wr_ptr & (FIFO_DEPTH - 1)] = wdata;
+		f->wr_ptr = (f->wr_ptr + 1) & ((1 << (PTR_WIDTH + 1)) - 1);
+		f->wr_ptr_gray = f->wr_ptr ^ (f->wr_ptr >> 1);
+		printf("WRITE: data=%u, wr_ptr=%u, rd_ptr=%u, full=%d, empty=%d\n",
+			   wdata, f->wr_ptr, f->rd_ptr, fifo_full(f), fifo_empty(f));
+	}
+}
+void fifo_read(async_fifo_t *f)
+{
+	if (!fifo_empty(f))
+	{
+		uint32_t rdata = f->fifo_mem[f->rd_ptr & (FIFO_DEPTH - 1)];
+		printf("READ: data=%u, wr_ptr=%u, rd_ptr=%u, full=%d, empty=%d\n",
+			   rdata, f->wr_ptr, f->rd_ptr, fifo_full(f), fifo_empty(f));
+		f->rd_ptr = (f->rd_ptr + 1) & ((1 << (PTR_WIDTH + 1)) - 1);
+		f->rd_ptr_gray = f->rd_ptr ^ (f->rd_ptr >> 1);
+	}
 }
