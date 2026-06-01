@@ -25,36 +25,24 @@ int main()
 	async_fifo_t fifo = {0}; // fifo 초기화
 
 	FILE *fp = fopen("stimulus.txt", "w");
+	FILE *input_fp = fopen("input.txt", "a");
+	
 	srand(42);
 
 	for (int i=0; i<20; i++) {
 		int cmd = rand() % 2; // 0: write, 1: read
 		int data = rand() % 100; // random data
 
-		FILE *input_fp = fopen("input.txt", "a");
 
 		if (cmd == 0) {
 			fprintf(fp, "WRITE %d\n", data);
+			fprintf(input_fp, "%d\n", data);
 		} else {
 			fprintf(fp, "READ\n");
 		}
 	}
-	
-
-
-	// 데이터 쓰기
-	fifo_write(&fifo, 10);
-	fifo_write(&fifo, 20);
-	fifo_write(&fifo, 30);
-	fifo_write(&fifo, 40);
-	fifo_write(&fifo, 50);
-
-	// 데이터 읽기
-	fifo_read(&fifo);
-	fifo_read(&fifo);
-	fifo_read(&fifo);
-	fifo_read(&fifo);
-	fifo_read(&fifo);
+	fclose(fp);
+	fclose(input_fp);
 
 	return 0;
 }
