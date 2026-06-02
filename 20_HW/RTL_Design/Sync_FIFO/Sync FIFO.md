@@ -3,6 +3,7 @@
 - [[#Step 2: RTL | Step 2: RTL]]
 - [[#Step 3: C모델| Step 3: C모델 ]]
 - [[#Step 4 TB| Step 4: TB]]
+- [[#관련 문서| 관련 문서]]
 
 ---
 
@@ -17,16 +18,16 @@
 - **Sync의 의미**: 
 	- 읽기/쓰기가 동일한 클럭 도메인에서 동작한다.
 
-## 내부 구조 (3가지)
+## 내부 구조
 
-1. **메모리 배열** — 실제 데이터를 저장하는 레지스터 (depth × width)
-2. **wr_ptr (write pointer)** — 다음에 쓸 위치를 가리킴
-3. **rd_ptr (read pointer)** — 다음에 읽을 위치를 가리킴
+1. **메모리 배열**: 실제 데이터를 저장하는 레지스터 (depth × width)
+2. **wr_ptr (write pointer)**: 다음에 쓸 위치를 가리킴
+3. **rd_ptr (read pointer)**: 다음에 읽을 위치를 가리킴
 
 ## Full / Empty 판별 — Extra bit 방식
 
-포인터를 실제 주소 비트보다 1비트 더 넓게 선언한다.
-(예: depth=8이면 주소는 3비트, 포인터는 4비트)
+- 포인터를 실제 주소 비트보다 1비트 더 넓게 선언한다.
+- 예: depth=8이면 주소는 3비트, 포인터는 4비트
 
 | 조건                  | 상태        |
 | ------------------- | --------- |
@@ -78,6 +79,7 @@
 	- Icarus에서 **always_comb** 비트 슬라이싱 미지원 문제로 assign 사용. 동작 동일.
 
 ## 구현 코드
+
 - [[sync_fifo.sv]]
 
 ```systemverilog
@@ -120,6 +122,7 @@ endmodule
 	- Extra bit 포함 유지 ->  ((1 << (PTR_WIDTH + 1)) - 1)
 
 ## 구현 코드
+
 - [[sync_fifo.c]]
 
 ```c
@@ -198,6 +201,7 @@ READ FAIL (empty)
 ---
 
 # 관련 문서
+
 - [[sync_fifo.sv]]
 - [[sync_fifo.c]]
 - [[tb_sync_fifo.sv]]
