@@ -25,7 +25,7 @@ int main()
 	async_fifo_t fifo = {0}; // fifo 초기화
 
 	FILE *fp = fopen("stimulus.txt", "w");
-	FILE *input_fp = fopen("input.txt", "a");
+	FILE *output_fp = fopen("golden_output.txt", "w");
 	
 	srand(42);
 
@@ -33,16 +33,18 @@ int main()
 		int cmd = rand() % 2; // 0: write, 1: read
 		int data = rand() % 100; // random data
 
-
-		if (cmd == 0) {
-			fprintf(fp, "WRITE %d\n", data);
-			fprintf(input_fp, "%d\n", data);
-		} else {
-			fprintf(fp, "READ\n");
+		if (cmd == d) {
+			if (!fifo_full(&fifo)) {
+				fifo_write(&fifo, data);
+				fprintf(fp, "WRITE %u/n", data);
+				fprintf(output_fp, "WRITE: data=%u, wr_ptr=%u, rd_ptr=%u, full=%d, empty=%d\n",
+						data, fifo.wr_ptr, fifo.rd_ptr, fifo_full(&fifo), fifo_empty(&fifo));
+			}
+			
 		}
-	}
+
 	fclose(fp);
-	fclose(input_fp);
+	fclose(output_fp);
 
 	return 0;
 }
