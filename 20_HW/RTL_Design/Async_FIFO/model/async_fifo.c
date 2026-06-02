@@ -31,8 +31,8 @@ int main()
 
 	for (int i = 0; i < 20; i++)
 	{
-		int cmd = rand() % 2;	 // 0: write, 1: read
-		int data = rand() % 100; // random data
+		uint32_t cmd = rand() % 2;	 // 0: write, 1: read
+		uint32_t data = rand() % 100; // random data
 
 		if (cmd == 0) // WRITE
 		{
