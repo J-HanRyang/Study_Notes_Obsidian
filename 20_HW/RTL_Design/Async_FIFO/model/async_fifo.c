@@ -24,8 +24,8 @@ int main()
 {
 	async_fifo_t fifo = {0}; // fifo 초기화
 
-	FILE *fp = fopen("stimulus.txt", "w");			   // tb input stimulus 파일
-	FILE *output_fp = fopen("golden_output.txt", "w"); // tb output과 비교할 golden output 파일
+	FILE *fp = fopen("../sim/stimulus.txt", "w");			 // tb input stimulus 파일
+	FILE *output_fp = fopen("../sim/golden_output.txt", "w"); // tb output과 비교할 golden output 파일
 
 	srand(42);
 

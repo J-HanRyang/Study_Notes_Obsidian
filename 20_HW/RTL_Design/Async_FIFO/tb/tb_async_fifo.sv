@@ -53,7 +53,7 @@ module tb_async_fifo;
     // Test Sequence
     initial begin
         // Dumpfile
-        $dumpfile("async_fifo.vcd");
+        $dumpfile("./sim/wave.vcd");
         $dumpvars(0, tb_async_fifo);
 
         // Reset
@@ -80,8 +80,8 @@ module tb_async_fifo;
         join
 
         // Open stimulus file
-        fd_in  = $fopen("./model/stimulus.txt", "r");
-        fd_out = $fopen("./model/dut_output.txt", "w");
+        fd_in  = $fopen("./sim/stimulus.txt", "r");
+        fd_out = $fopen("./sim/dut_output.txt", "w");
 
         if (fd_in == 0 || fd_out == 0) begin
             $display("Failed to open files.");
