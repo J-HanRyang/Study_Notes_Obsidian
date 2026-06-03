@@ -48,7 +48,6 @@ module async_fifo #(
             rd_ptr <= 0;
             rd_ptr_gray <= 0;
         end else if (rd_en && !empty) begin
-            rd_data <= fifo_mem[rd_ptr[PTR_WIDTH-1:0]];
             rd_ptr <= rd_ptr + 1;
             rd_ptr_gray <= (rd_ptr + 1) ^ ((rd_ptr + 1) >> 1); // Convert to Gray code
         end
@@ -75,8 +74,17 @@ module async_fifo #(
         end
     end
 
+    // Write Pointer Nexy Value - FULL 인식이 느려 타이밍 맞춤
+    logic [PTR_WIDTH:0] wr_ptr_gray_next;
+    assign wr_ptr_gray_next = (wr_ptr + 1) ^ ((wr_ptr + 1) >> 1);
+
     // full and empty flags
-    assign empty = (wr_ptr_gray_sync_1 == rd_ptr_gray);
+    // assign empty = (wr_ptr_gray_sync_1 == rd_ptr_gray);
+    assign empty = (rd_ptr_gray == wr_ptr_gray_sync_1);
+    // assign full  = (wr_ptr_gray_next == {~rd_ptr_gray_sync_1[PTR_WIDTH:PTR_WIDTH-1], rd_ptr_gray_sync_1[PTR_WIDTH-2:0]});
     assign full  = (wr_ptr_gray == {~rd_ptr_gray_sync_1[PTR_WIDTH:PTR_WIDTH-1], rd_ptr_gray_sync_1[PTR_WIDTH-2:0]});
+
+    // output data
+    assign rd_data <= fifo_mem[rd_ptr[PTR_WIDTH-1:0]];
 
 endmodule
