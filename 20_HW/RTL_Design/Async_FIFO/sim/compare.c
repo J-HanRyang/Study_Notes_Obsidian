@@ -17,7 +17,7 @@ int main()
 
 	int pass_count = 0;
 	int fail_count = 0;
-	int skip_count = 0;	// empty / full 상황에서 발생하는 실패는 비교에서 제외
+	int skip_count = 0; // empty / full 상황에서 발생하는 실패는 비교에서 제외
 	char golden_line[100];
 	char dut_line[100];
 
@@ -26,16 +26,20 @@ int main()
 		   fgets(dut_line, sizeof(dut_line), dut_fp) != NULL)
 	{
 		// FAIL 라인 비교 제외
-        while (strstr(golden_line, "FAIL") != NULL) {
-            skip_count++;
-            if (fgets(golden_line, sizeof(golden_line), golden_fp) == NULL) break;
-        }
+		while (strstr(golden_line, "FAIL") != NULL)
+		{
+			skip_count++;
+			if (fgets(golden_line, sizeof(golden_line), golden_fp) == NULL)
+				break;
+		}
 
-        while (strstr(dut_line, "FAIL") != NULL) {
-            skip_count++;
-            if (fgets(dut_line, sizeof(dut_line), dut_fp) == NULL) break;
-        }
-		
+		while (strstr(dut_line, "FAIL") != NULL)
+		{
+			skip_count++;
+			if (fgets(dut_line, sizeof(dut_line), dut_fp) == NULL)
+				break;
+		}
+
 		// golden과 dut의 라인 비교
 		if (strcmp(golden_line, dut_line) == 0)
 		{
