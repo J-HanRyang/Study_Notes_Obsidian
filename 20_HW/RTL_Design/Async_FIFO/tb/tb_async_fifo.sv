@@ -1,4 +1,4 @@
-`timescale 1ns / 1ns
+`timescale 1ns / 1ps
 
 module tb_async_fifo;
     // Parameters & Signals
@@ -52,6 +52,10 @@ module tb_async_fifo;
 
     // Test Sequence
     initial begin
+        // Dumpfile
+        $dumpfile("tb_async_fifo.vcd");
+        $dumpvars(0, tb_async_fifo);
+
         // Reset
         rst_n_wr = 0;
         rst_n_rd = 0;
@@ -104,9 +108,6 @@ module tb_async_fifo;
         #100;  // wait
         $display("Test Completed.");
         $display("dut_output.txt generated.");
-
-        $dumpfile("sim_dump.vcd");
-        $dumpvars(0, tb_async_fifo);
 
         $finish;
     end
