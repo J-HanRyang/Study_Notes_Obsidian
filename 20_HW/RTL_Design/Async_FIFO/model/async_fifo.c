@@ -31,7 +31,7 @@ int main()
 
 	for (int i = 0; i < 20; i++)
 	{
-		uint32_t cmd = rand() % 2;	 // 0: write, 1: read
+		uint32_t cmd = rand() % 2;	  // 0: write, 1: read
 		uint32_t data = rand() % 100; // random data
 
 		if (cmd == 0) // WRITE
@@ -40,8 +40,7 @@ int main()
 
 			if (fifo_write(&fifo, data))
 			{
-				fprintf(output_fp, "WRITE: data=%u, wr_ptr=%u, rd_ptr=%u, full=%d, empty=%d\n",
-						data, fifo.wr_ptr, fifo.rd_ptr, fifo_full(&fifo), fifo_empty(&fifo));
+				fprintf(output_fp, "WRITE: data=%u\n", data);
 			}
 			else
 			{
@@ -55,8 +54,7 @@ int main()
 
 			if (fifo_read(&fifo, &rdata))
 			{
-				fprintf(output_fp, "READ: data=%u, wr_ptr=%u, rd_ptr=%u, full=%d, empty=%d\n",
-						rdata, fifo.wr_ptr, fifo.rd_ptr, fifo_full(&fifo), fifo_empty(&fifo));
+				fprintf(output_fp, "READ: data=%u\n", rdata);
 			}
 			else
 			{

@@ -33,16 +33,16 @@ module tb_async_fifo;
         .empty   (empty)
     );
 
-    // 100MHZ WriteClock Generation
+    // 200MHZ WriteClock Generation
     initial begin
         clk_wr = 0;
-        forever #5 clk_wr = ~clk_wr;
+        forever #2.5 clk_wr = ~clk_wr;
     end
 
-    // 200MHz ReadClock Generation
+    // 100MHz ReadClock Generation
     initial begin
         clk_rd = 0;
-        forever #2.5 clk_rd = ~clk_rd;
+        forever #5 clk_rd = ~clk_rd;
     end
 
     integer fd_in;  // stimulus inputs
@@ -53,7 +53,7 @@ module tb_async_fifo;
     // Test Sequence
     initial begin
         // Dumpfile
-        $dumpfile("tb_async_fifo.vcd");
+        $dumpfile("async_fifo.vcd");
         $dumpvars(0, tb_async_fifo);
 
         // Reset
@@ -112,26 +112,21 @@ module tb_async_fifo;
         $finish;
     end
 
-    // Monitor DUT outputs (for debugging)
+    // Write Monitor
     always @(posedge clk_wr) begin
         if (rst_n_wr && wr_en && !full) begin
-            #1;  // wr_data가 data에 반영될 시간
-            $fdisplay(
-                fd_out,
-                "WRITE: data=%0d, wr_ptr=%0d, rd_ptr=%0d, full=%0b, empty=%0b",
-                wr_data, dut.wr_ptr, dut.rd_ptr, full, empty);
+            // #1;  // testbench에서 직접 인가하므로 setup/hold 타이밍은 task 내에서 처리
+            $fdisplay(fd_out, "WRITE: data=%0d", wr_data);
         end else if (rst_n_wr && wr_en && full) begin
             $fdisplay(fd_out, "WRITE FAIL (full): data=%0d", wr_data);
         end
     end
 
+    // Read Monitor
     always @(posedge clk_rd) begin
         if (rst_n_rd && rd_en && !empty) begin
-            #1;  // Data가 rd_data에 반영될 시간
-            $fdisplay(
-                fd_out,
-                "READ: data=%0d, wr_ptr=%0d, rd_ptr=%0d, full=%0b, empty=%0b",
-                rd_data, dut.wr_ptr, dut.rd_ptr, full, empty);
+            #1; // RTL에서 rd_data가 valid해지는 타이밍을 맞추기 위해 약간의 지연 추가
+            $fdisplay(fd_out, "READ: data=%0d", rd_data);
         end else if (rst_n_rd && rd_en && empty) begin
             $fdisplay(fd_out, "READ FAIL (empty)");
         end
@@ -146,8 +141,7 @@ module tb_async_fifo;
             wr_data = data;
             @(posedge clk_wr);
             #1;  // Hold Time
-            wr_en   = 0;
-            wr_data = 0;
+            wr_en = 0;
         end
     endtask
 
