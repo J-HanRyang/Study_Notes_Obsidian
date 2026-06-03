@@ -103,6 +103,11 @@ module tb_async_fifo;
         #100;  // wait
         $display("Test Completed.");
         $display("dut_output.txt generated.");
+
+        // Waveform Dump
+        $dumpfile("wave.vcd");
+        $dumpvars(0, tb_async_fifo);
+
         $finish;
     end
 
