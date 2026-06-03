@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+`timescale 1ns / 1ns
 
 module tb_async_fifo;
     // Parameters & Signals
@@ -76,9 +76,8 @@ module tb_async_fifo;
         join
 
         // Open stimulus file
-        fd_in = $fopen("./model/stimulus.txt", "r");
-        fd_out = $fopen("./model/dut_output.txt",
-                        "w");  // DUT 출력 기록용 (디버깅)
+        fd_in  = $fopen("./model/stimulus.txt", "r");
+        fd_out = $fopen("./model/dut_output.txt", "w");
 
         if (fd_in == 0 || fd_out == 0) begin
             $display("Failed to open files.");
@@ -106,8 +105,7 @@ module tb_async_fifo;
         $display("Test Completed.");
         $display("dut_output.txt generated.");
 
-        // Waveform Dump
-        $dumpfile("wave.vcd");
+        $dumpfile("sim_dump.vcd");
         $dumpvars(0, tb_async_fifo);
 
         $finish;
@@ -145,9 +143,10 @@ module tb_async_fifo;
             #1;  // Setup Time
             wr_en   = 1;
             wr_data = data;
-            @(negedge clk_wr);
+            @(posedge clk_wr);
             #1;  // Hold Time
             wr_en   = 0;
+            wr_data = 0;
         end
     endtask
 
@@ -156,7 +155,7 @@ module tb_async_fifo;
             @(posedge clk_rd);
             #1;  // Setup Time
             rd_en = 1;
-            @(negedge clk_rd);
+            @(posedge clk_rd);
             #1;  // Hold Time
             rd_en = 0;
         end
