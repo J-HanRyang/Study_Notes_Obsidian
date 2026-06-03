@@ -20,6 +20,9 @@ module async_fifo #(
     // Write and Read pointers
     logic [   PTR_WIDTH:0] wr_ptr;
     logic [   PTR_WIDTH:0] rd_ptr;
+    // Write and Read next pointers
+    logic [   PTR_WIDTH:0] wr_ptr_next;
+    logic [   PTR_WIDTH:0] rd_ptr_next;
     // Gray code pointers
     logic [   PTR_WIDTH:0] wr_ptr_gray;
     logic [   PTR_WIDTH:0] rd_ptr_gray;
@@ -31,25 +34,29 @@ module async_fifo #(
     logic [   PTR_WIDTH:0] rd_ptr_gray_sync_1;
 
     // Write operation
+    assign wr_ptr_next = wr_ptr + 1;
+
     always_ff @(posedge clk_wr, negedge rst_n_wr) begin
         if (!rst_n_wr) begin
             wr_ptr <= 0;
             wr_ptr_gray <= 0;
         end else if (wr_en && !full) begin
             fifo_mem[wr_ptr[PTR_WIDTH-1:0]] <= wr_data;
-            wr_ptr <= wr_ptr + 1;
-            wr_ptr_gray <= (wr_ptr + 1) ^ ((wr_ptr + 1) >> 1); // Convert to Gray code
+            wr_ptr <= wr_ptr_next;
+            wr_ptr_gray <= (wr_ptr_next) ^ ((wr_ptr_next) >> 1); // Convert to Gray code
         end
     end
 
     // Read operation
+    assign rd_ptr_next = rd_ptr + 1;
+
     always_ff @(posedge clk_rd, negedge rst_n_rd) begin
         if (!rst_n_rd) begin
             rd_ptr <= 0;
             rd_ptr_gray <= 0;
         end else if (rd_en && !empty) begin
-            rd_ptr <= rd_ptr + 1;
-            rd_ptr_gray <= (rd_ptr + 1) ^ ((rd_ptr + 1) >> 1); // Convert to Gray code
+            rd_ptr <= rd_ptr_next;
+            rd_ptr_gray <= (rd_ptr_next) ^ ((rd_ptr_next) >> 1); // Convert to Gray code
         end
     end
 
@@ -75,16 +82,15 @@ module async_fifo #(
     end
 
     // Write Pointer Nexy Value - FULL 인식이 느려 타이밍 맞춤
-    logic [PTR_WIDTH:0] wr_ptr_gray_next;
-    assign wr_ptr_gray_next = (wr_ptr + 1) ^ ((wr_ptr + 1) >> 1);
+    // logic [PTR_WIDTH:0] wr_ptr_gray_next;
+    // assign wr_ptr_gray_next = (wr_ptr + 1) ^ ((wr_ptr + 1) >> 1);
 
     // full and empty flags
-    // assign empty = (wr_ptr_gray_sync_1 == rd_ptr_gray);
     assign empty = (rd_ptr_gray == wr_ptr_gray_sync_1);
     // assign full  = (wr_ptr_gray_next == {~rd_ptr_gray_sync_1[PTR_WIDTH:PTR_WIDTH-1], rd_ptr_gray_sync_1[PTR_WIDTH-2:0]});
     assign full  = (wr_ptr_gray == {~rd_ptr_gray_sync_1[PTR_WIDTH:PTR_WIDTH-1], rd_ptr_gray_sync_1[PTR_WIDTH-2:0]});
 
     // output data
-    assign rd_data <= fifo_mem[rd_ptr[PTR_WIDTH-1:0]];
+    assign rd_data = fifo_mem[rd_ptr[PTR_WIDTH-1:0]];
 
 endmodule

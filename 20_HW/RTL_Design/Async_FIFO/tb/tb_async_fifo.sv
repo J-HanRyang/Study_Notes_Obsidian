@@ -115,7 +115,6 @@ module tb_async_fifo;
     // Write Monitor
     always @(posedge clk_wr) begin
         if (rst_n_wr && wr_en && !full) begin
-            // #1;  // testbench에서 직접 인가하므로 setup/hold 타이밍은 task 내에서 처리
             $fdisplay(fd_out, "WRITE: data=%0d", wr_data);
         end else if (rst_n_wr && wr_en && full) begin
             $fdisplay(fd_out, "WRITE FAIL (full): data=%0d", wr_data);
@@ -125,7 +124,6 @@ module tb_async_fifo;
     // Read Monitor
     always @(posedge clk_rd) begin
         if (rst_n_rd && rd_en && !empty) begin
-            #1; // RTL에서 rd_data가 valid해지는 타이밍을 맞추기 위해 약간의 지연 추가
             $fdisplay(fd_out, "READ: data=%0d", rd_data);
         end else if (rst_n_rd && rd_en && empty) begin
             $fdisplay(fd_out, "READ FAIL (empty)");
