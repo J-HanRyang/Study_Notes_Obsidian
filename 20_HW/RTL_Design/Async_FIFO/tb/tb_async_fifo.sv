@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module tb_async_fifo;
     // Parameters & Signals
     localparam DATA_WIDTH = 32;
@@ -143,10 +145,9 @@ module tb_async_fifo;
             #1;  // Setup Time
             wr_en   = 1;
             wr_data = data;
-            @(posedge clk_wr);
+            @(negedge clk_wr);
             #1;  // Hold Time
             wr_en   = 0;
-            wr_data = 0;
         end
     endtask
 
@@ -155,7 +156,7 @@ module tb_async_fifo;
             @(posedge clk_rd);
             #1;  // Setup Time
             rd_en = 1;
-            @(posedge clk_rd);
+            @(negedge clk_rd);
             #1;  // Hold Time
             rd_en = 0;
         end
