@@ -74,9 +74,9 @@ module tb_async_fifo;
         join
 
         // Open stimulus file
-        fd_in = fopen("./model/stimulus.txt", "r");
-        fd_out = fopen("./model/dut_output.txt",
-                       "w");  // DUT 출력 기록용 (디버깅)
+        fd_in = $fopen("./model/stimulus.txt", "r");
+        fd_out = $fopen("./model/dut_output.txt",
+                        "w");  // DUT 출력 기록용 (디버깅)
 
         if (fd_in == 0 || fd_out == 0) begin
             $display("Failed to open files.");
@@ -107,8 +107,9 @@ module tb_async_fifo;
     end
 
     // Monitor DUT outputs (for debugging)
-    always_ff @(posedge clk_wr) begin
-        if (rst_n_wr && wr_ed && !full) begin
+    always @(posedge clk_wr) begin
+        if (rst_n_wr && wr_en && !full) begin
+            #1;  // wr_data가 data에 반영될 시간
             $fdisplay(
                 fd_out,
                 "WRITE: data=%0d, wr_ptr=%0d, rd_ptr=%0d, full=%0b, empty=%0b",
@@ -118,8 +119,9 @@ module tb_async_fifo;
         end
     end
 
-    always_ff @(posedge clk_rd) begin
+    always @(posedge clk_rd) begin
         if (rst_n_rd && rd_en && !empty) begin
+            #1;  // Data가 rd_data에 반영될 시간
             $fdisplay(
                 fd_out,
                 "READ: data=%0d, wr_ptr=%0d, rd_ptr=%0d, full=%0b, empty=%0b",
