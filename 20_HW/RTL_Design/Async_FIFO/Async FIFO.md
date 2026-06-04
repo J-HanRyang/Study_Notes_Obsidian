@@ -142,6 +142,9 @@ full 판별
 	- Icarus 호환성 문제도 회피.
 - **리셋 분리**:
 	- wr_clk/rd_clk 도메인이 독립적이므로 rst_n_wr, rst_n_rd를 각각 별도로 사용.
+- **Combinational Read :
+	- registered read는 레이턴시 1사이클 발생.
+	- assign으로 바꾸면 rd_ptr 기준으로 즉시 출력되어 TB 타이밍 문제도 사라진다.
 
 ## 구현 코드
 
@@ -184,59 +187,89 @@ full 판별
 	- Extra bit 포함 유지 -> & ((1 << (PTR_WIDTH + 1)) - 1)
 - **full 판별 마스크**:
 	- 상위 2비트 반전 -> ^ (3 << (PTR_WIDTH - 1))
+- **prev_full로 WAIT 삽입**:
+	- full 상태에서 read 후 write가 바로 들어오면 RTL은 sync 지연 때문에 full이 아직 안 꺼진 상태.
+	- prev_full && !cur_full 조건으로 full 해제 직후를 감지해서 WAIT를 stimulus에 삽입한다.
+- **WAIT는 full 전환 시에만 삽입**:
+	- empty 상태에서 read가 들어와도 데이터 유실은 없으므로 WAIT 불필요.
+	- full일 때 write가 들어오면 데이터를 덮어씌우는 문제가 생기므로 full 해제 후 write 전에만 WAIT를 넣는다.
 
-### 구현 코드 (초안)
+### 구현 코드
 
 - [[async_fifo.c]]
 
 ```c
-typedef struct {
-    uint32_t fifo_mem[FIFO_DEPTH];
-    uint32_t wr_ptr;
-    uint32_t rd_ptr;
-    uint32_t wr_ptr_gray;
-    uint32_t rd_ptr_gray;
-} async_fifo_t;
+int prev_full = 0;
 
-int fifo_full(async_fifo_t *f) {
-    return (f->wr_ptr_gray == (f->rd_ptr_gray ^ (3 << (PTR_WIDTH - 1))));
-}
+// 반복문 내부
+	// Full감지 -> READ이후 WAIT
+	int cur_full = fifo_full(&fifo);
 
-int fifo_empty(async_fifo_t *f) {
-    return (f->wr_ptr_gray == f->rd_ptr_gray);
-}
+	if ((prev_full && !cur_full))
+	{
+		fprintf(fp, "WAIT\n");
+	}
 
-void fifo_write(async_fifo_t *f, uint32_t wdata) {
-    if (!fifo_full(f)) {
-        f->fifo_mem[f->wr_ptr & (FIFO_DEPTH - 1)] = wdata;
-        f->wr_ptr = (f->wr_ptr + 1) & ((1 << (PTR_WIDTH + 1)) - 1);
-        f->wr_ptr_gray = f->wr_ptr ^ (f->wr_ptr >> 1);
-        printf("WRITE: data=%u, wr_ptr=%u, rd_ptr=%u, full=%d, empty=%d\n",
-               wdata, f->wr_ptr, f->rd_ptr, fifo_full(f), fifo_empty(f));
-    } else {
-        printf("WRITE FAIL (full): data=%u\n", wdata);
-    }
-}
-
-void fifo_read(async_fifo_t *f) {
-    if (!fifo_empty(f)) {
-        uint32_t rdata = f->fifo_mem[f->rd_ptr & (FIFO_DEPTH - 1)];
-        printf("READ: data=%u, wr_ptr=%u, rd_ptr=%u, full=%d, empty=%d\n",
-               rdata, f->wr_ptr, f->rd_ptr, fifo_full(f), fifo_empty(f));
-        f->rd_ptr = (f->rd_ptr + 1) & ((1 << (PTR_WIDTH + 1)) - 1);
-        f->rd_ptr_gray = f->rd_ptr ^ (f->rd_ptr >> 1);
-    } else {
-        printf("READ FAIL (empty)\n");
-    }
-}
+	prev_full = fifo_full(&fifo);
 ```
 
 ---
 
 # Step 4: TB
+## 설계 결정 사항 (Why 포함)
+
+- **검증 범위**:
+	- full/empty 신호는 2-stage sync 지연 때문에 C 모델과 1:1 타이밍 일치가 불가능하다.
+	- 검증 대상은 **READ 데이터 무결성과 순서**로 한정한다.
+- **FAIL 라인 비교 제외**:
+	- empty일 때 read, full일 때 write는 FAIL을 출력하지만 비교에서 제외한다.
+	- empty read는 데이터 문제가 없고, full write는 WAIT로 사전에 막는다.
+- **out-of-order 허용 안 함**:
+	- full 상태에서 write가 들어오면 뒤로 미루지 않고 그 자리에서 FAIL 처리.
+	- 순서를 바꾸면 실제 시스템 동작과 달라지기 때문이다.
+- **WAIT 처리**:
+	- TB에서 WAIT 커맨드를 만나면 negedge full까지 대기 후 clk_wr 한 사이클 여유를 준다.
+	- full 해제를 RTL 타이밍 기준으로 기다리는 것이다.
+- **타임스탬프 기록**:
+	- dut_output.txt에 @ 타임스탬프를 함께 저장해서 FAIL 발생 시 GTKWave에서 해당 시점을 바로 찾을 수 있다.
+
+## 구현 코드
+
+- [[tb_async_fifo.sv]]
+
+```systemverilog
+while (!$feof(
+	fd_in
+)) begin
+	// 파일에서 한 줄 읽기
+	$fscanf(fd_in, "%s %d\n", cmd, data);
+
+	if (cmd == "WRITE") begin
+		// Task를 활용하여 clk_wr 도메인으로 안전하게 인가
+		fifo_write(data);
+	end else if (cmd == "READ") begin
+		// Task를 활용하여 clk_rd 도메인으로 안전하게 인가
+		fifo_read();
+	end else if (cmd == "WAIT") begin
+		@(negedge full);
+		@(posedge clk_wr);
+	end
+end
+```
+
+## 검증 결과
+
+C 모델 golden과 RTL dut 출력 READ 데이터 완전 일치.
+
+![[Full 수정 후 waveform.png]]
+
+![[Full 수정 후 scoreboard.png]]
 
 ---
+
 # 관련 문서
 
 - [[async_fifo.sv]]
 - [[async_fifo.c]]
+- [[tb_async_fifo.sv]]
+- [[compare.c]]

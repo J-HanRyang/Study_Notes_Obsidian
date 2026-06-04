@@ -20,7 +20,7 @@
 | wr_ptr | 다음에 쓸 위치 |
 | rd_ptr | 다음에 읽을 위치 |
 
-### Full / Empty 판별 — Extra bit 방식
+### **Full / Empty 판별:** Extra bit 방식
 
 - 포인터를 주소 비트보다 1비트 넓게 선언한다. (depth=4면 주소 2비트, 포인터 3비트)
 
