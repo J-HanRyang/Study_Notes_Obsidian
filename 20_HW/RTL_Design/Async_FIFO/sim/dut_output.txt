@@ -1,20 +1,100 @@
-READ FAIL (empty)
-READ FAIL (empty)
-READ FAIL (empty)
-WRITE: data=44
-READ FAIL (empty)
-READ: data=44
-READ FAIL (empty)
-WRITE: data=25
-WRITE: data=12
-READ: data=25
-READ: data=12
-WRITE: data=7
-WRITE: data=40
-WRITE: data=91
-READ: data=7
-WRITE: data=97
-WRITE: data=45
-WRITE FAIL (full): data=47
-READ: data=40
-READ: data=91
+READ FAIL (empty): @ 25000
+READ FAIL (empty): @ 45000
+READ FAIL (empty): @ 65000
+WRITE: data=44 @ 73000
+READ FAIL (empty): @ 85000
+READ : data=44 @ 105000
+READ FAIL (empty): @ 125000
+WRITE: data=25 @ 133000
+WRITE: data=12 @ 143000
+READ : data=25 @ 155000
+READ : data=12 @ 175000
+WRITE: data=7 @ 183000
+WRITE: data=40 @ 193000
+WRITE: data=91 @ 203000
+READ : data=7 @ 215000
+WRITE: data=97 @ 223000
+WRITE: data=45 @ 233000
+WRITE FAIL (full): data=47 @ 243000
+READ : data=40 @ 255000
+READ : data=91 @ 285000
+READ : data=97 @ 305000
+READ : data=45 @ 325000
+WRITE: data=99 @ 333000
+READ FAIL (empty): @ 345000
+READ : data=99 @ 365000
+WRITE: data=23 @ 373000
+READ FAIL (empty): @ 385000
+READ : data=23 @ 405000
+READ FAIL (empty): @ 425000
+READ FAIL (empty): @ 445000
+WRITE: data=35 @ 453000
+WRITE: data=71 @ 463000
+WRITE: data=86 @ 473000
+READ : data=35 @ 485000
+READ : data=71 @ 505000
+WRITE: data=76 @ 513000
+READ : data=86 @ 525000
+READ : data=76 @ 545000
+READ FAIL (empty): @ 565000
+WRITE: data=79 @ 573000
+WRITE: data=23 @ 583000
+READ : data=79 @ 595000
+WRITE: data=58 @ 603000
+READ : data=23 @ 615000
+WRITE: data=33 @ 623000
+WRITE: data=67 @ 633000
+WRITE: data=17 @ 643000
+READ : data=58 @ 655000
+READ : data=33 @ 685000
+WRITE: data=48 @ 693000
+WRITE: data=18 @ 703000
+READ : data=67 @ 715000
+WRITE: data=12 @ 738000
+READ : data=17 @ 755000
+READ : data=48 @ 785000
+READ : data=18 @ 805000
+WRITE: data=14 @ 813000
+WRITE: data=64 @ 823000
+READ : data=12 @ 835000
+WRITE: data=17 @ 843000
+WRITE: data=73 @ 853000
+WRITE FAIL (full): data=25 @ 863000
+WRITE FAIL (full): data=94 @ 873000
+READ : data=14 @ 885000
+WRITE: data=85 @ 908000
+READ : data=64 @ 925000
+WRITE: data=72 @ 948000
+READ : data=17 @ 965000
+READ : data=73 @ 995000
+WRITE: data=10 @ 1003000
+WRITE: data=28 @ 1013000
+READ : data=85 @ 1025000
+READ : data=72 @ 1055000
+READ : data=10 @ 1075000
+READ : data=28 @ 1095000
+READ FAIL (empty): @ 1115000
+READ FAIL (empty): @ 1135000
+READ FAIL (empty): @ 1155000
+READ FAIL (empty): @ 1175000
+WRITE: data=46 @ 1183000
+READ FAIL (empty): @ 1195000
+READ : data=46 @ 1215000
+WRITE: data=74 @ 1223000
+READ FAIL (empty): @ 1235000
+READ : data=74 @ 1255000
+WRITE: data=15 @ 1263000
+READ FAIL (empty): @ 1275000
+READ : data=15 @ 1295000
+READ FAIL (empty): @ 1315000
+READ FAIL (empty): @ 1335000
+WRITE: data=12 @ 1343000
+WRITE: data=71 @ 1353000
+WRITE: data=74 @ 1363000
+READ : data=12 @ 1375000
+WRITE: data=79 @ 1383000
+READ : data=71 @ 1395000
+READ : data=74 @ 1415000
+WRITE: data=88 @ 1423000
+READ : data=79 @ 1435000
+READ : data=88 @ 1455000

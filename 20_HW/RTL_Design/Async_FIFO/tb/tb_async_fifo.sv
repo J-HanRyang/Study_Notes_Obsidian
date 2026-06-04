@@ -2,8 +2,17 @@
 
 module tb_async_fifo;
     // Parameters & Signals
+`ifdef DATA_WIDTH_DEF
+    localparam DATA_WIDTH = `DATA_WIDTH_DEF;
+`else
     localparam DATA_WIDTH = 32;
+`endif
+
+`ifdef FIFO_DEPTH_DEF
+    localparam FIFO_DEPTH = `FIFO_DEPTH_DEF;
+`else
     localparam FIFO_DEPTH = 4;
+`endif
 
     logic                  clk_wr;
     logic                  rst_n_wr;
@@ -100,6 +109,9 @@ module tb_async_fifo;
             end else if (cmd == "READ") begin
                 // Task를 활용하여 clk_rd 도메인으로 안전하게 인가
                 fifo_read();
+            end else if (cmd == "WAIT") begin
+                @(negedge full);
+                @(posedge clk_wr);
             end
         end
 
@@ -115,18 +127,19 @@ module tb_async_fifo;
     // Write Monitor
     always @(posedge clk_wr) begin
         if (rst_n_wr && wr_en && !full) begin
-            $fdisplay(fd_out, "WRITE: data=%0d", wr_data);
+            $fdisplay(fd_out, "WRITE: data=%0d @ %0t", wr_data, $time);
         end else if (rst_n_wr && wr_en && full) begin
-            $fdisplay(fd_out, "WRITE FAIL (full): data=%0d", wr_data);
+            $fdisplay(fd_out, "WRITE FAIL (full): data=%0d @ %0t", wr_data,
+                      $time);
         end
     end
 
     // Read Monitor
     always @(posedge clk_rd) begin
         if (rst_n_rd && rd_en && !empty) begin
-            $fdisplay(fd_out, "READ: data=%0d", rd_data);
+            $fdisplay(fd_out, "READ : data=%0d @ %0t", rd_data, $time);
         end else if (rst_n_rd && rd_en && empty) begin
-            $fdisplay(fd_out, "READ FAIL (empty)");
+            $fdisplay(fd_out, "READ FAIL (empty): @ %0t", $time);
         end
     end
 

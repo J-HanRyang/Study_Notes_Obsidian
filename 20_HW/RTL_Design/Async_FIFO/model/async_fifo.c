@@ -2,9 +2,21 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#ifndef DATA_WIDTH
 #define DATA_WIDTH 32
+#endif
+
+#ifndef FIFO_DEPTH
 #define FIFO_DEPTH 4
+#endif
+
+#ifndef PTR_WIDTH
 #define PTR_WIDTH 2
+#endif
+
+#ifndef LOOP_COUNT
+#define LOOP_COUNT 20
+#endif
 
 typedef struct
 {
@@ -24,12 +36,14 @@ int main()
 {
 	async_fifo_t fifo = {0}; // fifo 초기화
 
-	FILE *fp = fopen("../sim/stimulus.txt", "w");			 // tb input stimulus 파일
-	FILE *output_fp = fopen("../sim/golden_output.txt", "w"); // tb output과 비교할 golden output 파일
+	FILE *fp = fopen("./sim/stimulus.txt", "w");			 // tb input stimulus 파일
+	FILE *output_fp = fopen("./sim/golden_output.txt", "w"); // tb output과 비교할 golden output 파일
 
 	srand(42);
 
-	for (int i = 0; i < 20; i++)
+	int prev_full = 0;
+
+	for (int i = 0; i < LOOP_COUNT; i++)
 	{
 		uint32_t cmd = rand() % 2;	  // 0: write, 1: read
 		uint32_t data = rand() % 100; // random data
@@ -54,13 +68,23 @@ int main()
 
 			if (fifo_read(&fifo, &rdata))
 			{
-				fprintf(output_fp, "READ: data=%u\n", rdata);
+				fprintf(output_fp, "READ : data=%u\n", rdata);
 			}
 			else
 			{
 				fprintf(output_fp, "READ FAIL (empty)\n");
 			}
 		}
+
+		// Full감지 -> READ이후 WAIT
+		int cur_full = fifo_full(&fifo);
+
+		if ((prev_full && !cur_full))
+		{
+			fprintf(fp, "WAIT\n");
+		}
+
+		prev_full = fifo_full(&fifo);
 	}
 
 	fclose(fp);
