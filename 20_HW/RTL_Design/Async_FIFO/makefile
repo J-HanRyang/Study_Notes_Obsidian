@@ -46,13 +46,12 @@ wave:
 # compare 실행
 compare:
 	$(CC) -DTOTAL_COUNT=$(LOOP_COUNT) \
-		-o model/compare.exe $(CMP)
-		./model/compare.exe
+		  -o sim/compare.exe $(CMP)
+	./sim/compare.exe
 
 clean:
 	rm -f $(SIM_OUT) \
 	      model/async_fifo.exe \
-	      model/compare.exe \
 	      sim/stimulus.txt \
 	      sim/golden_output.txt \
 	      sim/dut_output.txt \
