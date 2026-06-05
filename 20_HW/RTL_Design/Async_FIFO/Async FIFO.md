@@ -187,19 +187,22 @@ full 판별
 	- Extra bit 포함 유지 -> & ((1 << (PTR_WIDTH + 1)) - 1)
 - **full 판별 마스크**:
 	- 상위 2비트 반전 -> ^ (3 << (PTR_WIDTH - 1))
-- **prev_full로 WAIT 삽입**:
+- **prev_full로 WR_WAIT 삽입**:
 	- full 상태에서 read 후 write가 바로 들어오면 RTL은 sync 지연 때문에 full이 아직 안 꺼진 상태.
-	- prev_full && !cur_full 조건으로 full 해제 직후를 감지해서 WAIT를 stimulus에 삽입한다.
-- **WAIT는 full 전환 시에만 삽입**:
-	- empty 상태에서 read가 들어와도 데이터 유실은 없으므로 WAIT 불필요.
-	- full일 때 write가 들어오면 데이터를 덮어씌우는 문제가 생기므로 full 해제 후 write 전에만 WAIT를 넣는다.
-
+	- prev_full && !cur_full 조건으로 full 해제 직후를 감지해서 WR_WAIT를 stimulus에 삽입한다.
+- ~~**WAIT는 full 전환 시에만 삽입**:~~ (RD_WAIT도 필요)
+	- ~~empty 상태에서 read가 들어와도 데이터 유실은 없으므로 WAIT 불필요.~~
+	- ~~full일 때 write가 들어오면 데이터를 덮어씌우는 문제가 생기므로 full 해제 후 write 전에만 WAIT를 넣는다.~~
+- **prev_empty로 RD_WAIT 삽입**:
+	- empty 상태에서 write 후 read가 바로 들어오면 RTL은 sync 지연 때문에 empty가 아직 안 꺼진 상태.
+	- prev_empty && !cur_empty 조건으로 empty 해제 직후를 감지해서 RD_WAIT를 stimulus에 삽입한다.
 ### 구현 코드
 
 - [[async_fifo.c]]
 
 ```c
 int prev_full = 0;
+int prev_empty = 0;
 
 // 반복문 내부
 	// Full감지 -> READ이후 WAIT
@@ -207,10 +210,19 @@ int prev_full = 0;
 
 	if ((prev_full && !cur_full))
 	{
-		fprintf(fp, "WAIT\n");
+		fprintf(fp, "WR_WAIT\n");
+	}
+
+	// Empty감지 -> WRITE이후 WAIT
+	int cur_empty = fifo_empty(&fifo);
+
+	if ((prev_empty && !cur_empty))
+	{
+		fprintf(fp, "RD_WAIT\n");
 	}
 
 	prev_full = fifo_full(&fifo);
+	prev_empty = fifo_empty(&fifo);
 ```
 
 ---
@@ -227,9 +239,12 @@ int prev_full = 0;
 - **out-of-order 허용 안 함**:
 	- full 상태에서 write가 들어오면 뒤로 미루지 않고 그 자리에서 FAIL 처리.
 	- 순서를 바꾸면 실제 시스템 동작과 달라지기 때문이다.
-- **WAIT 처리**:
-	- TB에서 WAIT 커맨드를 만나면 negedge full까지 대기 후 clk_wr 한 사이클 여유를 준다.
+- **RD_WAIT 처리**:
+	- TB에서 WR_WAIT 커맨드를 만나면 @(negedge full)까지 대기 후 clk_wr 한 사이클 여유를 준다.
 	- full 해제를 RTL 타이밍 기준으로 기다리는 것이다.
+- **RD_WAIT 처리**:
+	- TB에서 RD_WAIT 커맨드를 만나면 @(negedge enpty)까지 대기 후 clk_rd 한 사이클 여유를 준다.
+	- empty 해제를 RTL 타이밍 기준으로 기다리는 것이다.
 - **타임스탬프 기록**:
 	- dut_output.txt에 @ 타임스탬프를 함께 저장해서 FAIL 발생 시 GTKWave에서 해당 시점을 바로 찾을 수 있다.
 
@@ -250,9 +265,12 @@ while (!$feof(
 	end else if (cmd == "READ") begin
 		// Task를 활용하여 clk_rd 도메인으로 안전하게 인가
 		fifo_read();
-	end else if (cmd == "WAIT") begin
+	end else if (cmd == "WR_WAIT") begin
 		@(negedge full);
 		@(posedge clk_wr);
+	end else if (cmd == "RD_WAIT") begin
+		@(negedge empty);
+		@(posedge clk_rd);
 	end
 end
 ```

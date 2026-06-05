@@ -6,8 +6,8 @@ VVP     = vvp
 
 # 파라미터 설정
 DATA_WIDTH = 32
-FIFO_DEPTH = 4
-PTR_WIDTH  = 2
+FIFO_DEPTH = 128
+PTR_WIDTH  = 7
 LOOP_COUNT = 100000
 
 # 경로 설정

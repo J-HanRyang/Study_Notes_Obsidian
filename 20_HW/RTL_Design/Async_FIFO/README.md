@@ -65,13 +65,13 @@ Sync FIFO에서 개선 예정이었던 **C 모델 랜덤 입력 자동 생성**,
 - **golden_output.txt:** C 레퍼런스 모델이 예측한 정답 데이터
 - **dut_output.txt:** RTL 시뮬레이션 결과 (타임스탬프 @ 포함)
 
-compare.exe를 통한 자동 비교 결과, READ 데이터의 무결성과 순서가 C 모델과 완전 일치(PASS)함을 확인했다.
+compare.exe를 통한 자동 비교 결과, WRITE/READ 데이터의 무결성과 순서가 C 모델과 완전 일치(PASS)함을 확인했다.
 
 ![[Full 수정 후 scoreboard.png]]
 
 ---
 
-## 트러블슈팅: Async FIFO의 보수적 Full 플래그 타이밍 이슈
+## 트러블슈팅: Async FIFO의 보수적 Full 플래그 타이밍 이슈 ->  Empty도 수정
 
 ### **수정 전 (문제 상황)**
 * **문제:** FIFO가 Full인 상태에서 Read ➔ Write 연속 명령어가 올 때 RTL에서 Fail 발생.
