@@ -261,9 +261,9 @@ end
 
 C 모델 golden과 RTL dut 출력 READ 데이터 완전 일치.
 
-![[Full 수정 후 waveform.png]]
+![[Full 수정 후 waveform.png|800]]
 
-![[Full 수정 후 scoreboard.png]]
+![[Full 수정 후 scoreboard.png|500]]
 
 ---
 

@@ -63,19 +63,33 @@ Sync FIFO에서 개선 예정이었던 **C 모델 랜덤 입력 자동 생성**,
 
 - **stimulus.txt:** C 레퍼런스 모델이 생성한 랜덤 입력 패턴
 - **golden_output.txt:** C 레퍼런스 모델이 예측한 정답 데이터
-- dut_output.txt: RTL 시뮬레이션 결과 (타임스탬프 @ 포함)
+- **dut_output.txt:** RTL 시뮬레이션 결과 (타임스탬프 @ 포함)
 
-`compare.exe`를 통한 자동 비교 결과, READ 데이터의 무결성과 순서가 C 모델과 완전 일치(PASS)함을 확인했다.
+compare.exe를 통한 자동 비교 결과, READ 데이터의 무결성과 순서가 C 모델과 완전 일치(PASS)함을 확인했다.
 
-```text
-PASS: @ 75000
-  Golden READ : data=42
-  DUT    READ : data=42
-PASS: @ 105000
-  Golden READ : data=17
-  DUT    READ : data=17
-...
-Total PASS:    20
-Total FAIL:    0
-Total SKIPPED: 2
-All 20 cases processed.
+![[Full 수정 후 scoreboard.png]]
+
+---
+
+## 트러블슈팅: Async FIFO의 보수적 Full 플래그 타이밍 이슈
+
+### **수정 전 (문제 상황)**
+* **문제:** FIFO가 Full인 상태에서 Read ➔ Write 연속 명령어가 올 때 RTL에서 Fail 발생.
+* **이유 (C 모델 vs RTL의 차이):** 
+	* **C 모델:** 클럭 개념이 없어서 데이터를 읽자마자 즉시 Full 플래그가 꺼짐.
+	* **RTL:** Read 포인터가 쓰기 도메인으로 전송될 때 2-stage FF 동기화 지연(CDC Latency)이 발생하므로, 실제 공간이 비었어도 몇 클럭 동안 **보수적 Full** 상태를 유지함.
+* 결과적으로 RTL이 아직 Full 상태일 때 Write가 인가되어 데이터 미스매치가 발생함.
+
+![[Full 수정 전 waveform.png|800]]
+
+![[Full 수정 전 scoreboard.png|800]]
+
+### **수정 후 (해결 완료)**
+* **해결:** 시뮬레이션 환경에 RTL 플래그 인지 로직을 추가하여 해결.
+	* C 모델에서 Full 직후 Read가 오면 패턴을 감지해 **WAIT** 명령어를 생성하도록 유도.
+	* 테스트벤치에서 WAIT를 만나면 RTL의 full 신호가 떨어질 때까지 @(negedge full) 대기한 후 다음 동작을 수행하도록 흐름 제어.
+* **결과:** 하드웨어 지연 특성이 검증 환경에 올바르게 반영되어 데이터 검증 완전 일치 (PASS).
+
+![[Full 수정 후 waveform.png|800]]
+
+![[Full 수정 후 scoreboard.png|500]]

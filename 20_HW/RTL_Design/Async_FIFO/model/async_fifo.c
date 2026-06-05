@@ -42,6 +42,7 @@ int main()
 	srand(42);
 
 	int prev_full = 0;
+	int prev_empty = 0;
 
 	for (int i = 0; i < LOOP_COUNT; i++)
 	{
@@ -81,10 +82,19 @@ int main()
 
 		if ((prev_full && !cur_full))
 		{
-			fprintf(fp, "WAIT\n");
+			fprintf(fp, "WR_WAIT\n");
+		}
+
+		// Empty감지 -> WRITE이후 WAIT
+		int cur_empty = fifo_empty(&fifo);
+
+		if ((prev_empty && !cur_empty))
+		{
+			fprintf(fp, "RD_WAIT\n");
 		}
 
 		prev_full = fifo_full(&fifo);
+		prev_empty = fifo_empty(&fifo);
 	}
 
 	fclose(fp);

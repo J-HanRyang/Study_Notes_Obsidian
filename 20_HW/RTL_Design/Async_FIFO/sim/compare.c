@@ -28,18 +28,18 @@ int main()
 		   fgets(dut_line, sizeof(dut_line), dut_fp) != NULL)
 	{
 		// FAIL 라인 스킵
-		while (strstr(golden_line, "FAIL") != NULL)
-		{
-			skip_count++;
-			if (fgets(golden_line, sizeof(golden_line), golden_fp) == NULL)
-				break;
-		}
-		while (strstr(dut_line, "FAIL") != NULL)
-		{
-			skip_count++;
-			if (fgets(dut_line, sizeof(dut_line), dut_fp) == NULL)
-				break;
-		}
+		// while (strstr(golden_line, "FAIL") != NULL)
+		// {
+		// 	skip_count++;
+		// 	if (fgets(golden_line, sizeof(golden_line), golden_fp) == NULL)
+		// 		break;
+		// }
+		// while (strstr(dut_line, "FAIL") != NULL)
+		// {
+		// 	skip_count++;
+		// 	if (fgets(dut_line, sizeof(dut_line), dut_fp) == NULL)
+		// 		break;
+		// }
 
 		// dut에서 @ 기준으로 data 부분과 타임스탬프 분리
 		char dut_data[100];
@@ -69,7 +69,7 @@ int main()
 
 		if (strcmp(golden_line, dut_data) == 0)
 		{
-			printf("PASS: @ %s\n  Golden %s\n  DUT    %s\n", dut_time, golden_line, dut_data);
+			// printf("PASS: @ %s\n  Golden %s\n  DUT    %s\n", dut_time, golden_line, dut_data);
 			pass_count++;
 		}
 		else

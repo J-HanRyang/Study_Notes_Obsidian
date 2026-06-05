@@ -8,7 +8,7 @@ VVP     = vvp
 DATA_WIDTH = 32
 FIFO_DEPTH = 4
 PTR_WIDTH  = 2
-LOOP_COUNT = 100
+LOOP_COUNT = 100000
 
 # 경로 설정
 MODEL   = model/async_fifo.c

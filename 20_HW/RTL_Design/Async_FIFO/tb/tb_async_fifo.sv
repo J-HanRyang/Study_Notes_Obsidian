@@ -109,9 +109,12 @@ module tb_async_fifo;
             end else if (cmd == "READ") begin
                 // Task를 활용하여 clk_rd 도메인으로 안전하게 인가
                 fifo_read();
-            end else if (cmd == "WAIT") begin
+            end else if (cmd == "WR_WAIT") begin
                 @(negedge full);
                 @(posedge clk_wr);
+            end else if (cmd == "RD_WAIT") begin
+                @(negedge empty);
+                @(posedge clk_rd);
             end
         end
 
@@ -139,7 +142,7 @@ module tb_async_fifo;
         if (rst_n_rd && rd_en && !empty) begin
             $fdisplay(fd_out, "READ : data=%0d @ %0t", rd_data, $time);
         end else if (rst_n_rd && rd_en && empty) begin
-            $fdisplay(fd_out, "READ FAIL (empty): @ %0t", $time);
+            $fdisplay(fd_out, "READ FAIL (empty) @ %0t", $time);
         end
     end
 
