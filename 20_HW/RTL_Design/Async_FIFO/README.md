@@ -67,7 +67,8 @@ Sync FIFO에서 개선 예정이었던 **C 모델 랜덤 입력 자동 생성**,
 
 compare.exe를 통한 자동 비교 결과, WRITE/READ 데이터의 무결성과 순서가 C 모델과 완전 일치(PASS)함을 확인했다.
 
-![[Full 수정 후 scoreboard.png]]
+<img width="287" height="97" alt="Full 수정 후 scoreboard" src="https://github.com/user-attachments/assets/d090e48a-1249-4e45-af8a-d06af693768c" />
+
 
 ---
 
@@ -80,9 +81,12 @@ compare.exe를 통한 자동 비교 결과, WRITE/READ 데이터의 무결성과
 	* **RTL:** Read 포인터가 쓰기 도메인으로 전송될 때 2-stage FF 동기화 지연(CDC Latency)이 발생하므로, 실제 공간이 비었어도 몇 클럭 동안 **보수적 Full** 상태를 유지함.
 * 결과적으로 RTL이 아직 Full 상태일 때 Write가 인가되어 데이터 미스매치가 발생함.
 
-![[Full 수정 전 waveform.png|800]]
+<img width="620" height="262" alt="Full 수정 전 waveform" src="https://github.com/user-attachments/assets/727559d8-53c5-40bc-a452-aa5309fcb100" />
 
-![[Full 수정 전 scoreboard.png|800]]
+</br>
+
+<img width="616" height="101" alt="Full 수정 전 scoreboard" src="https://github.com/user-attachments/assets/fde358c7-ada1-46ab-b83d-0523aed0ebfe" />
+
 
 ### **수정 후 (해결 완료)**
 * **해결:** 시뮬레이션 환경에 RTL 플래그 인지 로직을 추가하여 해결.
@@ -90,6 +94,8 @@ compare.exe를 통한 자동 비교 결과, WRITE/READ 데이터의 무결성과
 	* 테스트벤치에서 WAIT를 만나면 RTL의 full 신호가 떨어질 때까지 @(negedge full) 대기한 후 다음 동작을 수행하도록 흐름 제어.
 * **결과:** 하드웨어 지연 특성이 검증 환경에 올바르게 반영되어 데이터 검증 완전 일치 (PASS).
 
-![[Full 수정 후 waveform.png|800]]
+<img width="642" height="257" alt="Full 수정 후 waveform" src="https://github.com/user-attachments/assets/6536fbb9-0906-453e-9f5c-803c404692e2" />
 
-![[Full 수정 후 scoreboard.png|500]]
+</br>
+
+<img width="287" height="97" alt="Full 수정 후 scoreboard" src="https://github.com/user-attachments/assets/12cb5527-2a64-442e-83bb-511d4a957b24" />
