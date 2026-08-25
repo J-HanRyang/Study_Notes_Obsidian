@@ -87,9 +87,9 @@ module async_fifo #(
 
     // full and empty flags
     assign empty = (rd_ptr_gray == wr_ptr_gray_sync_1);
-    // assign full  = (wr_ptr_gray_next == {~rd_ptr_gray_sync_1[PTR_WIDTH:PTR_WIDTH-1], rd_ptr_gray_sync_1[PTR_WIDTH-2:0]});
     assign full  = (wr_ptr_gray == {~rd_ptr_gray_sync_1[PTR_WIDTH:PTR_WIDTH-1], rd_ptr_gray_sync_1[PTR_WIDTH-2:0]});
 
+    // assign full  = (wr_ptr_gray_next == {~rd_ptr_gray_sync_1[PTR_WIDTH:PTR_WIDTH-1], rd_ptr_gray_sync_1[PTR_WIDTH-2:0]});
     // output data
     assign rd_data = fifo_mem[rd_ptr[PTR_WIDTH-1:0]];
 
