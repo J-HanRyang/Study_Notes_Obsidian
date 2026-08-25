@@ -38,11 +38,11 @@ module async_fifo #(
 
     always_ff @(posedge clk_wr, negedge rst_n_wr) begin
         if (!rst_n_wr) begin
-            wr_ptr <= 0;
+            wr_ptr      <= 0;
             wr_ptr_gray <= 0;
         end else if (wr_en && !full) begin
             fifo_mem[wr_ptr[PTR_WIDTH-1:0]] <= wr_data;
-            wr_ptr <= wr_ptr_next;
+            wr_ptr      <= wr_ptr_next;
             wr_ptr_gray <= (wr_ptr_next) ^ ((wr_ptr_next) >> 1); // Convert to Gray code
         end
     end
@@ -52,10 +52,10 @@ module async_fifo #(
 
     always_ff @(posedge clk_rd, negedge rst_n_rd) begin
         if (!rst_n_rd) begin
-            rd_ptr <= 0;
+            rd_ptr      <= 0;
             rd_ptr_gray <= 0;
         end else if (rd_en && !empty) begin
-            rd_ptr <= rd_ptr_next;
+            rd_ptr      <= rd_ptr_next;
             rd_ptr_gray <= (rd_ptr_next) ^ ((rd_ptr_next) >> 1); // Convert to Gray code
         end
     end
