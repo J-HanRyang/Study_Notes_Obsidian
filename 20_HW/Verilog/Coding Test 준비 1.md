@@ -543,7 +543,7 @@ module sync3ff(
 			sync_out <= 0;
 		end else begin
 			meta1    <= async_in;
-			meat2    <= meta1;
+			meta2    <= meta1;
 			sync_out <= meta2;
 		end
 	end
@@ -551,7 +551,7 @@ module sync3ff(
 endmodule
 ```
 
-## 20. Synchronized Pulse Detector (5분) 비동기 입력을 2-FF로 동기화한 뒤, 그 동기화된 신호의 rising edge에서 1클럭 펄스를 출력하세요. (11번 + 10번 결합 응용)
+## 20. Synchronized Pulse Detector (5분) 비동기 입력을 2-FF로 동기화한 뒤, 그 동기화된 신호의 rising edge에서 1클럭 펄스를 출력하세요. (11번 + 10번 결합 응용) - 2분
 
 ```verilog
 module sync_pulse_detect(
@@ -562,18 +562,23 @@ module sync_pulse_detect(
 );
 
 	logic meta;
+	logic sync;
 	logic sig_d;
 	
 	always @(posedge clk, negedge rst_n) begin
 		if (!rst_n) begin
 			meta  <= 0;
+			sync  <= 0;
 			sig_d <= 0;
 		end else begin
 			meta  <= async_in;
-			sig_d <= 
+			sync  <= meta;
+			sig_d <= sync;
 		end
 	end
 
+	assign pulse = (sync & !sig_d);
+	
 endmodule
 ```
 
@@ -603,6 +608,33 @@ module seq_detect_1011_nooverlap(
     output logic detect
 );
 
+	parameter p_IDLE   = 3'd0;
+	parameter p_State1 = 3'd1;
+	parameter p_State2 = 3'd2;
+	parameter p_State3 = 3'd3;
+	parameter p_State4 = 3'd4;
+	
+	logic [2:0] p_stqte, n_state;
+	
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			p_state <= p_IDLE;
+		end else begin
+			p_state <= n_state;
+		end
+	end
+	
+	always @(*) begin
+		n_state = p_state;
+		
+		case (p_state)
+			p_IDLE   : n_state = (din == 1) ? p_State1 : p_IDLE;
+			p_State1 : n_state = (din == 0) ? p_State2 : p_IDLE;
+			p_State2 : n_state = (din == 1) ? p_State3 : p_State1;
+			p_State3 : n_state = (din == 1) ? p_State4 : p_State2;
+			p_State4 : n_state = p_IDLE;
+		endcase
+	end
 endmodule
 ```
 
