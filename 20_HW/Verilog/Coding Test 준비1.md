@@ -1,6 +1,6 @@
 # Part 1. 기본기 워밍업 (TSN Lab 스타일)
 
-## 1. Inverter (3분)
+## 1. Inverter (3분) - 15초
 
 ```verilog
 module inv(
@@ -8,11 +8,12 @@ module inv(
     output logic [3:0] y
 );
     // inverter
+    assign y = ~a;
 
 endmodule
 ```
 
-## 2. Logic Gates — AND, OR, XOR, NAND, NOR (3분)
+## 2. Logic Gates — AND, OR, XOR, NAND, NOR (3분) - 45초
 
 ```verilog
 module gates(
@@ -24,11 +25,17 @@ module gates(
     // y3 = XOR
     // y4 = NAND
     // y5 = NOR
+    
+    assign y1 = a & b;
+    assign y2 = a | b;
+    assign y3 = a ^ b;
+    assign y4 = a ~& b;
+    assign y5 = a ~| b;
 
 endmodule
 ```
 
-## 3. Multiplexer (3분)
+## 3. Multiplexer (3분) - 25초
 
 ```verilog
 module mux2(
@@ -37,11 +44,11 @@ module mux2(
     output logic [3:0] y
 );
     // 2:1 multiplexer
-
+	assign y = s ? d1 : d0;
 endmodule
 ```
 
-## 4. Register (5분)
+## 4. Register (5분) - 30초
 
 ```verilog
 module flop(
@@ -50,11 +57,14 @@ module flop(
     output logic [3:0] q
 );
     // D flip-flop
+    always @(posedge clk) begin
+	    q <= d;
+	end
 
 endmodule
 ```
 
-## 5. 3:8 Decoder (5분)
+## 5. 3:8 Decoder (5분) - 2분분
 
 ```verilog
 module decoder3_8(
@@ -62,7 +72,8 @@ module decoder3_8(
     output logic [7:0] y
 );
     // 3:8 decoder
-
+    assign y = 8'b1 << a;
+        
 endmodule
 ```
 
@@ -70,7 +81,7 @@ endmodule
 
 # Part 2. 조합논리 추가
 
-## 6. 4-bit 크기 비교기 (3분)
+## 6. 4-bit 크기 비교기 (3분) - 1분
 
 a > b, a == b, a < b 세 가지 출력을 만드세요.
 
@@ -80,10 +91,13 @@ module comparator4(
     output logic gt, eq, lt
 );
 
+	assign gt = (a > b)  ? 1'b1 : 1'b0;
+	assign eq = (a == b) ? 1'b1 : 1'b0;
+	assign lt = (a < b)  ? 1'b1 : 1'b0;
 endmodule
 ```
 
-## 7. 4:1 Priority Encoder (4분)
+## 7. 4:1 Priority Encoder (4분) - 2분 25초
 
 입력 중 가장 높은 비트 위치의 인덱스를 출력하세요 (입력이 모두 0이면 valid=0).
 
@@ -94,6 +108,12 @@ module priority_enc4(
     output logic       valid
 );
 
+	assign idx   =  (in[3] == 1) ? 2'b11 :
+					(in[2] == 1) ? 2'b10 :
+					(in[1] == 1) ? 2'b01 : 2'b00;
+					
+	assign valid =  (in == 'b0) ? 0 : 1;
+	// assign valid = |in;
 endmodule
 ```
 
@@ -101,7 +121,7 @@ endmodule
 
 # Part 3. 순차논리
 
-## 8. 동기 리셋 + Enable D-FF (4분)
+## 8. 동기 리셋 + Enable D-FF (4분) - 1분 10초
 
 ```verilog
 module flop_en_rst(
@@ -112,10 +132,18 @@ module flop_en_rst(
     output logic [3:0] q
 );
 
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			q <= 'b0;
+		end else if (en) begin
+			q <= d;
+		end
+	end
+
 endmodule
 ```
 
-## 9. 4-bit SIPO Shift Register (5분)
+## 9. 4-bit SIPO Shift Register (5분) 1분 40초
 
 매 클럭 `sin`을 LSB로 밀어넣는 시프트 레지스터.
 
@@ -127,10 +155,20 @@ module sipo4(
     output logic [3:0] q
 );
 
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			q <= 'b0;
+		end else begin
+			q    <= q << 1;
+			q[0] <= sin;
+		end
+
+	end
+
 endmodule
 ```
 
-## 10. Rising Edge Detector (4분)
+## 10. Rising Edge Detector (4분) - 2분 5초 (다시 풀어볼 것)
 
 1클럭짜리 펄스를 입력 신호의 상승 엣지에서 출력하세요.
 
@@ -142,10 +180,18 @@ module edge_detect(
     output logic pulse
 );
 
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			pulse <= 'b0;
+		end if (sig_in) begin
+			pulse <= 'b1;
+		end
+	end
+
 endmodule
 ```
 
-## 11. 2-FF Synchronizer (CDC) (4분)
+## 11. 2-FF Synchronizer (CDC) (4분) - 1분 10초초
 
 비동기 입력 `async_in`을 `clk` 도메인으로 동기화하세요.
 
@@ -157,6 +203,13 @@ module sync2ff(
     output logic sync_out
 );
 
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			sync_out <= 'b0;
+		end else begin
+			sync_out <= async_in;
+		end
+	end
 endmodule
 ```
 
