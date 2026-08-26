@@ -598,7 +598,7 @@ case (p_state)
 endcase
 ```
 
-## 21. "1011" Non-overlap 버전 (5분) 같은 패턴이지만 이번엔 overlap 미허용 — 패턴이 매치되면 무조건 IDLE로 리셋하고 처음부터 다시 찾으세요. (15번 원래 코드가 사실 이 스펙이었다면 정답이었음 — 조건 차이를 몸으로 느껴보는 문제)
+## 21. "1011" Non-overlap 버전 (5분) 같은 패턴이지만 이번엔 overlap 미허용 — 패턴이 매치되면 무조건 IDLE로 리셋하고 처음부터 다시 찾으세요. (15번 원래 코드가 사실 이 스펙이었다면 정답이었음 — 조건 차이를 몸으로 느껴보는 문제) - 5분분
 
 ```verilog
 module seq_detect_1011_nooverlap(
@@ -614,7 +614,7 @@ module seq_detect_1011_nooverlap(
 	parameter p_State3 = 3'd3;
 	parameter p_State4 = 3'd4;
 	
-	logic [2:0] p_stqte, n_state;
+	logic [2:0] p_state, n_state;
 	
 	always @(posedge clk, negedge rst_n) begin
 		if (!rst_n) begin
@@ -629,16 +629,19 @@ module seq_detect_1011_nooverlap(
 		
 		case (p_state)
 			p_IDLE   : n_state = (din == 1) ? p_State1 : p_IDLE;
-			p_State1 : n_state = (din == 0) ? p_State2 : p_IDLE;
-			p_State2 : n_state = (din == 1) ? p_State3 : p_State1;
+			p_State1 : n_state = (din == 0) ? p_State2 : p_State1;
+			p_State2 : n_state = (din == 1) ? p_State3 : p_IDLE;
 			p_State3 : n_state = (din == 1) ? p_State4 : p_State2;
 			p_State4 : n_state = p_IDLE;
 		endcase
 	end
+	
+	assign detect = (p_state == p_State4);
+	
 endmodule
 ```
 
-## 22. "101" Overlap 시퀀스 디텍터 (5분) 패턴을 "101"로 바꿔서 overlap 허용 버전을 다시 설계하세요. (힌트: "10101"처럼 겹치는 입력에서 두 번 검출돼야 함)
+## 22. "101" Overlap 시퀀스 디텍터 (5분) 패턴을 "101"로 바꿔서 overlap 허용 버전을 다시 설계하세요. (힌트: "10101"처럼 겹치는 입력에서 두 번 검출돼야 함) - 4분
 
 ```verilog
 module seq_detect_101(
@@ -648,10 +651,38 @@ module seq_detect_101(
     output logic detect
 );
 
+	parameter p_IDLE   = 2'd0;
+	parameter p_State1 = 2'd1;
+	parameter p_State2 = 2'd2;
+	parameter p_State3 = 2'd3;
+	
+	logic [1:0] p_state, n_state;
+	
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			p_state <= p_IDLE;
+		end else begin
+			p_state <= n_state;
+		end
+	end
+	
+	always @(*) begin
+		n_state = p_state;
+		
+		case (p_state)
+			p_IDLE   : n_state = (din == 1) ? p_State1 : p_IDLE;
+			p_State1 : n_state = (din == 0) ? p_State2 : p_State1;
+			p_State2 : n_state = (din == 1) ? p_State3 : p_IDLE;
+			p_State3 : n_state = (din == 0) ? p_State2 : p_State1;
+		endcase
+	end
+	
+	assign detect = (p_state == p_State3);
+
 endmodule
 ```
 
-## 23. "1011" Mealy 버전 (6분) 15번을 Moore가 아닌 Mealy로 다시 설계하세요 (output이 state뿐 아니라 현재 input에도 즉시 반응 — 보통 1클럭 더 빨리 detect가 뜸). Moore와 Mealy의 타이밍 차이를 직접 비교해보는 게 목적입니다.
+## 23. "1011" Mealy 버전 (6분) 15번을 Moore가 아닌 Mealy로 다시 설계하세요 (output이 state뿐 아니라 현재 input에도 즉시 반응 — 보통 1클럭 더 빨리 detect가 뜸). Moore와 Mealy의 타이밍 차이를 직접 비교해보는 게 목적입니다. - 4분
 
 ```verilog
 module seq_detect_1011_mealy(
@@ -661,16 +692,33 @@ module seq_detect_1011_mealy(
     output logic detect
 );
 
-endmodule
-```**19. 3-FF Synchronizer (4분)** 2단 대신 3단으로 확장해서 안정성을 더 높인 버전을 짜세요. (메타스테이블 확률을 더 낮추고 싶을 때 씀)
-
-```verilog
-module sync3ff(
-    input  logic clk,
-    input  logic rst_n,
-    input  logic async_in,
-    output logic sync_out
-);
-
+	parameter p_IDLE   = 2'd0;
+	parameter p_State1 = 2'd1;
+	parameter p_State2 = 2'd2;
+	parameter p_State3 = 2'd3;
+	
+	logic [1:0] p_state, n_state;
+	
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			p_state <= p_IDLE;
+		end else begin
+			p_state <= n_state;
+		end
+	end
+	
+	always @(*) begin
+		n_state = p_state;
+		
+		case (p_state)
+			p_IDLE   : n_state = (din == 1) ? p_State1 : p_IDLE;
+			p_State1 : n_state = (din == 0) ? p_State2 : p_State1;
+			p_State2 : n_state = (din == 1) ? p_State3 : p_IDLE;
+			p_State3 : n_state = (din == 1) ? p_State1 : p_State2;
+		endcase
+	end
+	
+	assign detect = ((p_state == p_State3) && (din == 1));
+	
 endmodule
 ```
