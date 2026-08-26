@@ -455,7 +455,7 @@ end
 assign pulse = sig_in & ~sig_d;  // rising: 0→1
 ```
 
-## 17. Falling Edge Detector (4분) 1→0으로 떨어지는 순간에 1클럭 펄스를 출력하세요.
+## 17. Falling Edge Detector (4분) 1→0으로 떨어지는 순간에 1클럭 펄스를 출력하세요. - 1분 10초
 
 ```verilog
 module falling_edge_detect(
@@ -465,10 +465,22 @@ module falling_edge_detect(
     output logic pulse
 );
 
+	logic sig_d;
+	
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			sig_d <= 0;
+		end else begin
+			sig_d <= sig_in;
+		end
+	end
+	
+	assign pulse = (!sig_in & sig_d) ? 1 : 0;
+
 endmodule
 ```
 
-## 18. Both Edge Detector (4분) rising이든 falling이든, 값이 바뀌는 순간마다 1클럭 펄스를 출력하세요.
+## 18. Both Edge Detector (4분) rising이든 falling이든, 값이 바뀌는 순간마다 1클럭 펄스를 출력하세요. - 1분
 
 ```verilog
 module both_edge_detect(
@@ -478,6 +490,18 @@ module both_edge_detect(
     output logic pulse
 );
 
+	logic sig_d;
+	
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			sig_d <= 0;
+		end else begin
+			sig_d <= sig_in;
+		end
+	end
+	
+	assign pulse = (sig_in != sig_d);
+	
 endmodule
 ```
 
@@ -500,7 +524,7 @@ always @(posedge clk or negedge rst_n) begin
 end
 ```
 
-## 19. 3-FF Synchronizer (4분) 2단 대신 3단으로 확장해서 안정성을 더 높인 버전을 짜세요. (메타스테이블 확률을 더 낮추고 싶을 때 씀)
+## 19. 3-FF Synchronizer (4분) 2단 대신 3단으로 확장해서 안정성을 더 높인 버전을 짜세요. (메타스테이블 확률을 더 낮추고 싶을 때 씀) - 1분 20초
 
 ```verilog
 module sync3ff(
@@ -509,6 +533,20 @@ module sync3ff(
     input  logic async_in,
     output logic sync_out
 );
+
+	logic meta1, meta2;
+	
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			meta1    <= 0;
+			meta2    <= 0;
+			sync_out <= 0;
+		end else begin
+			meta1    <= async_in;
+			meat2    <= meta1;
+			sync_out <= meta2;
+		end
+	end
 
 endmodule
 ```
@@ -522,6 +560,19 @@ module sync_pulse_detect(
     input  logic async_in,
     output logic pulse
 );
+
+	logic meta;
+	logic sig_d;
+	
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			meta  <= 0;
+			sig_d <= 0;
+		end else begin
+			meta  <= async_in;
+			sig_d <= 
+		end
+	end
 
 endmodule
 ```
