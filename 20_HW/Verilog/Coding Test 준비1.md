@@ -45,6 +45,7 @@ module mux2(
 );
     // 2:1 multiplexer
 	assign y = s ? d1 : d0;
+	
 endmodule
 ```
 
@@ -94,6 +95,7 @@ module comparator4(
 	assign gt = (a > b)  ? 1'b1 : 1'b0;
 	assign eq = (a == b) ? 1'b1 : 1'b0;
 	assign lt = (a < b)  ? 1'b1 : 1'b0;
+	
 endmodule
 ```
 
@@ -114,6 +116,7 @@ module priority_enc4(
 					
 	assign valid =  (in == 'b0) ? 0 : 1;
 	// assign valid = |in;
+	
 endmodule
 ```
 
@@ -132,7 +135,7 @@ module flop_en_rst(
     output logic [3:0] q
 );
 
-	always @(posedge clk, negedge rst_n) begin
+	always @(posedge clk) begin
 		if (!rst_n) begin
 			q <= 'b0;
 		end else if (en) begin
@@ -143,7 +146,7 @@ module flop_en_rst(
 endmodule
 ```
 
-## 9. 4-bit SIPO Shift Register (5분) 1분 40초
+## 9. 4-bit SIPO Shift Register (5분) 1분 40초 - shift 확인 잘해라
 
 매 클럭 `sin`을 LSB로 밀어넣는 시프트 레지스터.
 
@@ -159,10 +162,10 @@ module sipo4(
 		if (!rst_n) begin
 			q <= 'b0;
 		end else begin
-			q    <= q << 1;
-			q[0] <= sin;
+			q <= {q[2:0], sin};
+			// q    <= q << 1;
+			// q[0] <= sin;     --- 순서상 맞지만, 에러가 뜰 수 있음 주의
 		end
-
 	end
 
 endmodule
@@ -180,13 +183,18 @@ module edge_detect(
     output logic pulse
 );
 
+	// 수정
+	logic sig_d;
+
 	always @(posedge clk, negedge rst_n) begin
 		if (!rst_n) begin
-			pulse <= 'b0;
-		end if (sig_in) begin
-			pulse <= 'b1;
+			sig_d <= 'b0;
+		end else begin
+			sig_d <= sig_in;
 		end
 	end
+	
+	assign pulse = sin_in & !sin_d;
 
 endmodule
 ```
@@ -203,13 +211,19 @@ module sync2ff(
     output logic sync_out
 );
 
+	// 2-state임
+	logic meta;
+
 	always @(posedge clk, negedge rst_n) begin
 		if (!rst_n) begin
+			meta     <= 'b0;
 			sync_out <= 'b0;
 		end else begin
-			sync_out <= async_in;
+			meta     <= async_in;
+			sync_out <= meta;
 		end
 	end
+	
 endmodule
 ```
 
@@ -217,7 +231,7 @@ endmodule
 
 # Part 4. Counter
 
-## 12. Mod-6 Up Counter (5분)
+## 12. Mod-6 Up Counter (5분) - 1분 30초
 
 0~5까지 카운트하고 6이 되면 0으로 롤오버.
 
@@ -227,11 +241,21 @@ module counter_mod6(
     input  logic       rst_n,
     output logic [2:0] cnt
 );
-
+	
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			cnt <= 'b0;
+		end else if (cnt == 3'd5) begin
+			cnt <= 'b0;
+		end else begin
+			cnt <= cnt + 1;
+		end
+	end
+	
 endmodule
 ```
 
-## 13. Up/Down Counter (5분)
+## 13. Up/Down Counter (5분) - 1분 20초
 
 `updown = 1`이면 증가, `0`이면 감소.
 
@@ -243,6 +267,16 @@ module updown_counter(
     output logic [3:0] cnt
 );
 
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			cnt <= 'b0;
+		end else if (updown) begin
+			cnt <= cnt + 1;
+		end else begin
+			cnt <= cnt - 1;
+		end
+	end
+
 endmodule
 ```
 
@@ -250,7 +284,7 @@ endmodule
 
 # Part 5. FSM
 
-## 14. 신호등 컨트롤러 (Moore, 6~7분)
+## 14. 신호등 컨트롤러 (Moore, 6~7분) - 10분분
 
 RED(2clk) → GREEN(3clk) → YELLOW(1clk) → RED 순환.
 
@@ -260,6 +294,51 @@ module traffic_light(
     input  logic       rst_n,
     output logic [1:0] light  // 00=RED, 01=GREEN, 10=YELLOW
 );
+
+	parameter p_RED    = 3'b000;
+	parameter p_r1clk  = 3'b001;
+	parameter p_GREEN  = 3'b010;
+	parameter p_g1clk  = 3'b011;
+	parameter p_g2clk  = 3'b100;
+	parameter p_YELLOW = 3'b101;
+	
+	logic p_state, n_state;
+	logic color_state;
+
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			p_state <= p_RED;
+			color_state
+		end else begin
+			p_state <= n_state;
+		end
+	end
+	
+	always @(*) begin
+		n_state = p_state;
+		
+		case (p_state)
+			p_RED    : n_state = p_r1clk;
+			p_r1clk  : n_state = p_GREEN;
+			p_GREEN  : n_state = p_g1clk;
+			p_g1clk  : n_state = p_g2clk;
+			p_g2clk  : n_state = p_YELLOW;
+			p_YELLOW : n_state = p_RED;
+		endcase
+	end
+	
+	always @(*) begin
+		light = 'b0;
+		
+		case (p_state)
+			p_RED    : light = 2'b00;
+			p_r1clk  : light = 2'b00;
+			p_GREEN  : light = 2'b01;
+			p_g1clk  : light = 2'b01;
+			p_g2clk  : light = 2'b01;
+			p_YELLOW : light = 2'b10;
+		endcase
+	end
 
 endmodule
 ```
@@ -275,6 +354,8 @@ module seq_detect_1011(
     input  logic din,
     output logic detect
 );
+
+	parateter p_
 
 endmodule
 ```
