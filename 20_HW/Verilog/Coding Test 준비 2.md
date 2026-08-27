@@ -239,6 +239,22 @@ module btn_debounce_toggle (
     output logic led_out
 );
 
+	logic [1:0] counter;
+	logic stable, stable_d;
+	logic purse;
+	
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			led_out <= 0;
+			stable  <= 0;
+		end else (btn_in == stable) begin
+			counter <= 'b0;
+		end else begin
+			
+		end
+	end
+	
+	assign 
 endmodule
 ```
 
