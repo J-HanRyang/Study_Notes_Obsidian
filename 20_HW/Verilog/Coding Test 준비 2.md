@@ -130,6 +130,95 @@ module uart_tx (
 endmodule
 ```
 
+### 답안 1
+
+```verilog
+module uart_tx (
+    input  logic        clk,
+    input  logic        rst_n,
+    input  logic        tick,
+    input  logic        tx_start,
+    input  logic [7:0]  tx_data,
+    output logic        tx_out,
+    output logic        tx_busy
+);
+
+	parameter p_IDLE = 0;
+	parameter P_BUSY = 1;
+	
+	logic p_state, n_state;
+	logic [9:0] tx_shift_data;
+	logic [3:0] counter;
+	
+	always_ff @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+        p_state       <= p_IDLE;
+        counter       <= 0;
+        tx_shift_data <= 10'b0;
+    end else if (tick) begin
+        p_state <= n_state;
+        case (p_state)
+            p_IDLE: begin
+                counter       <= 0;
+                tx_shift_data <= {1'b1, tx_data, 1'b0};  // stop, data(MSB first), start
+            end
+            
+            p_BUSY: begin
+                counter       <= counter + 1;
+                tx_shift_data <= tx_shift_data >> 1;
+            end
+        endcase
+    end
+
+	assign tx_out  = tx_shift_data[0];
+	assign tx_busy = (p_state == p_BUSY);
+	
+endmodule
+```
+
+ ### 답안 2
+ 
+ ```verilog
+	// Block 1: state + counter + shift register 모두 여기서만 업데이트 (순차)
+	always_ff @(posedge clk or negedge rst_n) begin
+	    if (!rst_n) begin
+	        p_state       <= p_IDLE;
+	        counter       <= 0;
+	        tx_shift_data <= 10'b0;
+	    end else if (tick) begin
+	        p_state       <= n_state;
+	        counter       <= n_counter;
+	        tx_shift_data <= n_shift;
+	    end
+	end
+	
+	// Block 2: next-state / next-counter / next-shift 계산 (조합)
+	always_comb begin
+	    n_state   = p_state;
+	    n_counter = counter;
+	    n_shift   = tx_shift_data;
+	
+	    case (p_state)
+	        p_IDLE: begin
+	            n_state   = tx_start ? p_BUSY : p_IDLE;
+	            n_counter = 0;
+	            n_shift   = {1'b1, tx_data, 1'b0};
+	        end
+	        p_BUSY: begin
+	            n_state   = (counter == 4'd9) ? p_IDLE : p_BUSY;
+	            n_counter = counter + 1;
+	            n_shift   = tx_shift_data >> 1;
+	        end
+	    endcase
+	end
+	
+	// Block 3: output (조합)
+	always_comb begin
+	    tx_out  = tx_shift_data[0];
+	    tx_busy = (p_state == p_BUSY);
+	end
+ ```
+
 ---
 
 ## 3. Push Button Debounce + Toggle (10~12분)
