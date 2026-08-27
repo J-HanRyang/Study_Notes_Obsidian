@@ -3,7 +3,7 @@
 
 ---
 
-## 1. Synchronous FIFO Controller — depth 8 (12~15분)
+## 1. Synchronous FIFO Controller — depth 8 (12~15분) - 7분
 
 포인터 기반 FIFO의 컨트롤 로직만 설계하세요 (데이터 저장 배열은 이미 있다고 가정, `wptr`/`rptr`/`full`/`empty`만 구현).
 
@@ -24,15 +24,37 @@ module fifo_ctrl (
     output logic [2:0]  rptr,
     output logic        full,
     output logic        empty
-);
+); 
 
+	logic [3:0] r_wptr, r_rptr;
+	
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			r_wptr <= 0;
+		end else if (wr_en && !full) begin
+			r_wptr <= r_wptr + 1;
+		end
+	end
+
+	always @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			r_rptr <= 0;
+		end else if (rd_en && !empty) begin
+			r_rptr <= r_rptr + 1;
+		end
+	end
+		
+	assign wptr  = r_wptr[2:0];
+	assign rptr  = r_rptr[2:0];
+	assign full  = (r_wptr == {~r_rptr[3], r_rptr[2:0]});
+	assign empty = (r_wptr == r_rptr);
+	
 endmodule
 ```
 
 ---
 
-## 2. UART Transmitter — start + 8 data + stop (13~15분)
-
+## 2. UART Transmitter — start + 8 data + stop (13~15분) - 11분 (다시 생각해볼 것)
 `tick`(baud rate enable pulse, 1클럭 폭)이 1일 때만 상태가 진행되는 간단 UART TX를 설계하세요.
 
 **스펙**
@@ -44,8 +66,8 @@ endmodule
 
 ```verilog
 module uart_tx (
-    input  logic       clk,
-    input  logic       rst_n,
+    input  logic        clk,
+    input  logic        rst_n,
     input  logic        tick,
     input  logic        tx_start,
     input  logic [7:0]  tx_data,
@@ -53,6 +75,58 @@ module uart_tx (
     output logic        tx_busy
 );
 
+	parameter p_IDLE  = 2'd0;
+	parameter p_START = 2'd1;
+	parameter p_DATA  = 2'd2;
+	parameter p_STOP  = 2'd3;
+
+	logic [1:0] p_state, n_state;
+	logic [2:0] counter;
+	
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			p_state <= p_IDLE;
+		end else begin
+			p_state <= n_state;
+		end
+	end
+	
+	always_comb @(*) begin
+		n_state = p_state;
+		
+		case (p_state)
+			p_IDLE  : n_state = (tx_start == 1) ? p_START : p_IDLE;
+			p_START : n_state = p_DATA;
+			p_DATA  : n_state = (counter == 3'd7) ? p_STOP : p_DATA;
+			p_STOP  : n_state = p_IDLE;
+		endcase
+	end
+	
+	always_comb @(*) begin
+		case (p_state)
+			P_IDLE  : begin
+				tx_bysu = 0;
+			end
+			p_START : begin
+				tx_out  = 0;	
+				tx_busy = 1;
+			end
+			
+			p_DATA  : begin
+				if (counter != 3'd7) begin
+					counter          = counter + 1;
+					tx_out[counter]  = tx_data[counter]
+				end else begin
+					counter = 'b0;
+				end
+			end
+				
+			p_STOP : begin
+				tx_out = 1;
+			end
+		endcase
+	end
+	
 endmodule
 ```
 
