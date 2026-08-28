@@ -414,7 +414,7 @@ endmodule
 
 ---
 
-## 6. PWM Generator (10~12분)
+## 6. PWM Generator (10~12분) - 4분
 
 8bit 카운터와 duty cycle 비교를 이용한 PWM 신호를 생성하세요.
 
@@ -432,6 +432,21 @@ module pwm_gen (
     output logic        pwm_out
 );
 
+	logic [7:0] count;
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			pwm_out <= 0;
+		end else begin
+			if (count == 8'd255) begin
+				count <= 'b0;
+			end else begin
+				count <= count + 1;
+			end
+			
+			pwm_out <= (duty == 8'd255) ? 1'b1 : (count < duty);
+		end
+	end
+	
 endmodule
 ```
 
