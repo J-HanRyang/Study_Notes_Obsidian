@@ -567,21 +567,27 @@ module traffic_light_ped (
 	
 	always_ff @(posedge clk, negedge rst_n) begin
 		if (!rst_n) begin
-			p_state <= RED;
-			p_count <= 'b0;
+			p_state  <= RED;
+			p_count  <= 'b0;
+			p_pending <= 0;
+			p_extend  <= 0;
 		end else begin		
-			p_state <= n_state;
-			p_count <= n_count;
+			p_state   <= n_state;
+			p_count   <= n_count;
+			p_pending <= n_pending;
+			p_extend  <= n_extend;
 		end
 	end
 	
 	always_comb @(*) begin
-		n_state = p_state;
-		n_count = p_count;
+		n_state   = p_state;
+		n_count   = p_count;
+		n_pending = (ped_req) ? 1 : p_pending;
+		n_extend  = p_extend;
 		
 		case (p_state)
 			RED    : begin
-				if ((p_extend && p_count == 3'd4) || (!p_extent && p_count == 3'd1)) begin
+				if ((p_extend && p_count == 3'd4) || (!p_extend && p_count == 3'd1)) begin
 					n_state = GREEN;
 					n_count = 'd0;
 				end else begin
@@ -591,7 +597,7 @@ module traffic_light_ped (
 			
 			GREEN  : begin
 				if (p_count == 3'd2) begin
-					n_state = GREEN;
+					n_state = YELLOW;
 					n_count = 'd0;
 				end else begin
 					n_count = p_count + 1;
@@ -599,15 +605,15 @@ module traffic_light_ped (
 			end
 			
 			YELLOW : begin
-				n_state = RED;
-				n_count = 'd0;
-				
+				n_state   = RED;
+				n_count   = 'd0;
+				n_extend  = p_pending;
+				n_pending = 0;
 			end
 		endcase
 	end
 	
 	assign light = p_state;
-	assign pulse = (!req & ped_req);
 	
 endmodule
 ```
