@@ -283,7 +283,7 @@ endmodule
 
 ---
 
-## 4. 4-bit Shift-Add Multiplier (13~15분)
+## 4. 4-bit Shift-Add Multiplier (13~15분) - 14분
 
 Multi-cycle 방식의 4bit × 4bit 곱셈기를 FSM + 데이터패스로 설계하세요.
 
@@ -303,6 +303,71 @@ module mult_shift_add (
     output logic [7:0]  result,
     output logic        done
 );
+
+	parameter IDLE    = 2'd0;
+	parameter LOAD    = 2'd1;
+	parameter COMPUTE = 2'd2;
+	parameter DONE    = 2'd3;
+	
+	logic [1:0] p_state, n_state;
+	logic [7:0] p_product, n_product;
+	logic [3:0] p_bshift, n_bshift;
+	logic [1:0] p_shiftcnt, n_shiftcnt;
+	
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			p_state    <= IDLE;
+			p_product  <= 'b0;
+			p_bshift   <= 'b0;
+			p_shiftcnt <= 'b0;
+		end else begin
+			p_state    <= n_state;
+			p_product  <= n_product;
+			p_bshift   <= n_bshift;
+			p_shiftcnt <= n_shiftcnt;
+		end
+	end
+	
+	always_comb @(*) begin
+		n_state    = p_state;
+		n_product  = p_product;
+		n_bshift   = p_bshift;
+		n_shiftcnt = p_shiftcnt;
+		
+		case (p_state)
+			IDLE    : begin
+				n_state    = start ? LOAD : IDLE;
+				n_shiftcnt = 'b0;
+			end
+			
+			LOAD    : begin
+				n_bshift   = b;
+				n_product  = 'b0;
+				n_shiftcnt = 'b0;
+				n_state    = COMPUTE;
+			end
+			
+			COMPUTE : begin
+			    if (p_bshift[0]) begin
+			        n_product = p_product + (a << p_shiftcnt);
+				end
+			
+			    if (p_shiftcnt == 2'd3) begin
+			        n_state = DONE;
+				end
+			        
+			    n_bshift   = p_bshift >> 1;
+			    n_shiftcnt = p_shiftcnt + 1;
+			end
+			
+			DONE    : begin
+				n_state = IDLE;
+			end
+		endcase
+	end
+	
+	assign done   = (p_state == DONE);
+	assign result = p_product;
 
 endmodule
 ```
@@ -330,5 +395,6 @@ module regfile_4x8 (
     output logic [7:0]  rdata
 );
 
+	logic register
 endmodule
 ```
