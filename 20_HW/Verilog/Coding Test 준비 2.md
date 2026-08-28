@@ -452,7 +452,7 @@ endmodule
 
 ---
 
-## 7. SPI Master — single byte transfer, CPOL=0/CPHA=0 (13~15분)
+## 7. SPI Master — single byte transfer, CPOL=0/CPHA=0 (13~15분) - 14분
 
 `sclk_tick`(SPI 클럭 생성용 enable pulse, UART의 tick과 같은 역할)이 1일 때만 동작하는 8bit SPI Master를 설계하세요.
 
@@ -477,6 +477,61 @@ module spi_master (
     output logic        done
 );
 
+	parameter p_IDLE  = 2'd0;
+	parameter p_START = 2'd1;
+	parameter p_DATA  = 2'd2;
+	parameter p_DONE  = 2'd3;
+	
+	logic [1:0] p_state, n_state;
+	logic [7:0] p_wdata, n_wdata;
+	logic [7:0] p_rdata, n_rdata;
+	logic [3:0] p_count, n_count;
+
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			p_state <= p_IDLE;
+			p_wdata <= 'b0;
+			p_rdata <= 'b0;
+			p_count <= 'b0;
+		end else if (sclk_tick) begin
+			p_state <= n_state;
+			p_wdata <= n_wdata;
+			p_rdata <= n_rdata;
+			p_count <= n_count;
+		end
+	end
+	
+	always_comb @(*) begin
+		n_state = p_state;
+		n_wdata = p_wdata;
+		n_rdata = p_rdata;
+		n_count = p_count;
+		
+		case (p_state)
+			p_IDLE  : n_state = start ? p_START : p_IDLE;
+			
+			p_START : begin
+				n_wdata = tx_data;
+				n_count = 'd0;
+				n_state = p_DATA;
+			end
+			
+			p_DATA  : begin
+				n_wdata = p_wdata << 1;
+				n_rdata = {p_rdata[6:0], miso};
+				n_count = p_count + 1;
+				n_state = (p_count == 3'd7) ? p_DONE : p_DATA;
+			end
+			
+			p_DONE  : n_state = p_IDLE;
+		endcase
+	end
+
+	assign mosi    = (p_state == p_DATA) ? p_wdata[7] : 0;
+	assign rx_data = p_rdata;
+	assign busy    = (p_state == p_START) || (p_state == p_DATA);
+	assign done    = (p_state == p_DONE);
+	
 endmodule
 ```
 
