@@ -374,7 +374,7 @@ endmodule
 
 ---
 
-## 5. Register File w/ Address Decode — APB-lite 스타일 (10~12분)
+## 5. Register File w/ Address Decode — APB-lite 스타일 (10~12분) - 4분
 
 4개의 8bit 레지스터(주소 0~3)에 대한 단일 사이클 read/write 컨트롤러를 설계하세요.
 
@@ -395,6 +395,96 @@ module regfile_4x8 (
     output logic [7:0]  rdata
 );
 
-	logic register
+	logic [7:0] register [0:3];
+	
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			register[0] <= 'b0;
+			register[1] <= 'b0;
+			register[2] <= 'b0;
+			register[3] <= 'b0;
+		end else if (wr_en) begin
+			register[addr] <= wdata;
+		end
+	end
+	
+	assign rdata =  register[addr];
+endmodule
+```
+
+---
+
+## 6. PWM Generator (10~12분)
+
+8bit 카운터와 duty cycle 비교를 이용한 PWM 신호를 생성하세요.
+
+**스펙**
+
+- `duty` (0~255)만큼 매 주기(0~255 카운트) 동안 `pwm_out=1`, 나머지 구간은 0
+- 카운터는 255에서 0으로 자동 롤오버하며 계속 반복
+- `duty=0`이면 항상 0, `duty=255`이면 항상 1 (edge case 스스로 확인)
+
+```verilog
+module pwm_gen (
+    input  logic       clk,
+    input  logic       rst_n,
+    input  logic [7:0] duty,
+    output logic        pwm_out
+);
+
+endmodule
+```
+
+---
+
+## 7. SPI Master — single byte transfer, CPOL=0/CPHA=0 (13~15분)
+
+`sclk_tick`(SPI 클럭 생성용 enable pulse, UART의 tick과 같은 역할)이 1일 때만 동작하는 8bit SPI Master를 설계하세요.
+
+**스펙**
+
+- `start=1`이면 `tx_data`를 로드하고 전송 시작 (idle 상태에서만 유효)
+- 매 `sclk_tick`마다 MOSI로 `tx_data`의 MSB부터 1비트씩 내보내고, 동시에 MISO로 들어오는 비트를 `rx_data`에 채워 넣음 (shift 방향 주의)
+- 8비트 다 주고받으면 `done=1`, 그 다음 사이클엔 idle로 복귀
+- 전송 중엔 `busy=1`
+
+```verilog
+module spi_master (
+    input  logic       clk,
+    input  logic       rst_n,
+    input  logic        sclk_tick,
+    input  logic        start,
+    input  logic [7:0]  tx_data,
+    input  logic        miso,
+    output logic        mosi,
+    output logic [7:0]  rx_data,
+    output logic        busy,
+    output logic        done
+);
+
+endmodule
+```
+
+---
+
+## 8. 신호등 + 횡단보도 버튼 (Moore, 13~15분)
+
+14번 신호등 문제의 확장판입니다. 평소엔 기존 RED→GREEN→YELLOW 순환을 돌되, 보행자가 버튼을 누르면 **다음 RED 구간을 평소보다 길게** 유지하세요.
+
+**스펙**
+
+- 기본 순환: RED(2clk) → GREEN(3clk) → YELLOW(1clk) → RED...
+- `ped_req=1`(버튼 눌림, 1클럭 폭 pulse)이 들어오면 이후 진입하는 RED 구간은 2클럭이 아니라 **5클럭**으로 연장
+- `ped_req`는 아무 상태에서나(GREEN 도중이든 YELLOW 도중이든) 들어올 수 있음 — 그 요청을 어딘가에 "기억"해뒀다가 RED 진입 시점에 반영해야 함 (설계 포인트)
+- 한 번의 요청은 한 번의 연장에만 반영 (연장 끝나면 요청 플래그 클리어)
+
+```verilog
+module traffic_light_ped (
+    input  logic       clk,
+    input  logic       rst_n,
+    input  logic        ped_req,
+    output logic [1:0]  light  // 00=RED, 01=GREEN, 10=YELLOW
+);
+
 endmodule
 ```
