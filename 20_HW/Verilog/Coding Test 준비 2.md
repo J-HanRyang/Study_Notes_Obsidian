@@ -221,7 +221,7 @@ endmodule
 
 ---
 
-## 3. Push Button Debounce + Toggle (10~12분)
+## 3. Push Button Debounce + Toggle (10~12분) - 10분
 
 버튼 입력을 디바운스한 뒤, 눌릴 때마다(한 번의 유효한 press당 한 번만) 출력을 토글하세요.
 
@@ -241,20 +241,43 @@ module btn_debounce_toggle (
 
 	logic [1:0] counter;
 	logic stable, stable_d;
-	logic purse;
+	logic pulse;
 	
+	// stable
 	always_ff @(posedge clk, negedge rst_n) begin
 		if (!rst_n) begin
-			led_out <= 0;
+			counter <= 0;
 			stable  <= 0;
-		end else (btn_in == stable) begin
+		end else if (btn_in == stable) begin
 			counter <= 'b0;
+		end else if (counter == 2'd3) begin
+			counter <= 'b0;
+			stable  <= btn_in;
 		end else begin
-			
+			counter <= counter + 1;
 		end
 	end
 	
-	assign 
+	// pulse
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			stable_d <= 0;
+		end else begin
+			stable_d <= stable;
+		end
+	end
+	
+	assign pulse = (~stable_d & stable);
+	
+	// led
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			led_out <= 0;
+		end else if (pulse) begin
+			led_out <= ~led_out;
+		end
+	end
+	
 endmodule
 ```
 
