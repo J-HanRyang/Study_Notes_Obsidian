@@ -485,7 +485,7 @@ module spi_master (
 	logic [1:0] p_state, n_state;
 	logic [7:0] p_wdata, n_wdata;
 	logic [7:0] p_rdata, n_rdata;
-	logic [3:0] p_count, n_count;
+	logic [2:0] p_count, n_count;
 
 	always_ff @(posedge clk, negedge rst_n) begin
 		if (!rst_n) begin
@@ -537,7 +537,7 @@ endmodule
 
 ---
 
-## 8. 신호등 + 횡단보도 버튼 (Moore, 13~15분)
+## 8. 신호등 + 횡단보도 버튼 (Moore, 13~15분) - 13분 30초초
 
 14번 신호등 문제의 확장판입니다. 평소엔 기존 RED→GREEN→YELLOW 순환을 돌되, 보행자가 버튼을 누르면 **다음 RED 구간을 평소보다 길게** 유지하세요.
 
@@ -556,5 +556,58 @@ module traffic_light_ped (
     output logic [1:0]  light  // 00=RED, 01=GREEN, 10=YELLOW
 );
 
+	parameter RED    = 2'd0;
+	parameter GREEN  = 2'd1;
+	parameter YELLOW = 2'd2;
+	
+	logic [1:0] p_state, n_state;
+	logic [2:0] p_count, n_count;
+	logic p_pending, n_pending;
+	logic p_extend, n_extend;
+	
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			p_state <= RED;
+			p_count <= 'b0;
+		end else begin		
+			p_state <= n_state;
+			p_count <= n_count;
+		end
+	end
+	
+	always_comb @(*) begin
+		n_state = p_state;
+		n_count = p_count;
+		
+		case (p_state)
+			RED    : begin
+				if ((p_extend && p_count == 3'd4) || (!p_extent && p_count == 3'd1)) begin
+					n_state = GREEN;
+					n_count = 'd0;
+				end else begin
+					n_count = p_count + 1;
+				end
+			end
+			
+			GREEN  : begin
+				if (p_count == 3'd2) begin
+					n_state = GREEN;
+					n_count = 'd0;
+				end else begin
+					n_count = p_count + 1;
+				end
+			end
+			
+			YELLOW : begin
+				n_state = RED;
+				n_count = 'd0;
+				
+			end
+		endcase
+	end
+	
+	assign light = p_state;
+	assign pulse = (!req & ped_req);
+	
 endmodule
 ```
