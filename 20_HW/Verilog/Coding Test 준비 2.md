@@ -771,11 +771,11 @@ module pulse_cross (
 		end else begin
 			sync_b1 <= toggle_a;
 			sync_b2 <= sync_b1;
-			edge_b  <= sync_b1;
+			edge_b  <= sync_b2;
 		end
 	end
 
-	assign pulse_out = (~sync_b & edge_b);
+	assign pulse_out = (sync_b2 ^ edge_b);
 	
 endmodule
 ```
@@ -799,6 +799,8 @@ module irq_ctrl (
     output logic       irq_valid,
     output logic       ack
 );
+
+
 
 endmodule
 ```
