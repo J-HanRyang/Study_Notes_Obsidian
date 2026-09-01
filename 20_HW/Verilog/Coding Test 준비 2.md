@@ -3,6 +3,7 @@
 
 ---
 
+# Part 4 심화
 ## 1. Synchronous FIFO Controller — depth 8 (12~15분) - 7분
 
 포인터 기반 FIFO의 컨트롤 로직만 설계하세요 (데이터 저장 배열은 이미 있다고 가정, `wptr`/`rptr`/`full`/`empty`만 구현).
@@ -617,3 +618,223 @@ module traffic_light_ped (
 	
 endmodule
 ```
+
+---
+
+
+# 오답노트 및 재연습
+
+> 오늘 반복됐던 실수 패턴을 하나씩 정면으로 찌르는 문제들입니다. 각 문제 위에 "이게 어떤 실수를 다시 짚는지" 적어뒀으니, 풀기 전에 한 번 읽고 시작하세요.
+
+---
+
+## 1. 8-bit Running Parity Counter (10분) - 7분
+
+**짚는 포인트**: "무조건 할 일 vs 조건부로 할 일" 분리 — 27번 곱셈기, 6번 PWM에서 반복됐던 실수.
+
+**스펙**
+
+- `valid=1`일 때마다 `din` 1비트를 받아서 running XOR parity를 갱신 (`parity <= parity ^ din`) — 이건 조건부(valid일 때만)
+- 동시에 `valid=1`일 때마다 받은 비트 수를 세는 `count`도 갱신 — 이것도 valid에 종속
+- `count`가 8에 도달하면 `parity_done=1`을 1클럭 띄우고, `count`와 `parity`를 0으로 리셋 후 다음 8비트 카운트를 새로 시작
+- 힌트: "갱신"과 "카운트"는 항상 같이 움직이지만, "8개 다 찼을 때 리셋"은 그 이후에 별도로 판단해야 함 — 어디까지가 하나의 조건이고 어디부터 별개의 조건인지 스스로 나눠보는 게 핵심
+
+```verilog
+module parity_counter (
+    input  logic       clk,
+    input  logic       rst_n,
+    input  logic        valid,
+    input  logic        din,
+    output logic        parity_done,
+    output logic        parity_out
+);
+	
+	logic parity;
+	logic [2:0] count;
+
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			count       <= 'd0;
+			parity      <= 0;
+			parity_done <= 0;
+			parity_out  <= 0;
+		end else begin
+			parity_done <= 1'b0;
+
+	        if (valid) begin
+	            parity <= parity ^ din;
+	            if (count == 3'd7) begin
+	                count       <= 3'd0;
+	                parity_done <= 1'b1;
+	                parity_out  <= parity ^ din;
+	            end else begin
+	                count <= count + 1;
+	            end
+	        end
+	    end
+	end
+	
+endmodule
+```
+
+---
+
+## 2. "110" Overlap 시퀀스 디텍터 (10분) - 6분
+
+**짚는 포인트**: 부분 매칭 실패 시 올바른 fallback state로 가는 것 — 15, 21, 23번에서 반복됐던 그 실수.
+
+**스펙**
+
+- 입력 비트스트림에서 "110" 패턴이 끝나는 순간 `detect=1` (Moore)
+- Overlap 허용 — 예를 들어 "1101101"이면 두 번 검출되어야 함
+- 그리기 힌트: 상태를 "지금까지 매칭된 접두사"로 이름 붙이고, 각 상태에서 din=0/din=1일 때 "지금까지 문자열 + 그 비트"의 접미사가 패턴의 접두사와 어디까지 겹치는지 손으로 먼저 표로 그려보세요.
+
+```verilog
+module seq_detect_110 (
+    input  logic clk,
+    input  logic rst_n,
+    input  logic din,
+    output logic detect
+);
+
+	parameter p_IDLE = 2'd0;
+	parameter p_D1   = 2'd1;
+	parameter p_D2   = 2'd2;
+	parameter p_D3   = 2'd3;
+	
+	logic [1:0] p_state, n_state;
+	
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin
+			p_state <= p_IDLE;
+		end else begin
+			p_state <= n_state;
+		end
+	end
+	
+	always_comb @(*) begin
+		n_state = p_state;
+		
+		case (p_state)
+			p_IDLE : n_state = (din == 1) ? p_D1 : p_IDLE;
+			p_D1   : n_state = (din == 1) ? p_D2 : p_IDLE;
+			p_D2   : n_state = (din == 0) ? p_D3 : p_D2;
+			p_D3   : n_state = (din == 1) ? p_D1 : p_IDLE;
+		endcase
+	end
+	
+	assign detect = (p_state == p_D3);
+	
+endmodule
+```
+
+---
+
+## 3. Pulse Crossing Synchronizer — Toggle 방식 (12~15분) - 6분
+
+**짚는 포인트**: CDC 개념의 응용. 2-FF sync(11번)는 "레벨 신호"를 옮기는 거였는데, 이번엔 "폭이 1클럭인 pulse"를 다른 클럭 도메인으로 안전하게 옮기는 문제 — 왜 pulse를 2-FF sync에 그냥 넣으면 안 되는지가 핵심.
+
+**스펙**
+
+- `clk_a` 도메인에서 `pulse_in`(폭 1클럭)이 뜨면, `clk_b` 도메인에서 `pulse_out`이 (정확히 한 번만) 떠야 함
+- 힌트: `pulse_in`을 그대로 2-FF sync에 넣으면, `clk_b`가 `clk_a`보다 느릴 경우 그 1클럭짜리 pulse를 아예 샘플링을 못 하고 놓칠 수 있음. 그래서 실무에서는 **toggle 방식**을 씀: `clk_a` 쪽에서 pulse가 뜰 때마다 레벨 신호를 토글시키고(`toggle_a <= ~toggle_a`), 그 "레벨"을 `clk_b`로 2-FF sync 시킨 뒤, `clk_b` 쪽에서 그 동기화된 신호의 edge를 검출하면 그게 곧 pulse_out.
+- 즉 이 문제는 "10번(edge detect) + 11번(2-FF sync) + toggle FF"를 순서대로 조립하는 문제입니다.
+
+```verilog
+module pulse_cross (
+    input  logic clk_a,
+    input  logic rst_n_a,
+    input  logic pulse_in,     // clk_a 도메인
+
+    input  logic clk_b,
+    input  logic rst_n_b,
+    output logic pulse_out     // clk_b 도메인
+);
+
+	logic toggle_a;
+	logic sync_b1, sync_b2;
+	logic edge_b;
+	
+	always_ff @(posedge clk_a, negedge rst_n_a) begin
+		if (!rst_n_a) begin
+			toggle_a <= 0;
+		end else if (pulse_in) begin
+			toggle_a <= ~toggle_a;
+		end
+	end
+	
+	always_ff @(posedge clk_b, negedge rst_n_b) begin
+		if (!rst_n_b) begin
+			sync_b1 <= 0;
+			sync_b2 <= 0;
+			edge_b  <= 0;
+		end else begin
+			sync_b1 <= toggle_a;
+			sync_b2 <= sync_b1;
+			edge_b  <= sync_b1;
+		end
+	end
+
+	assign pulse_out = (~sync_b & edge_b);
+	
+endmodule
+```
+
+---
+
+## 4. 인터럽트 우선순위 컨트롤러 — Latch 방지 집중 (10분)
+
+**짚는 포인트**: `always_comb`에서 모든 출력에 기본값을 먼저 깔아두는 패턴 — 25번 UART, 28번 SPI에서 래치 위험이 나왔던 그 지점을 의도적으로 다시 연습.
+
+**스펙**
+
+- 4개의 인터럽트 입력(`irq[3:0]`) 중 가장 우선순위 높은 것(번호가 클수록 우선순위 높음, `irq[3]`이 최우선) 하나만 골라서 `grant`(2bit, 어느 irq인지)와 `irq_valid`(뭐라도 떴는지)를 출력
+- 추가로 `ack`(1bit, 이번 사이클에 처리 중이라는 표시)도 같이 만들어야 함 — 총 3개 출력을 하나의 `always_comb`에서 관리
+- 목표: case문이든 if-else든, **시작하자마자 모든 출력에 기본값부터 깔고** 그 다음에 조건별로 필요한 것만 덮어쓰는 스타일을 의식적으로 연습하는 것
+
+```verilog
+module irq_ctrl (
+    input  logic [3:0] irq,
+    output logic [1:0] grant,
+    output logic       irq_valid,
+    output logic       ack
+);
+
+endmodule
+```
+
+---
+
+## 5. 간단 자판기 FSM — 동전 누적 (13~15분)
+
+**짚는 포인트**: "나중에 쓸 값을 지금 기억해뒀다가 특정 시점에 반영" — 오늘 마지막 문제(신호등+버튼)에서 제대로 짚어내신 그 패턴을 완전히 새로운 문제에 다시 적용해보는 것. 오답이 아니라 "잘했던 걸 다른 문제에서도 재현할 수 있는지" 확인용입니다.
+
+**스펙**
+
+- `coin_5=1`이면 5원 투입, `coin_10=1`이면 10원 투입 (동시에 안 들어옴, 한 클럭에 최대 하나)
+- 누적 금액이 **15원 이상**이 되면 그 다음 클럭에 `dispense=1`을 1클럭 띄우고 누적 금액을 초기화 (거스름돈 로직은 무시해도 됨)
+- 누적 금액이 15원 미만인 동안은 계속 값을 쌓아가야 함 (즉 "투입될 때마다 더하고, 15 넘었는지는 그 이후에 판단"이라는 구조 — 1번 문제와 원리가 같음)
+- `amount`(누적 금액, 5bit 정도)를 출력으로 노출해서 중간 확인 가능하게 하세요
+
+```verilog
+module vending_machine (
+    input  logic       clk,
+    input  logic       rst_n,
+    input  logic        coin_5,
+    input  logic        coin_10,
+    output logic [4:0]  amount,
+    output logic        dispense
+);
+
+endmodule
+```
+
+---
+
+## 오늘 전체 복기 체크리스트
+
+- [ ] FSM 짜기 전에 상태 다이어그램(원+화살표)을 먼저 그렸는가
+- [ ] "조건부로 해야 할 일"과 "무조건 매 사이클 해야 할 일"을 분리했는가 (특히 counter 증가, shift)
+- [ ] `always_comb`에서 모든 출력에 기본값을 먼저 깔았는가 (case가 일부만 커버해도 래치 안 생기게)
+- [ ] 선언한 변수명과 실제 사용한 변수명이 끝까지 일치하는가 (제출 전 한 번 스캔)
+- [ ] 종료 조건(off-by-one)을 "먼저 연산, 그다음 판단" 순서로 짰는가
