@@ -782,7 +782,7 @@ endmodule
 
 ---
 
-## 4. 인터럽트 우선순위 컨트롤러 — Latch 방지 집중 (10분)
+## 4. 인터럽트 우선순위 컨트롤러 — Latch 방지 집중 (10분) - 5분
 
 **짚는 포인트**: `always_comb`에서 모든 출력에 기본값을 먼저 깔아두는 패턴 — 25번 UART, 28번 SPI에서 래치 위험이 나왔던 그 지점을 의도적으로 다시 연습.
 
@@ -800,7 +800,37 @@ module irq_ctrl (
     output logic       ack
 );
 
-
+	always_comb begin
+		grant     = 2'd0;
+		irq_valid = 0;
+		ack       = 0;
+		
+		casez (irq)
+			4'b1??? : begin
+				grant     = 2'd3;
+				irq_valid = 1;
+				ack       = 1;
+			end
+			
+			4'b01?? : begin
+				grant     = 2'd2;
+				irq_valid = 1;
+				ack       = 1;
+			end
+			
+			4'b001? : begin
+				grant     = 2'd1;
+				irq_valid = 1;
+				ack       = 1;
+			end
+			
+			4'b0001 : begin
+				grant     = 2'd0;
+				irq_valid = 1;
+				ack       = 1;
+			end
+		endcase
+	end
 
 endmodule
 ```
@@ -822,11 +852,35 @@ endmodule
 module vending_machine (
     input  logic       clk,
     input  logic       rst_n,
-    input  logic        coin_5,
-    input  logic        coin_10,
-    output logic [4:0]  amount,
-    output logic        dispense
+    input  logic       coin_5,
+    input  logic       coin_10,
+    output logic [4:0] amount,
+    output logic       dispense
 );
+
+    logic [4:0] next_amount;
+
+    always_comb begin
+        next_amount = amount;
+        
+        if (coin_5)       next_amount = amount + 5'd5;
+        else if (coin_10) next_amount = amount + 5'd10;
+    end
+
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            amount   <= 5'd0;
+            dispense <= 1'b0;
+        end else begin
+            if (next_amount >= 5'd15) begin
+                dispense <= 1'b1;
+                amount   <= 5'd0;
+            end else begin
+                dispense <= 1'b0;
+                amount   <= next_amount;
+            end
+        end
+    end
 
 endmodule
 ```
