@@ -18,7 +18,15 @@
 ## 프로젝트
 
 - [[20_HW/Design_Verification/00_Environment/README|00 - 실행 환경 확인]]
+- [[20_HW/Design_Verification/01_Sync_FIFO/README|01 - Sync FIFO 검증]]
+- [[20_HW/Design_Verification/02_Async_FIFO/README|02 - Async FIFO 검증]]
 - [[20_HW/Design_Verification/_Project_Template/README|새 프로젝트 템플릿]]
+
+## UVM 실행
+
+Icarus Verilog는 RTL 및 기본 SystemVerilog 확인에 사용합니다. UVM은 VS Code에서 작성한 뒤 EDA Playground용 파일을 자동 생성해 실행합니다.
+
+- [[20_HW/Design_Verification/00_Environment/EDA_Playground_연동|EDA Playground 연동 방법]]
 
 ## 사용 방법
 
