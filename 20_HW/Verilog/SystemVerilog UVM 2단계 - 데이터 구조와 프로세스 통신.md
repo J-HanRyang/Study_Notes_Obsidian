@@ -91,7 +91,8 @@ score_by_id.delete(10); // 특정 key 삭제
 score_by_id.delete();   // 전체 삭제
 ```
 
-기존 key에 다시 대입하면 element 수가 늘지 않고 값만 덮어쓴다. Transaction ID를 이용하는 out-of-order scoreboard matching 등에 적합하다.
+기존 key에 다시 대입하면 element 수가 늘지 않고 값만 덮어쓴다. 
+Transaction ID를 이용하는 out-of-order scoreboard matching 등에 적합하다.
 
 ## 5. Enum, typedef, struct
 
@@ -121,7 +122,8 @@ typedef struct {
 } bus_item_t;
 ```
 
-Struct는 관련 field를 하나의 value로 묶는다. Struct variable 대입은 class handle assignment와 달리 field 값 복사다.
+Struct는 관련 field를 하나의 value로 묶는다. 
+Struct variable 대입은 class handle assignment와 달리 field 값 복사다.
 
 ```systemverilog
 bus_item_t a, b;
@@ -182,7 +184,9 @@ event done;
 @done;   // 다음 trigger 대기
 ```
 
-`@done`이 대기를 시작하기 전에 trigger가 이미 지나가면 event가 유실될 수 있다. Event는 과거 trigger 횟수를 queue처럼 기억하지 않는다. `done.triggered`는 같은 time slot의 race 완화에는 도움이 되지만 이전 simulation time의 trigger를 복구하지는 않는다.
+`@done`이 대기를 시작하기 전에 trigger가 이미 지나가면 event가 유실될 수 있다. 
+Event는 과거 trigger 횟수를 queue처럼 기억하지 않는다. 
+`done.triggered`는 같은 time slot의 race 완화에는 도움이 되지만 이전 simulation time의 trigger를 복구하지는 않는다.
 
 ## 8. Semaphore
 
@@ -218,7 +222,8 @@ mailbox #(int) mbx = new(2); // int 전용, 용량 2
 | `peek()` | 비면 기다림 | 제거하지 않음 |
 | `try_peek()` | 비면 즉시 0 | 제거하지 않음 |
 
-`mailbox #(int)`에는 `int`만 넣을 수 있다. `peek()`과 `try_peek()`의 차이는 제거 여부가 아니라 blocking 여부다.
+`mailbox #(int)`에는 `int`만 넣을 수 있다. 
+`peek()`과 `try_peek()`의 차이는 제거 여부가 아니라 blocking 여부다.
 
 ## 10. 도구 선택 기준
 
@@ -230,7 +235,8 @@ mailbox #(int) mbx = new(2); // int 전용, 용량 2
 | 공유 자원의 동시 접근 제한 | Semaphore |
 | 연속되지 않은 ID 기반 조회 | Associative array |
 
-Shared variable이나 queue만 여러 thread가 함께 사용하면 대기·깨우기·동시 접근 정책을 직접 구현해야 한다. Mailbox와 semaphore는 이 동기화 의도를 명시적으로 표현한다.
+Shared variable이나 queue만 여러 thread가 함께 사용하면 대기·깨우기·동시 접근 정책을 직접 구현해야 한다. 
+Mailbox와 semaphore는 이 동기화 의도를 명시적으로 표현한다.
 
 ## 자주 틀렸던 부분
 
