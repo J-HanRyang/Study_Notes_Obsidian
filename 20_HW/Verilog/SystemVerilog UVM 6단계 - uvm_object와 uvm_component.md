@@ -27,12 +27,12 @@ uvm_component 계열
 
 ```text
 uvm_object
-├─ uvm_transaction
-│  └─ uvm_sequence_item
-│     └─ bus_item 같은 transaction
-└─ uvm_sequence_base
-   └─ uvm_sequence
-      └─ write_sequence 같은 sequence
+└─ uvm_transaction
+   └─ uvm_sequence_item
+      ├─ bus_item 같은 transaction
+      └─ uvm_sequence_base
+         └─ uvm_sequence
+            └─ write_sequence 같은 sequence
 ```
 
 상속 구조는 UVM 버전과 class 종류에 따라 더 세부적일 수 있다. 여기서는 sequence item과 sequence가 모두 `uvm_object` 계열이라는 점이 중요하다.
@@ -79,7 +79,7 @@ Sequence는 UVM class이지만 component hierarchy에 들어가지 않는다. �
 
 ## 3. `uvm_component` 계열
 
-대표적인 component 계열 class는 다음과 같다.
+대표적인 component 계열 class는 다음과 같다. 아래 목록은 계열을 보여주기 위한 것으로 중간 상속 class를 생략했다.
 
 ```text
 uvm_component
@@ -265,4 +265,3 @@ Sequence의 `body()`는 component phase와 별개의 sequence 실행 method다.
 - 다음에는 class 계열과 생성 방식을 더 정확히 연결하면 된다.
 
 다음 학습 주제는 **7단계 Factory와 utility macro**다.
-
