@@ -18,6 +18,15 @@ SystemVerilog와 UVM을 이용한 설계 검증 학습 프로젝트입니다.
 - [[20_HW/Design_Verification/01_Sync_FIFO/README|01 - Sync FIFO 검증]]
 - [[20_HW/Design_Verification/02_Async_FIFO/README|02 - Async FIFO 검증]]
 
+## UVM 학습 자료
+
+- [[20_HW/Verilog/SystemVerilog UVM 1단계 - 객체지향 복습|1단계 - 객체지향 복습]]
+- [[20_HW/Verilog/SystemVerilog UVM 2단계 - 데이터 구조와 프로세스 통신|2단계 - 데이터 구조와 프로세스 통신]]
+- [[20_HW/Verilog/SystemVerilog UVM 3단계 - Randomization과 Constraint|3단계 - Randomization과 Constraint]]
+- [[20_HW/Verilog/SystemVerilog UVM 4단계 - Interface와 Simulation Timing|4단계 - Interface와 Simulation Timing]]
+- [[20_HW/Verilog/SystemVerilog UVM 5단계 - UVM 개요와 전체 구조|5단계 - UVM 개요와 전체 구조]]
+- [[20_HW/Verilog/SystemVerilog UVM 6단계 - uvm_object와 uvm_component|6단계 - uvm_object와 uvm_component]]
+
 ## UVM 실행
 
 RTL 문법과 기본 SystemVerilog Testbench는 Icarus Verilog로 확인합니다.
