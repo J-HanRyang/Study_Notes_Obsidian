@@ -3,6 +3,14 @@
 SystemVerilog와 UVM을 이용한 설계 검증 학습 프로젝트입니다.
 각 프로젝트 폴더 안에 DUT, Testbench, 검증 문서와 학습 기록을 함께 보관합니다.
 
+## 시작 문서
+
+- [[20_HW/Verilog/SystemVerilog UVM 학습 Prompt|SystemVerilog/UVM 통합 학습·실습 프롬프트]]: 이론과 실습을 함께 진행하는 단일 프롬프트
+- [[20_HW/Design_Verification/01_Sync_FIFO/README|01_Sync_FIFO 프로젝트]]: 첫 실습의 상태와 파일
+- [[20_HW/Design_Verification/00_Environment/EDA_Playground_연동|EDA Playground 연동]]: UVM 코드 내보내기와 실행
+
+현재는 7단계 factory와 utility macro를 학습 중입니다. 7~8단계에는 작은 코드 예측·실행 실습을 합니다. 9단계에서는 기존 `RTL_Design/01_Sync_FIFO`의 RTL·directed TB·C 모델·결과를 출발 자료로 확인하고, 남은 검증 항목과 최소 UVM 요청 경로를 구성합니다. 기존 directed TB를 새로 만들지 않습니다. 10~12단계에서 virtual interface, monitor, scoreboard를 연결합니다.
+
 ## 프로젝트 구성 원칙
 
 ```text
