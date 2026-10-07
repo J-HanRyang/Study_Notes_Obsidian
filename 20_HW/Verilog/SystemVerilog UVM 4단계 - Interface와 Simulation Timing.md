@@ -1,4 +1,12 @@
+---
+cssclasses:
+  - uvm-study-note
+updated: 2026-10-07
+---
+
 # SystemVerilog/UVM 4단계 - Interface와 Simulation Timing
+
+![4단계 개념 그림](assets/uvm-study/stage04.png)
 
 > 학습 범위: interface, interface instance, modport, virtual interface, clocking block, input/output skew, simulation event region, blocking/nonblocking assignment, race condition, driver 구동 시점, monitor sampling 시점, registered output 관찰.
 
@@ -370,3 +378,51 @@ Monitor는 모든 신호를 관찰하며 아무 신호도 구동하지 않는다
 - Event region과 registered output sampling: 2/5
 
 다음 학습 주제는 5단계 UVM 개요와 전체 구조다.
+
+## PDF 보충 - Parameter와 sampling 기준의 일치
+
+> 2026-10-07 보강. Parameterized interface와 전달 방식은 자료 보충이며 실제 연결·실행은 미확인이다.
+> 연결: 01.03.02 Interface, 책 64~73쪽; 01.03.05 Virtual interfaces, 책 103쪽; 02.03·02.12의 top/interface 연결 예.
+
+### Parameter와 modport도 type의 일부다
+
+```systemverilog
+interface bus_if #(parameter int DW = 8)(input logic clk);
+  logic [DW-1:0] data;
+endinterface
+// class 안의 선언 예
+virtual bus_if#(16) vif;
+```
+
+실제 instance, virtual interface 선언, 이후 config DB의 type parameter는 폭과 modport까지 일치시킨다. Config DB 전달 상세는 10단계에서 확인한다. Constructor를 통한 직접 전달도 가능하며 interface를 복사하지 않고 실제 instance에 대한 참조를 전달한다.
+
+### Clocking input skew와 output skew
+
+Clocking block의 input은 관찰하는 쪽, output은 구동하는 쪽이다. 일반적인 양의 input skew는 edge보다 앞서 sampling하고, 양의 output skew는 edge 뒤에 구동한다. 명시하지 않은 기본값은 input #1step, output #0이다. Clocking block의 input #0과 절차문 `#0;`은 같은 동작이 아니다. 절차문 #0만으로 NBA 이후 관찰을 보장하지 않는다.
+
+### 한 monitor에서 요청과 결과의 시점을 구분
+
+기존 통합 예제의 모든 신호 input #0은 출력 갱신 관찰을 설명한 예다. 그대로 사용하면 driver가 edge 뒤에 갱신한 입력을 DUT가 그 edge에서 사용한 입력으로 오해할 수 있다. 실제 protocol monitor는 요청 수락 시점의 입력과 등록 출력 갱신 시점을 각각 정한다.
+
+```systemverilog
+clocking mon_cb @(posedge clk);
+  input #1step valid, ready, data;
+  input #0 result;
+endclocking
+```
+
+이 예도 protocol에서 ready와 result의 의미를 확인해 선택해야 한다. FIFO에서는 wr_en/rd_en, full/empty의 edge 직전 상태로 수락을 판단하고 해당 edge 뒤의 등록 출력은 별도 timing으로 연결할 수 있다. 구체 정책은 DUT RTL을 읽은 뒤 정한다.
+
+### Program은 UVM의 필수 조건이 아니다
+
+PDF의 program block은 Reactive region을 활용하는 설명 방식이다. UVM top을 module로 작성해 run_test()를 호출할 수도 있다. 어느 방식이든 pin 접근 timing과 clocking block 정책을 명시해야 한다. NBA, Observed, Reactive/Re-NBA 등 실제 scheduling은 4단계의 단순 그림보다 세부적이다.
+
+보충 확인 문제: input #0 result와 절차문 #0 뒤 result 읽기는 왜 같다고 단정할 수 없는가? 새 보충 문제이며 답변·실행은 아직 확인하지 않았다.
+
+## 갱신 상태와 탐색
+
+원래 이해도 기록은 당시 평가를 유지한다. PDF 보충을 넣었다는 이유로 숙련도를 올리지 않았다. 현재 전체 진도는 8단계 기본 이론·해석까지이며 다음 시작점은 9단계다.
+
+[[SystemVerilog UVM 학습 진행 기록|최신 진도]] · [[SystemVerilog UVM 학습 홈|1~8단계 목차]]
+
+기준 PDF: `_uvm_tb_240705_214257.pdf`. 표기 쪽수는 책의 인쇄 쪽수이며 파일 페이지는 +11.

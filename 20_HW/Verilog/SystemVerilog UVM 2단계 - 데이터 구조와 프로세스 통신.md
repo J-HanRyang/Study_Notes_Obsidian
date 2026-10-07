@@ -1,4 +1,12 @@
+---
+cssclasses:
+  - uvm-study-note
+updated: 2026-10-07
+---
+
 # SystemVerilog/UVM 2단계 — 데이터 구조와 Process 통신
+
+![2단계 개념 그림](assets/uvm-study/stage02.png)
 
 > 학습 범위: packed/unpacked array, fixed/dynamic array, queue, associative array, enum, struct, typedef, process/thread, fork-join, event, semaphore, mailbox. 코드는 개념 설명용이며 simulator에서 실행해 검증한 결과는 아니다.
 
@@ -254,3 +262,55 @@ Mailbox와 semaphore는 이 동기화 의도를 명시적으로 표현한다.
 - event, semaphore, mailbox: 2~3/5
 
 다음 학습 주제는 3단계 Randomization과 constraint다.
+
+## PDF 보충 - Container의 element와 process 수명
+
+> 2026-10-07 보강. 추가 내용은 자료 보충이며 작성·실행 능력은 미평가다.
+> 연결: 01.02.04~01.02.06, 책 36~45쪽; 01.03.01, 책 60~63쪽; 01.03.06, 책 105~114쪽.
+
+### foreach와 array method
+
+`foreach`는 실제 index를 따라 element를 처리한다. `find()`는 조건에 맞는 element들의 queue를 반환하고, `find_index()`는 index들의 queue를 반환한다. `sort()`는 순서를 바꾸며 associative array에 같은 방식으로 적용하지 않는다. `sum() with (int'(item))`처럼 expression의 폭을 넓히면 작은 element type의 산술 폭 문제를 피할 수 있다.
+
+```systemverilog
+int values[$] = {3, 8, 5};
+int large[$];
+large = values.find() with (item > 4);
+values.sort();
+```
+
+Streaming operator는 bit열을 정한 순서와 chunk 크기로 묶거나 풀 때 사용한다. UVM의 `pack()`은 object field와 packer 정책을 사용하므로, SystemVerilog streaming 구문과 같은 API로 취급하지 않는다.
+
+### Function/task와 순차·동시 실행
+
+Function은 시간 소비가 불가능하고 task는 가능하다. 일반적인 task 호출은 호출한 process에서 순차 실행된다. 10ns task 뒤에 20ns task를 호출하면 30ns, 두 task를 fork...join으로 동시에 시작하면 20ns가 걸리는 예로 8단계에서 확인했다. Simulator의 논리적 동시 실행과 CPU core 수는 별개의 문제다.
+
+`disable fork`는 가장 가까운 fork 블록 이름만 기준으로 종료하는 문법이 아니다. 호출한 process의 활성 자손 process에 영향을 줄 수 있으므로, 종료할 작업을 별도 parent process 아래에 묶어 범위를 제어한다. 형제 child의 실행 순서는 의존하지 않는다.
+
+### Event의 발생과 완료 상태
+
+`wait(done.triggered)`는 현재 time slot에서 발생한 trigger를 볼 수 있지만 과거 발생을 계속 저장하지 않는다. 반복 완료 확인에는 지속되는 `bit done_flag`나 mailbox처럼 의도에 맞는 상태/데이터 수단을 사용한다. `if`는 확인 시점에 한 번 분기하고 `wait(condition)`은 참이 될 때까지 process를 대기시킨다. 이미 참이면 즉시 통과한다.
+
+### Mailbox가 class object를 전달하는 경우
+
+```systemverilog
+mailbox #(Packet) mbx = new();
+Packet sent, received;
+sent = new();
+mbx.put(sent);
+mbx.get(received); // 같은 object의 handle을 전달
+```
+
+동기화된 전달과 object 복사는 별개의 일이다. Producer가 전달 후 같은 object를 수정하면 consumer가 보는 값도 바뀔 수 있다. 독립 snapshot이 필요하면 복사 정책을 정한다.
+
+PDF의 try_get()/try_peek() 예제에 보이는 숫자를 mailbox 길이로 일반화하지 않는다. Parameterized mailbox에서 반환값은 성공 여부를 판정하는 status로 사용한다. `num()`은 순간 길이이며 `num()>0` 확인 후 get() 사이에 다른 consumer가 제거할 수 있으므로 atomic한 try_get()과 같지 않다.
+
+보충 확인 문제: mailbox에 handle을 put한 뒤 원본 field를 바꾸면 수신 객체에도 영향이 있는가? 새 보충 문제이며 답변·실행은 아직 확인하지 않았다.
+
+## 갱신 상태와 탐색
+
+원래 이해도 기록은 당시 평가를 유지한다. PDF 보충을 넣었다는 이유로 숙련도를 올리지 않았다. 현재 전체 진도는 8단계 기본 이론·해석까지이며 다음 시작점은 9단계다.
+
+[[SystemVerilog UVM 학습 진행 기록|최신 진도]] · [[SystemVerilog UVM 학습 홈|1~8단계 목차]]
+
+기준 PDF: `_uvm_tb_240705_214257.pdf`. 표기 쪽수는 책의 인쇄 쪽수이며 파일 페이지는 +11.

@@ -1,4 +1,12 @@
+---
+cssclasses:
+  - uvm-study-note
+updated: 2026-10-07
+---
+
 # SystemVerilog/UVM 6단계 - `uvm_object`와 `uvm_component`
+
+![6단계 개념 그림](assets/uvm-study/stage06.png)
 
 > 학습 범위: UVM class를 object 계열과 component 계열로 분류하고, 각 계열의 hierarchy, parent, phase, 수명, 역할, constructor 차이를 이해한다.
 
@@ -265,3 +273,47 @@ Sequence의 `body()`는 component phase와 별개의 sequence 실행 method다.
 - 다음에는 class 계열과 생성 방식을 더 정확히 연결하면 된다.
 
 다음 학습 주제는 **7단계 Factory와 utility macro**다.
+
+## PDF 보충 - 상속과 hierarchy의 정확한 경계
+
+> 2026-10-07 보강. 연결: 02.01, 책 147~152쪽; 02.04, 책 165~166쪽; 02.06 Logical Hierarchy, 책 190~191쪽.
+
+### Component도 상속상 uvm_object의 후손이다
+
+```text
+uvm_object
+├─ uvm_transaction → uvm_sequence_item → item/sequence 계열
+└─ uvm_report_object → uvm_component → test/env/agent/driver 등
+```
+
+여기서 object 계열/component 계열이라는 실무 분류는 hierarchy와 phase 책임을 구분하는 표현이다. 상속상 완전히 독립된 두 뿌리가 아니다. `uvm_component`도 object 기능을 상속하지만 component 전체를 transaction처럼 clone해 hierarchy를 복제하는 용도로 사용하지 않는다.
+
+### Object create()의 parent 인수와 hierarchy
+
+```systemverilog
+item = fifo_item::type_id::create("item", this);
+```
+
+Object registry의 create()는 선택적으로 component를 받아 factory 검색 context에 사용할 수 있다. 이 인수가 object constructor의 parent가 되거나 object를 component hierarchy의 자식으로 등록하는 것은 아니다. Object의 new(name)과 component의 new(name,parent)를 구분한다.
+
+### UVM root와 test parent
+
+일반적인 run_test() 경로는 root 아래에 uvm_test_top을 만든다. Constructor에 parent=null을 전달하면 UVM component 기반 class가 root 아래의 최상위 component로 관리한다. 사용자 환경의 env, agent, driver는 각 생성된 부모 object를 전달한다. Root를 HDL top module과 혼동하지 않는다.
+
+### 이름을 얻는 API
+
+Component의 get_name()은 leaf 이름, get_full_name()은 component hierarchy의 전체 경로, get_type_name()은 class type 이름을 나타낸다. Factory/config/debug에 쓰는 경로와 class type 문자열은 서로 다른 기준이다. Object의 이름이나 sequence의 실행 context를 component의 구조적 parent-child 관계로 해석하지 않는다.
+
+### Constructor를 누가 언제 부르는가
+
+Factory는 선택된 type의 constructor를 호출한다. Component의 constructor는 parent 관계를 만들고, build_phase()는 UVM scheduler가 나중에 호출해 하위 구조와 설정을 구성한다. Constructor, build_phase(), run_phase()를 같은 실행 단계로 생각하지 않는다.
+
+보충 확인 문제: fifo_item::type_id::create("item", this)에서 this를 넘겼다는 이유로 item이 component hierarchy에 들어가는가? 새 보충 문제이며 답변·실행은 아직 확인하지 않았다.
+
+## 갱신 상태와 탐색
+
+원래 이해도 기록은 당시 평가를 유지한다. PDF 보충을 넣었다는 이유로 숙련도를 올리지 않았다. 현재 전체 진도는 8단계 기본 이론·해석까지이며 다음 시작점은 9단계다.
+
+[[SystemVerilog UVM 학습 진행 기록|최신 진도]] · [[SystemVerilog UVM 학습 홈|1~8단계 목차]]
+
+기준 PDF: `_uvm_tb_240705_214257.pdf`. 표기 쪽수는 책의 인쇄 쪽수이며 파일 페이지는 +11.

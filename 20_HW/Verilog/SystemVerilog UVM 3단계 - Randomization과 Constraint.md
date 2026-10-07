@@ -1,4 +1,12 @@
+---
+cssclasses:
+  - uvm-study-note
+updated: 2026-10-07
+---
+
 # SystemVerilog/UVM 3단계 - Randomization과 Constraint
+
+![3단계 개념 그림](assets/uvm-study/stage03.png)
 
 > 학습 범위: `rand`, `randc`, `randomize()`, constraint block, inline constraint, `inside`, `dist`, implication, conditional constraint, `solve before`, `soft`, `constraint_mode()`, `rand_mode()`, `pre_randomize()`, `post_randomize()`, constraint 상속과 override, 충돌 및 과도하거나 부족한 제약.
 
@@ -295,3 +303,49 @@ if (!item.randomize())
 - Constraint 상속과 상태 분류: 2~3/5
 
 다음 학습 주제는 4단계 Interface와 simulation timing이다.
+
+## PDF 보충 - Transaction의 값 공간 설계
+
+> 2026-10-07 보강. 추가 항목은 PDF 보충으로 읽었으며 개별 이해도는 미확인이다.
+> 연결: 01.03.04, 책 86~94쪽; 02.04 Transaction constraints/override, 책 168·171~172쪽.
+
+### 생성과 randomization을 분리한다
+
+PDF 책 87쪽의 new() 주석은 자동 randomization처럼 읽힐 수 있다. 일반적인 `new()`는 constructor를 실행하며 randomize()를 자동 호출하지 않는다. Constructor에 명시적으로 호출한 경우만 별도다. 성공 로그를 보지 않은 예제는 실행 통과로 판단하지 않는다.
+
+### Array의 크기와 각 element 조건
+
+```systemverilog
+class burst_item;
+  rand bit [7:0] payload[];
+  constraint c_payload {
+    payload.size() inside {[2:8]};
+    foreach (payload[i]) payload[i] inside {[1:15]};
+    payload.sum() with (int'(item)) <= 60;
+  }
+endclass
+```
+
+Size, element 범위, 전체 합은 동시에 만족해야 하는 조건이다. 합계를 구하는 expression의 폭을 명시하고, 합과 size가 서로 모순되는지 확인한다. `unique { ... }`는 서로 다른 값을 요구하는 보충 문법이며 randc의 호출 간 cycle과 구분한다.
+
+### Must-obey와 scenario rule
+
+PDF의 분류는 사양상 항상 지킬 조건과 특정 test가 선택한 조건을 나눠 관리하라는 설계 관점이다. 별도의 언어 keyword가 아니다. Scenario별 constraint를 이름별로 나누면 constraint_mode()로 의도를 드러내기 쉽다. Illegal stimulus를 검증할 때는 어떤 규칙을 의도적으로 해제했는지 기록한다.
+
+### Factory가 constraint를 교체하는 연결
+
+자식 transaction에 다른 이름의 constraint를 추가하면 부모의 조건과 함께 적용된다. 같은 이름이면 상속된 constraint를 대체한다. Factory override는 이런 자식 type을 생성하도록 선택하며, randomize()는 그 실제 object의 활성 constraint를 사용한다. Factory 자체가 rand field에 값을 넣는 것은 아니다.
+
+### Solver 안의 function과 재현성
+
+Constraint 안의 function은 부작용 없는 계산으로 작성한다. 호출 횟수·순서를 로그 제어 수단으로 사용하거나 randomization mode를 함수 안에서 바꾸지 않는다. Seed, test 이름, simulator/UVM 버전, 실패한 constraint와 호출 위치를 함께 남겨 재현한다. 분포 설명은 값의 폭과 다른 활성 constraint를 명시한 예제에 한정한다.
+
+보충 확인 문제: payload.size()==8이고 모든 element가 10 이상인데 sum<=60이면 해가 존재하는가? 새 보충 문제이며 답변·실행은 아직 확인하지 않았다.
+
+## 갱신 상태와 탐색
+
+원래 이해도 기록은 당시 평가를 유지한다. PDF 보충을 넣었다는 이유로 숙련도를 올리지 않았다. 현재 전체 진도는 8단계 기본 이론·해석까지이며 다음 시작점은 9단계다.
+
+[[SystemVerilog UVM 학습 진행 기록|최신 진도]] · [[SystemVerilog UVM 학습 홈|1~8단계 목차]]
+
+기준 PDF: `_uvm_tb_240705_214257.pdf`. 표기 쪽수는 책의 인쇄 쪽수이며 파일 페이지는 +11.

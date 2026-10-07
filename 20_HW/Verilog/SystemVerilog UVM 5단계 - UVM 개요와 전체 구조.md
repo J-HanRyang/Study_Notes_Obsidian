@@ -1,4 +1,12 @@
+---
+cssclasses:
+  - uvm-study-note
+updated: 2026-10-07
+---
+
 # SystemVerilog/UVM 5단계 - UVM 개요와 전체 구조
+
+![5단계 개념 그림](assets/uvm-study/stage05.png)
 
 > 학습 범위: UVM의 필요성, directed verification, constrained-random verification, transaction-level verification, reuse, test, environment, agent, active/passive agent, sequencer, driver, monitor, analysis port, reference model, scoreboard, subscriber, virtual sequence와 virtual sequencer.
 
@@ -261,3 +269,40 @@ Interface와 DUT는 UVM component hierarchy가 아니라 top의 HDL hierarchy에
 - Virtual sequence와 virtual sequencer: 2/5
 
 다음 학습 주제는 6단계 `uvm_object`와 `uvm_component`다.
+
+## PDF 보충 - 생성·실행·연결을 따로 설명하기
+
+> 2026-10-07 보강. 연결: 02.01, 책 147~152쪽; 02.02, 책 154~156쪽; 02.03, 책 157~164쪽; 02.04, 책 165~166쪽.
+
+### UVM은 library와 실행 framework다
+
+SystemVerilog class library를 import하고 macro를 include해 기반 class/API를 사용한다. 등록된 test를 run_test()가 선택·생성하고 component hierarchy에 phase를 적용한다. 사용자는 phase method를 구현하며 보통 이를 직접 호출하지 않는다. Test 선택과 종료 절차 상세는 8·13단계로 연결한다.
+
+### 생성, 실행, 연결은 서로 다른 동작이다
+
+| 대상 | 생성 | 실행 계기 | 연결 |
+|---|---|---|---|
+| Component | build에서 create(name, parent) | UVM scheduler의 phase 호출 | connect에서 port 연결 |
+| Sequence | 필요할 때 create(name) | start(sequencer) | 사용할 sequencer 지정 |
+| Transaction | sequence/monitor에서 create(name) | 사용자 method 호출 | handle을 통신 경로로 전달 |
+| Interface | top에서 정적 instance | signal/process 동작 | DUT port와 virtual interface |
+
+전체 화살표를 하나의 호출 체인이나 hierarchy로 오해하지 않는다. Sequence의 실행과 driver·monitor의 phase process는 병행된다. Driver를 교체하는 factory 설정, 설정값을 전달하는 config DB, 통신 port 연결은 각각 다른 작업이다.
+
+### Request와 response는 역할 이름이다
+
+Transaction은 입력 stimulus에만 사용되지 않는다. 응답, 관찰 결과, 상태도 의미 있는 object로 모델링할 수 있다. PDF의 reactive 흐름에서 DUT 요청을 받아 response를 만드는 경로도 소개하지만, 일반적인 FIFO 입력 생성 환경과 동일한 책임 배치를 강제하지 않는다.
+
+### UVM을 두 축으로 설명할 때의 범위
+
+Component 쪽은 환경 구성·상시 구동/관찰, sequence 쪽은 시나리오 실행이라는 관점으로 구조를 설명할 수 있다. 엄밀한 class 전체 분류는 아니며 transaction, configuration object, RAL model처럼 sequence 이외의 object도 있다. Callback·RAL·TLM-2는 후속 보충 주제로 남긴다.
+
+보충 확인 문제: driver 객체 생성, driver.run_phase 실행, sequencer port 연결은 각각 언제 누가 수행하는가? 새 보충 문제이며 답변·실행은 아직 확인하지 않았다.
+
+## 갱신 상태와 탐색
+
+원래 이해도 기록은 당시 평가를 유지한다. PDF 보충을 넣었다는 이유로 숙련도를 올리지 않았다. 현재 전체 진도는 8단계 기본 이론·해석까지이며 다음 시작점은 9단계다.
+
+[[SystemVerilog UVM 학습 진행 기록|최신 진도]] · [[SystemVerilog UVM 학습 홈|1~8단계 목차]]
+
+기준 PDF: `_uvm_tb_240705_214257.pdf`. 표기 쪽수는 책의 인쇄 쪽수이며 파일 페이지는 +11.
