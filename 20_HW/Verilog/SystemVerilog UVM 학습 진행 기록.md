@@ -13,5 +13,7 @@
 - PDF 추가: parameterized transaction/registry, comparer, method signature 보정, runtime/domain/jump, sequence 자동 objection, source trace. 보충으로 정리했으며 구현·문제 확인 전이다.
 - 세미나 설명 준비: 7·8단계 핵심 이유와 동작은 코드 해석으로 확인했으나 도움 없이 전체 흐름을 발표하는 능력은 별도 확인이 필요하다.
 - 실습 다음 작업: FIFO README와 기존 RTL/direct TB/C 모델을 읽고 검증 범위·최소 요청 경로부터 시작한다. 검증 환경 코드는 아직 새로 작성하지 않았다.
+- 문서 검수 완료: 1~8단계 통합 PDF 94쪽과 단계별 그림 8개. 전체 페이지를 이미지로 확인했고, 텍스트 영역 이탈·주요 내용 누락 검사에서 문제가 없었다. Obsidian 노트와 작업 폴더 사본을 동기화했다.
+- 편집 결과: 그림 가운데 정렬, 읽기/코드/표 글씨 크기 구분, 코드 박스의 긴 줄 줄바꿈·페이지 분할, 반복 표 머리글, PDF 목차·책갈피 적용. 새 PDF 보충의 이해도 확인과 UVM 예제 실행은 다음 학습에서 진행한다.
 
 [[SystemVerilog UVM 학습 홈|목차]]

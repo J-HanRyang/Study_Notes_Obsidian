@@ -180,7 +180,7 @@ parent는 bus_env class 자체가 아니다.
 parent는 실제로 생성된 bus_env 객체(this)다.
 ```
 
-최상위 test는 상위 component가 없으므로 일반적으로 parent가 `null`이다. 그 아래 component는 상위 component 객체를 parent로 받는다.
+일반적인 run_test() 경로에서 test는 parent 인수로 `null`을 전달하고 UVM root 아래에 배치된다. 그 아래 component는 상위 component 객체를 parent로 받는다.
 
 ## 6. 이름과 instance path
 
