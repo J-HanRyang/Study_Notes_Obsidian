@@ -19,23 +19,17 @@
 - DUT: [[20_HW/Design_Verification/01_Sync_FIFO/rtl/sync_fifo.sv|sync_fifo.sv]]
 - 원본 프로젝트: [[20_HW/RTL_Design/01_Sync_FIFO/README|RTL Design - Sync FIFO]]
 
-## 현재 학습 상태 (2026-10-10)
-
-9단계 sequence·driver handshake와 10단계 config DB·virtual interface 기본 이론 및 짧은 코드 해석을 진행했습니다. 실제 UVM 환경 작성과 simulator 실행은 미실행입니다.
-
-사용자 요청으로 이론 학습과 2026-10-15 세미나 자료 준비를 우선합니다. **다음 채팅은 11단계 TLM·analysis 이론(PDF 02.07)**에서 이어 가고, 아래 FIFO 실습 항목은 이론·세미나 준비 이후 재개합니다. 이론 진행을 아래 실습 완료 체크로 대체하지 않습니다.
-
 ## 검증 진행 순서
 
-- [ ] 9단계: 기존 RTL·directed TB·C 모델·실행 기록에서 확인된 동작과 미검증 동작 구분
-- [ ] 9단계: `docs/검증계획.md`에 UVM에서 확인할 입력·기대 결과·관찰 지점 정리
-- [ ] 9단계: 최소 UVM 요청 경로(`sequence_item` → sequencer → driver) 구성
-- [ ] 10단계: virtual interface/config DB 연결
-- [ ] 11단계: monitor와 analysis 통신 연결
-- [ ] 12단계: scoreboard/reference model로 데이터 순서와 경계 조건 검사
-- [ ] 13~14단계: 디버깅 기록 후 coverage와 assertion 추가
+- [ ] 9장: 기존 RTL·directed TB·C 모델·실행 기록에서 확인된 동작과 미검증 동작 구분
+- [ ] 9장: `docs/검증계획.md`에 UVM에서 확인할 입력·기대 결과·관찰 지점 정리
+- [ ] 9장: 최소 UVM 요청 경로(`sequence_item` → sequencer → driver) 구성
+- [ ] 10장: virtual interface/config DB 연결
+- [ ] 11장: monitor와 analysis 통신 연결
+- [ ] 12장: scoreboard/reference model로 데이터 순서와 경계 조건 검사
+- [ ] 13~14장: 디버깅 기록 후 coverage와 assertion 추가
 
-진행 방식은 [[20_HW/Verilog/SystemVerilog UVM 학습 Prompt|통합 학습·실습 프롬프트]]를 따릅니다. 실행하지 않은 항목은 통과로 표시하지 않습니다.
+개념과 예제는 [[20_HW/Verilog/UVM 기초 - 목차|UVM 기초 교재]]에서 확인할 수 있습니다. 실행하지 않은 항목은 통과로 표시하지 않습니다.
 
 ## 원본과의 관계
 

@@ -1,17 +1,30 @@
 ---
+tags:
+  - tlm
+  - analysis
+  - port
+  - export
+  - imp
+  - fifo
 cssclasses:
   - uvm-study-note
-updated: 2026-10-10
 ---
 
-# SystemVerilog/UVM 11단계 - TLM과 analysis
+# 11장. TLM과 Analysis
 
-![11단계 개념 그림](assets/uvm-study/stage11.png)
+#tlm #analysis #port #export #imp #fifo
 
-> 기본 이론과 짧은 코드 해석을 대화로 확인했다. 실제 환경 작성·연결·simulator 실행은 미실행이다. TLM-2는 목적과 위치를 설명했으며 상세 구현 이해도는 확인하지 않았다.
-> 회사 PDF 연결: 02.07 Component communication, 책 206~221쪽. 파일 페이지 = 책 쪽수 + 11. 예제 API는 UVM 1.2 기준이다.
+## 1. 장 소개
 
-## 1. TLM이 필요한 이유
+TLM은 component 사이에서 약속된 메서드로 transaction을 전달한다. 연결과 호출을 구분하고, analysis 방송의 시간·복사 특성을 이해하면 데이터 경로를 정확히 구성할 수 있다.
+
+## 2. 구조와 흐름
+
+![TLM과 Analysis 구조](assets/uvm-book/chapter11.png)
+
+## 3. 핵심 개념
+
+### 3.1. TLM이 필요한 이유
 
 TLM(Transaction Level Modeling)은 component들이 약속된 메서드를 통해 transaction을 주고받도록 하는 통신 방식이다. 내부 queue나 특정 구현을 직접 참조하는 대신 put/get/write 등 정해진 interface를 사용해 component의 재사용성을 높인다.
 
@@ -22,7 +35,7 @@ sequence → sequencer → driver → interface → DUT
 
 Driver와 DUT 사이의 신호 접근에는 virtual interface를 사용한다. Testbench 내부의 transaction 전달에는 TLM을 사용한다. TLM 연결이 DUT의 물리적인 신호 배선을 대신하지 않는다.
 
-## 2. 생성, 연결, 실행은 다르다
+### 3.2. 생성, 연결, 실행은 다르다
 
 | 절차 | 의미 | 예 |
 |---|---|---|
@@ -45,7 +58,7 @@ seq_item_port.item_done();
 
 connect()는 호출 경로를 만들 뿐, 그 자체로 item을 보내지 않는다. Driver가 get_next_item()을 호출하면 연결된 sequencer에 요청하고 item을 받아온다. 호출은 driver → sequencer, item의 이동은 sequencer → driver다. 이 pull interface에는 get_next_item/item_done 등 전용 handshake 메서드가 있으며 단순 blocking_get과 동일한 타입이 아니다.
 
-## 3. Port, export, imp
+### 3.3. Port, export, imp
 
 | 타입 계열 | 역할 |
 |---|---|
@@ -74,9 +87,9 @@ producer.put_port.connect(consumer.put_imp);
 
 consumer는 `task put(my_txn tr); ... endtask`를 구현한다. imp의 첫 타입 인자는 transaction 타입, 두 번째는 메서드를 구현한 component 타입이다. Port와 imp를 직접 연결할 때 중간 export는 필요하지 않다.
 
-PDF 예제처럼 imp 변수 이름을 put_export나 analysis_export로 지정할 수도 있다. 역할은 변수 이름이 아니라 선언 타입으로 판단한다. `uvm_blocking_put_imp #(my_txn, my_consumer) rx_export;`의 rx_export는 imp다.
+예를 들어 imp 변수 이름을 put_export나 analysis_export로 지정할 수도 있다. 역할은 변수 이름이 아니라 선언 타입으로 판단한다. `uvm_blocking_put_imp #(my_txn, my_consumer) rx_export;`의 rx_export는 imp다.
 
-## 4. Push, pull, FIFO, analysis
+### 3.4. Push, pull, FIFO, analysis
 
 | 방식 | 시작하는 쪽 | 메서드·의미 | 사용 위치 |
 |---|---|---|---|
@@ -87,7 +100,7 @@ PDF 예제처럼 imp 변수 이름을 put_export나 analysis_export로 지정할
 
 FIFO와 analysis는 함께 사용할 수 있다. Analysis는 전달 interface이며 FIFO는 받은 항목을 보관한다. UVM의 transaction FIFO와 검증 대상인 DUT FIFO도 서로 다른 대상이다.
 
-## 5. Analysis의 1:N 전달
+### 3.5. Analysis의 1:N 전달
 
 ```text
                     ┌→ scoreboard.write(tr)
@@ -124,13 +137,13 @@ endfunction
 
 Scoreboard만 연결하면 coverage에는 전달되지 않는다. Analysis port는 연결 대상이 0개여도 write()가 반환할 수 있으므로 필수 수신자 연결은 따로 확인해야 한다.
 
-## 6. Write는 function이다
+### 3.6. Write는 function이다
 
 write()에는 simulation 시간을 소비하는 delay/event 대기를 넣을 수 없다. 호출 과정에서 연결된 수신자들의 write()가 차례로 실행되며 모든 호출이 끝난 후 반환한다. 수신자별로 독립적인 병렬 task가 생기는 것이 아니다. 수신자 실행 순서에 의존한 설계를 피한다.
 
-PDF의 “동시에 call”은 모든 수신자에게 전달한다는 의미로 읽고 실제 function 호출과 구분한다. 시간 대기가 없다는 말은 CPU 처리 비용이 없다는 뜻도 아니다.
+연결된 수신자에 대한 function 호출은 순차적으로 진행되며 simulation time 대기를 포함하지 않는다. 시간 대기가 없다는 말은 CPU 처리 비용이 없다는 뜻도 아니다.
 
-## 7. Handle 전달과 snapshot
+### 3.7. Handle 전달과 snapshot
 
 ```systemverilog
 // monitor
@@ -160,7 +173,7 @@ endfunction
 
 pending은 my_txn handle queue라고 가정한다. clone()은 새 객체를 만들고 copy()로 내용을 복사하지만 내부 객체의 독립성은 복사 정책에 달려 있다. 이 코드는 실행 검증하지 않은 부분 예제다.
 
-## 8. Analysis FIFO
+### 3.8. Analysis FIFO
 
 수신 즉시 처리하기 어렵거나 task에서 기다리며 비교하려면 uvm_tlm_analysis_fifo를 중간에 둘 수 있다.
 
@@ -186,7 +199,7 @@ get()은 비어 있으면 기다리고, 항목을 받으면 FIFO에서 제거한
 
 Analysis FIFO는 크기 제한이 없으며 full 때문에 write를 거부하지 않는다. Scoreboard가 꺼내지 않으면 항목이 쌓이고 메모리 사용량이 늘어난다. 객체를 자동 복사하지 않으므로 같은 객체 재사용 문제도 그대로 남는다.
 
-## 9. Blocking, nonblocking, analysis의 차이
+### 3.9. Blocking, nonblocking, analysis의 차이
 
 | 호출 | 시간 대기 | 결과 |
 |---|---|---|
@@ -198,7 +211,7 @@ Blocking은 항상 delay가 생긴다는 뜻이 아니다. 제한된 uvm_tlm_fif
 
 write()의 수신자가 없다면 보관되지 않는다. 사용자 구현 수신자의 저장 공간이 제한돼 있다면 overflow 처리는 그 구현에 달려 있다. Analysis 자체는 저장·비교 성공이나 완료를 보장하지 않는다.
 
-## 10. Hierarchical connection
+### 3.10. Hierarchical connection
 
 외부 env에 전달하는 monitor의 출력은 parent agent의 analysis port로 노출하는 것이 일반적인 구조다.
 
@@ -230,44 +243,69 @@ analysis_export.connect(sink.analysis_imp);
 agt.ap.connect(sb.analysis_export);
 ```
 
-대화에서 monitor port → agent export → scoreboard imp로 역할을 설명한 그림은 호출 중계의 개념을 전달하기 위한 도식이었다. 재사용 가능한 계층 연결 예제는 위처럼 송신 측 port-to-port, 수신 측 export-to-imp로 정리한다. 실제 최종 처리는 imp가 연결한 구현 메서드에서 한다.
+재사용 가능한 계층 연결 예제는 위처럼 송신 측 port-to-port, 수신 측 export-to-imp로 정리한다. 실제 최종 처리는 imp가 연결한 구현 메서드에서 한다.
 
-## 11. 회사 PDF 보충과 남은 범위
+### 3.11. 다중 입력과 TLM-2의 위치
 
-- 02.07의 push/pull/FIFO/analysis와 port/export/imp를 현재 학습에 연결했다.
-- 책 216~217쪽의 다중 imp 선언은 서로 다른 입력을 write_in/write_out 같은 메서드로 구분하는 구현으로 확장할 수 있다. 매크로를 사용한 독립 작성은 미확인이다.
-- FIFO API 이름은 사용하는 library 기준으로 확인한다. UVM 1.2의 일반 get/peek 연결은 get_peek_export를 사용한다.
-- TLM-1도 blocking task 안에서 simulation 시간을 기다릴 수 있다. “Untimed”를 시간 대기 불가능으로 해석하지 않는다.
-- TLM-2는 socket/transport, delay 객체와 transaction 진행 phase를 다루는 별도 규약이다. b_transport는 task, nb_transport_fw/bw는 function이다. 목적만 설명했고 상세 예제·실행은 후속 보충이다.
-- TLM-1의 class transaction도 handle로 전달된다. TLM-2만 참조 전달이 가능하거나 언제나 더 빠르다고 일반화하지 않는다.
+서로 다른 입력은 write_in/write_out 같은 메서드로 구분할 수 있다. Analysis export는 내부 수신 구현으로 중계하고 최종 처리는 imp가 연결한 메서드에서 수행한다.
 
-## 12. 대화로 확인한 내용
+TLM-2는 socket/transport, delay 객체, transaction 진행 phase를 다루는 별도 통신 규약이다. b_transport는 task이고 nb_transport_fw/bw는 function이다. Sequence-driver item 전달과 analysis 통신에 사용하는 TLM-1과 계약이 다르다.
 
-| 확인 항목 | 확인된 답변·수준 |
-|---|---|
-| connect만 실행 | 요청하지 않았으므로 item이 전달되지 않음 |
-| rx_export의 타입이 imp | 실제 구현으로 이어지는 끝점으로 판단 |
-| saved = tr 후 tr 수정 | 저장 handle에서도 수정된 값이 보임 |
-| 빈 FIFO에서 get 대기 | write로 들어온 항목을 꺼내 받음 |
-| try_put 실패 | 저장되지 않음 |
-| analysis FIFO 소비 없음 | 항목 누적·메모리 사용 증가 |
-| 미연결 coverage | write해도 받지 못함 |
-| port/imp 세미나 설명 | 통로 관점으로 설명; 호출/구현 역할을 보충 |
+## 4. 핵심 예제
 
-핵심 개념과 짧은 코드 해석 수준을 확인했다. 생성·연결 전체 코드의 독립 작성, topology/연결 오류 디버깅, simulator 실행은 확인하지 않았다. PDF에 추가한 다중 imp와 TLM-2의 상세 내용을 이해 완료로 올리지 않는다.
+```systemverilog
+// env connect_phase
+mon.ap.connect(sb.analysis_imp);
+mon.ap.connect(cov.analysis_export);
+// monitor: 새로운 관찰 결과 발행
+ap.write(tr);
+// scoreboard의 수신 메서드
+function void write(fifo_item tr);
+  process_observation(tr);
+endfunction
+```
 
-## 13. 복습 문제와 짧은 답
+Write는 연결된 수신 메서드를 호출한다. 느린 시간 동작이 필요하면 analysis FIFO 등에 넘기고 별도의 task에서 처리한다.
 
-1. connect()와 write()는 각각 무엇을 하는가? → 경로 구성과 실제 전달.
-2. 미연결 analysis port에 write하면 저장되는가? → 저장을 보장하지 않는다.
-3. FIFO에 넣으면 transaction 객체가 독립적으로 복사되는가? → 아니며 별도 복사 정책이 필요하다.
-4. 수신자가 시간 대기를 해야 한다면? → analysis FIFO로 받아 task에서 get 후 처리한다.
+## 5. 주의점
 
-## 14. 참고와 다음 단계
+- Analysis에는 수신자의 ready/수락 handshake가 없다.
+- Analysis FIFO가 객체를 자동 deep copy하지는 않는다.
+- 변수 이름이 export여도 선언 타입이 imp면 역할은 imp다.
 
-- 회사 PDF: 02.07, 책 206~221쪽. 사용자 완독 여부와 별개로 튜터가 관련 절을 확인했다.
+## 6. 핵심 정리
+
+- **생성·연결·호출**: 단자를 만들고 connect한 뒤 put/get/write 등을 호출해야 실제 통신한다. Connect만으로 데이터가 흐르지 않는다.
+- **Port / export / imp**: Port는 호출점, export는 구현 경로 중계, imp는 component의 구현 메서드에 연결하는 끝점이다.
+- **통신 계약**: Put은 보내기, get은 받기다. Blocking은 기다릴 수 있고 try_put 같은 nonblocking 호출은 수락 여부를 즉시 반환한다.
+- **Analysis 방송**: Write 한 번으로 연결된 수신자들에 전달한다. Analysis write는 function이므로 시간 대기를 넣을 수 없다.
+- **Handle과 snapshot**: Class handle은 복사본이 아니다. 오래 보관할 데이터는 새 객체에 복사하고 subscriber가 공유 원본을 수정하지 않도록 정책을 정한다.
+- **FIFO와 계층**: Analysis FIFO는 전달과 소비 시점을 분리하며 누적될 수 있다. 송신 계층은 child port→parent port, 수신 계층은 export→내부 imp로 중계한다.
+
+## 7. 확인 문제와 해설
+
+### 문제 1
+
+Connect만 했을 때 transaction이 전달되는가?
+
+**해설:** 호출이 없으므로 전달되지 않는다.
+
+### 문제 2
+
+Write 안에서 @(posedge clk)를 기다릴 수 있는가?
+
+**해설:** Function이므로 시간 대기는 불가능하다.
+
+### 문제 3
+
+Subscriber 하나가 공유 tr을 수정하면?
+
+**해설:** 다른 수신자나 보관한 handle에 영향이 생길 수 있다.
+
+## 8. 참고 자료
+
+- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
 - [UVM 1.2 Analysis Ports](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/tlm1/uvm_analysis_port-svh.html)
 - [UVM 1.2 TLM FIFO Classes](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/tlm1/uvm_tlm_fifos-svh.html)
-- 다음 학습 연결: [[SystemVerilog UVM 12단계 - Monitor와 Scoreboard]]. 최신 세션 시작점은 진행 기록을 따른다.
 
-[[SystemVerilog UVM 학습 홈|목차]]
+[목차](<UVM 기초 - 목차.md>)

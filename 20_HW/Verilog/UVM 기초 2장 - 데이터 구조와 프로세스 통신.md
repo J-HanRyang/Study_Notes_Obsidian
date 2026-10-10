@@ -1,16 +1,29 @@
 ---
+tags:
+  - array
+  - queue
+  - mailbox
+  - semaphore
+  - process
 cssclasses:
   - uvm-study-note
-updated: 2026-10-07
 ---
 
-# SystemVerilog/UVM 2단계 — 데이터 구조와 Process 통신
+# 2장. 데이터 구조와 프로세스 통신
 
-![2단계 개념 그림](assets/uvm-study/stage02.png)
+#array #queue #mailbox #semaphore #process
 
-> 학습 범위: packed/unpacked array, fixed/dynamic array, queue, associative array, enum, struct, typedef, process/thread, fork-join, event, semaphore, mailbox. 코드는 개념 설명용이며 simulator에서 실행해 검증한 결과는 아니다.
+## 1. 장 소개
 
-## 1. Packed array와 unpacked array
+검증환경에는 데이터 저장과 동시 실행을 위한 구조가 필요하다. 배열과 queue는 값을 보관하고, event·semaphore·mailbox는 프로세스 사이의 통지를 전달하거나 접근을 조정한다.
+
+## 2. 구조와 흐름
+
+![데이터 구조와 프로세스 통신 구조](assets/uvm-book/chapter02.png)
+
+## 3. 핵심 개념
+
+### 3.1. Packed array와 unpacked array
 
 Dimension이 변수 이름 **앞**에 있으면 packed, **뒤**에 있으면 unpacked다.
 
@@ -31,7 +44,7 @@ logic [7:0] memory [0:15];
 - packed는 vector처럼 bit 연산과 slicing에 적합하다.
 - unpacked는 여러 element를 배열로 관리하는 데 적합하다.
 
-## 2. Fixed array와 dynamic array
+### 3.2. Fixed array와 dynamic array
 
 ```systemverilog
 int fixed_array[4];
@@ -58,7 +71,20 @@ values.delete();         // size를 0으로 만듦
 - `new[5](values)`: 기존 값을 앞에서부터 복사하고 추가된 `int` element는 0으로 초기화한다.
 - `values.size()`: 현재 element 수를 반환한다.
 
-## 3. Queue
+#### foreach와 array method
+
+`foreach`는 실제 index를 따라 element를 처리한다. `find()`는 조건에 맞는 element들의 queue를 반환하고, `find_index()`는 index들의 queue를 반환한다. `sort()`는 순서를 바꾸며 associative array에 같은 방식으로 적용하지 않는다. `sum() with (int'(item))`처럼 expression의 폭을 넓히면 작은 element type의 산술 폭 문제를 피할 수 있다.
+
+```systemverilog
+int values[$] = {3, 8, 5};
+int large[$];
+large = values.find() with (item > 4);
+values.sort();
+```
+
+Streaming operator는 bit열을 정한 순서와 chunk 크기로 묶거나 풀 때 사용한다. UVM의 `pack()`은 object field와 packer 정책을 사용하므로, SystemVerilog streaming 구문과 같은 API로 취급하지 않는다.
+
+### 3.3. Queue
 
 Queue는 양쪽 끝에서 element를 추가·제거하기 편한 가변 크기 자료구조다.
 
@@ -78,7 +104,7 @@ int b = q.pop_back();  // b=20, q={10}
 - `pop_*()`은 값을 반환하면서 queue에서 제거한다.
 - Scoreboard의 in-order expected transaction 대기열 등에 적합하다.
 
-## 4. Associative array
+### 3.4. Associative array
 
 사용한 key에 대해서만 element가 존재하는 sparse 자료구조다.
 
@@ -102,9 +128,9 @@ score_by_id.delete();   // 전체 삭제
 기존 key에 다시 대입하면 element 수가 늘지 않고 값만 덮어쓴다. 
 Transaction ID를 이용하는 out-of-order scoreboard matching 등에 적합하다.
 
-## 5. Enum, typedef, struct
+### 3.5. Enum, typedef, struct
 
-### Enum과 typedef
+#### Enum과 typedef
 
 ```systemverilog
 typedef enum logic [1:0] {
@@ -120,7 +146,7 @@ typedef enum logic [1:0] {
 - `state.name()`으로 현재 enum 이름을 문자열로 얻을 수 있다.
 - `parameter`도 값에 이름을 붙이지만, enum은 named value의 집합과 type을 만든다는 점이 다르다.
 
-### Struct
+#### Struct
 
 ```systemverilog
 typedef struct {
@@ -151,7 +177,7 @@ typedef struct packed {
 
 선언 순서대로 `opcode`가 MSB 쪽, `data`가 LSB 쪽에 배치된다.
 
-## 6. Process, thread, fork-join
+### 3.6. Process, thread, fork-join
 
 `fork` 안의 각 statement는 별도의 child thread로 동시 진행된다.
 
@@ -181,7 +207,13 @@ disable fork; // forever monitor 종료
 
 `join_none`으로 생성한 child는 parent가 처음 멈추거나 종료될 때 실행을 시작한다. Zero-time 코드의 순서를 분석할 때 주의한다.
 
-## 7. Event
+#### Function/task와 순차·동시 실행
+
+Function은 시간 소비가 불가능하고 task는 가능하다. 일반적인 task 호출은 호출한 process에서 순차 실행된다. 10ns task 뒤에 20ns task를 호출하면 30ns, 두 task를 fork...join으로 동시에 시작하면 20ns가 걸리는 예로 8장에서 확인했다. Simulator의 논리적 동시 실행과 CPU core 수는 별개의 문제다.
+
+`disable fork`는 가장 가까운 fork 블록 이름만 기준으로 종료하는 문법이 아니다. 호출한 process의 활성 자손 process에 영향을 줄 수 있으므로, 종료할 작업을 별도 parent process 아래에 묶어 범위를 제어한다. 형제 child의 실행 순서는 의존하지 않는다.
+
+### 3.7. Event
 
 Event는 데이터를 저장하지 않고 어떤 일이 발생했다는 사실만 알린다.
 
@@ -196,7 +228,11 @@ event done;
 Event는 과거 trigger 횟수를 queue처럼 기억하지 않는다. 
 `done.triggered`는 같은 time slot의 race 완화에는 도움이 되지만 이전 simulation time의 trigger를 복구하지는 않는다.
 
-## 8. Semaphore
+#### Event의 발생과 완료 상태
+
+`wait(done.triggered)`는 현재 time slot에서 발생한 trigger를 볼 수 있지만 과거 발생을 계속 저장하지 않는다. 반복 완료 확인에는 지속되는 `bit done_flag`나 mailbox처럼 의도에 맞는 상태/데이터 수단을 사용한다. `if`는 확인 시점에 한 번 분기하고 `wait(condition)`은 참이 될 때까지 process를 대기시킨다. 이미 참이면 즉시 통과한다.
+
+### 3.8. Semaphore
 
 Semaphore는 제한된 수의 key로 공유 자원 접근을 제어한다.
 
@@ -213,7 +249,7 @@ bus_lock.put(1); // key 반환
 - `put()` 누락 시 다른 thread가 계속 기다리는 deadlock이 발생할 수 있다.
 - 동일 시점에 경쟁하는 thread 중 누가 먼저 key를 얻는지는 코드만으로 단정하지 않는다.
 
-## 9. Mailbox
+### 3.9. Mailbox
 
 Mailbox는 producer와 consumer 사이에서 데이터를 안전하게 전달하는 synchronized communication 수단이다.
 
@@ -233,7 +269,21 @@ mailbox #(int) mbx = new(2); // int 전용, 용량 2
 `mailbox #(int)`에는 `int`만 넣을 수 있다. 
 `peek()`과 `try_peek()`의 차이는 제거 여부가 아니라 blocking 여부다.
 
-## 10. 도구 선택 기준
+#### Mailbox가 class object를 전달하는 경우
+
+```systemverilog
+mailbox #(Packet) mbx = new();
+Packet sent, received;
+sent = new();
+mbx.put(sent);
+mbx.get(received); // 같은 object의 handle을 전달
+```
+
+동기화된 전달과 object 복사는 별개의 일이다. Producer가 전달 후 같은 object를 수정하면 consumer가 보는 값도 바뀔 수 있다. 독립 snapshot이 필요하면 복사 정책을 정한다.
+
+Try_get()/try_peek()의 반환값을 mailbox 길이로 해석하지 않는다. Parameterized mailbox에서 반환값은 성공 여부를 판정하는 status로 사용한다. `num()`은 순간 길이이며 `num()>0` 확인 후 get() 사이에 다른 consumer가 제거할 수 있으므로 atomic한 try_get()과 같지 않다.
+
+### 3.10. 도구 선택 기준
 
 | 상황 | 적합한 도구 |
 |---|---|
@@ -246,71 +296,58 @@ mailbox #(int) mbx = new(2); // int 전용, 용량 2
 Shared variable이나 queue만 여러 thread가 함께 사용하면 대기·깨우기·동시 접근 정책을 직접 구현해야 한다. 
 Mailbox와 semaphore는 이 동기화 의도를 명시적으로 표현한다.
 
-## 자주 틀렸던 부분
-
-1. `logic [7:0] mem [0:15]`에서 `mem[3]`은 16개 array가 아니라 8bit element 하나다.
-2. Struct의 field를 enum 값으로 오해하지 않는다. Field는 선언된 자기 type의 값을 저장한다.
-3. `peek()`도 mailbox가 비면 기다리는 blocking method다.
-4. `try_get()`과 `try_put()`의 반환값은 실제 획득/저장 성공 여부다.
-5. `join_any`는 남은 child를 종료하지 않는다. 필요한 경우 `disable fork`를 사용한다.
-
-## 현재 이해도와 다음 단계
-
-- 배열과 자료구조: 2~3/5
-- enum, struct, typedef: 2/5
-- process와 fork-join: 3/5
-- event, semaphore, mailbox: 2~3/5
-
-다음 학습 주제는 3단계 Randomization과 constraint다.
-
-## PDF 보충 - Container의 element와 process 수명
-
-> 2026-10-07 보강. 추가 내용은 자료 보충이며 작성·실행 능력은 미평가다.
-> 연결: 01.02.04~01.02.06, 책 36~45쪽; 01.03.01, 책 60~63쪽; 01.03.06, 책 105~114쪽.
-
-### foreach와 array method
-
-`foreach`는 실제 index를 따라 element를 처리한다. `find()`는 조건에 맞는 element들의 queue를 반환하고, `find_index()`는 index들의 queue를 반환한다. `sort()`는 순서를 바꾸며 associative array에 같은 방식으로 적용하지 않는다. `sum() with (int'(item))`처럼 expression의 폭을 넓히면 작은 element type의 산술 폭 문제를 피할 수 있다.
-
-```systemverilog
-int values[$] = {3, 8, 5};
-int large[$];
-large = values.find() with (item > 4);
-values.sort();
-```
-
-Streaming operator는 bit열을 정한 순서와 chunk 크기로 묶거나 풀 때 사용한다. UVM의 `pack()`은 object field와 packer 정책을 사용하므로, SystemVerilog streaming 구문과 같은 API로 취급하지 않는다.
-
-### Function/task와 순차·동시 실행
-
-Function은 시간 소비가 불가능하고 task는 가능하다. 일반적인 task 호출은 호출한 process에서 순차 실행된다. 10ns task 뒤에 20ns task를 호출하면 30ns, 두 task를 fork...join으로 동시에 시작하면 20ns가 걸리는 예로 8단계에서 확인했다. Simulator의 논리적 동시 실행과 CPU core 수는 별개의 문제다.
-
-`disable fork`는 가장 가까운 fork 블록 이름만 기준으로 종료하는 문법이 아니다. 호출한 process의 활성 자손 process에 영향을 줄 수 있으므로, 종료할 작업을 별도 parent process 아래에 묶어 범위를 제어한다. 형제 child의 실행 순서는 의존하지 않는다.
-
-### Event의 발생과 완료 상태
-
-`wait(done.triggered)`는 현재 time slot에서 발생한 trigger를 볼 수 있지만 과거 발생을 계속 저장하지 않는다. 반복 완료 확인에는 지속되는 `bit done_flag`나 mailbox처럼 의도에 맞는 상태/데이터 수단을 사용한다. `if`는 확인 시점에 한 번 분기하고 `wait(condition)`은 참이 될 때까지 process를 대기시킨다. 이미 참이면 즉시 통과한다.
-
-### Mailbox가 class object를 전달하는 경우
+## 4. 핵심 예제
 
 ```systemverilog
 mailbox #(Packet) mbx = new();
 Packet sent, received;
-sent = new();
+sent = new(7);
 mbx.put(sent);
-mbx.get(received); // 같은 object의 handle을 전달
+mbx.get(received);
+sent.data = 9;
+// received.data도 9
 ```
 
-동기화된 전달과 object 복사는 별개의 일이다. Producer가 전달 후 같은 object를 수정하면 consumer가 보는 값도 바뀔 수 있다. 독립 snapshot이 필요하면 복사 정책을 정한다.
+Mailbox가 전달하는 것은 Packet의 handle이다. 수신 후에도 두 handle은 같은 객체를 가리킨다.
 
-PDF의 try_get()/try_peek() 예제에 보이는 숫자를 mailbox 길이로 일반화하지 않는다. Parameterized mailbox에서 반환값은 성공 여부를 판정하는 status로 사용한다. `num()`은 순간 길이이며 `num()>0` 확인 후 get() 사이에 다른 consumer가 제거할 수 있으므로 atomic한 try_get()과 같지 않다.
+## 5. 주의점
 
-보충 확인 문제: mailbox에 handle을 put한 뒤 원본 field를 바꾸면 수신 객체에도 영향이 있는가? 새 보충 문제이며 답변·실행은 아직 확인하지 않았다.
+- Event를 과거 발생 이력을 저장하는 queue처럼 사용하지 않는다.
+- disable fork는 현재 프로세스의 활성 자손에 영향을 준다.
+- 시간 대기를 허용하는 task라는 이유만으로 병렬 실행되지는 않는다.
 
-## 갱신 상태와 탐색
+## 6. 핵심 정리
 
-원래 이해도 기록은 당시 평가를 유지한다. PDF 보충을 넣었다는 이유로 숙련도를 올리지 않았다. 현재 전체 진도는 8단계 기본 이론·해석까지이며 다음 시작점은 9단계다.
+- **Packed / unpacked**: 이름 앞 차원은 packed 비트 묶음, 이름 뒤 차원은 unpacked 원소 배열이다. logic [7:0] a[4]는 8비트 원소 4개다.
+- **배열과 queue**: 고정 배열은 크기가 정해져 있다. 동적 배열은 new[size], queue는 push/pop으로 크기를 바꾼다.
+- **연관 배열과 자료형**: Associative array는 key로 저장값을 찾는다. enum·typedef·struct는 의미 있는 타입과 데이터 묶음을 만든다.
+- **프로세스 실행**: 일반 task 호출은 순차 실행이다. fork/join은 병렬 실행 후 모두 대기, join_any는 하나, join_none은 대기 없이 진행한다.
+- **Event와 semaphore**: Event는 발생 통지이며 데이터 저장소가 아니다. Semaphore는 key 획득·반환으로 공유 자원의 접근을 제어한다.
+- **Mailbox와 handle**: Mailbox는 put/get으로 데이터를 전달한다. Class 객체를 넣으면 handle이 전달되므로 독립 snapshot이 필요하면 복사 정책을 둔다.
 
-[[SystemVerilog UVM 학습 진행 기록|최신 진도]] · [[SystemVerilog UVM 학습 홈|1~8단계 목차]]
+## 7. 확인 문제와 해설
 
-기준 PDF: `_uvm_tb_240705_214257.pdf`. 표기 쪽수는 책의 인쇄 쪽수이며 파일 페이지는 +11.
+### 문제 1
+
+logic [7:0] a[4]의 원소 수와 원소 폭은?
+
+**해설:** 4개, 각 8비트다.
+
+### 문제 2
+
+10ns와 20ns task를 fork/join으로 실행하면?
+
+**해설:** 같이 시작한다면 20ns 뒤 모두 완료된다.
+
+### 문제 3
+
+Mailbox 수신 객체를 독립시키려면?
+
+**해설:** 새 객체에 필요한 필드와 중첩 객체를 복사한다.
+
+## 8. 참고 자료
+
+- IEEE 1800 SystemVerilog의 class·자료형·randomization·timing 문법
+- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
+
+[목차](<UVM 기초 - 목차.md>)

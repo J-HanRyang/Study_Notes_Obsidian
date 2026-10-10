@@ -1,16 +1,29 @@
 ---
+tags:
+  - randomization
+  - constraint
+  - rand
+  - randc
+  - seed
 cssclasses:
   - uvm-study-note
-updated: 2026-10-07
 ---
 
-# SystemVerilog/UVM 3단계 - Randomization과 Constraint
+# 3장. Randomization과 Constraint
 
-![3단계 개념 그림](assets/uvm-study/stage03.png)
+#randomization #constraint #rand #randc #seed
 
-> 학습 범위: `rand`, `randc`, `randomize()`, constraint block, inline constraint, `inside`, `dist`, implication, conditional constraint, `solve before`, `soft`, `constraint_mode()`, `rand_mode()`, `pre_randomize()`, `post_randomize()`, constraint 상속과 override, 충돌 및 과도하거나 부족한 제약.
+## 1. 장 소개
 
-## 1. Randomization의 기본 구조
+Constrained random은 허용된 값 공간에서 자극을 선택한다. 무작위 값 자체보다 유효한 조건, 경계 상황, 실패 처리와 재현 가능한 seed 관리가 중요하다.
+
+## 2. 구조와 흐름
+
+![Randomization과 Constraint 구조](assets/uvm-book/chapter03.png)
+
+## 3. 핵심 개념
+
+### 3.1. Randomization의 기본 구조
 
 ```systemverilog
 class Packet;
@@ -32,7 +45,11 @@ if (!p.randomize())
 - `randomize()`는 성공 시 1, 실패 시 0을 반환한다. 반환값을 무시하지 않는다.
 - Randomization이 실패하면 field는 이전값을 유지한다. 이 값을 정상 transaction으로 사용하면 안 된다.
 
-## 2. rand와 randc
+#### 생성과 randomization을 분리한다
+
+일반적인 `new()`는 constructor를 실행하며 randomize()를 자동 호출하지 않는다. Constructor에 명시적으로 호출한 경우만 별도다.
+
+### 3.2. rand와 randc
 
 ```systemverilog
 rand  bit [1:0] a;
@@ -48,7 +65,7 @@ randc bit [1:0] b;
 둘째 주기: 1, 3, 0, 2
 ```
 
-## 3. Constraint는 대입문이 아니라 조건이다
+### 3.3. Constraint는 대입문이 아니라 조건이다
 
 ```systemverilog
 constraint c_addr {
@@ -75,7 +92,7 @@ constraint c_bad {
 
 Solver는 활성화된 모든 조건을 동시에 만족하는 조합을 찾는다. 코드를 위에서 아래로 실행하며 값을 순서대로 대입하는 방식이 아니다.
 
-## 4. Inline constraint와 inside
+### 3.4. Inline constraint와 inside
 
 ```systemverilog
 if (!p.randomize() with {
@@ -94,7 +111,22 @@ if (!p.randomize() with {
 
 Inline constraint는 기존 class constraint를 자동으로 대체하지 않는다. 보통 기존 조건에 AND로 추가되며 해당 `randomize()` 호출에만 적용된다.
 
-## 5. dist와 가중치
+#### Array의 크기와 각 element 조건
+
+```systemverilog
+class burst_item;
+  rand bit [7:0] payload[];
+  constraint c_payload {
+    payload.size() inside {[2:8]};
+    foreach (payload[i]) payload[i] inside {[1:15]};
+    payload.sum() with (int'(item)) <= 60;
+  }
+endclass
+```
+
+Size, element 범위, 전체 합은 동시에 만족해야 하는 조건이다. 합계를 구하는 expression의 폭을 명시하고, 합과 size가 서로 모순되는지 확인한다. `unique { ... }`는 서로 다른 값을 요구하는 문법이며 randc의 호출 간 cycle과 구분한다.
+
+### 3.5. dist와 가중치
 
 ```systemverilog
 mode dist {
@@ -125,7 +157,7 @@ value dist {
 
 `:/`는 범위 전체가 weight를 나눠 갖는다. `[1:3]`의 각 값은 weight 10을 가지므로 네 값의 확률은 각각 25%다.
 
-## 6. Implication과 conditional constraint
+### 3.6. Implication과 conditional constraint
 
 ```systemverilog
 write == 1 -> addr inside {[8:15]};
@@ -143,7 +175,7 @@ else
   addr inside {[0:3]};
 ```
 
-## 7. solve before
+### 3.7. solve before
 
 ```systemverilog
 constraint c_value {
@@ -165,7 +197,7 @@ P(kind=1, length=3) = 1/6
 
 `solve before`는 절차적 실행 순서도 아니고 값의 대입 순서도 아니다.
 
-## 8. soft constraint
+### 3.8. soft constraint
 
 ```systemverilog
 constraint c_default {
@@ -182,7 +214,11 @@ p.randomize() with { addr inside {[4:11]}; };
 두 조건의 교집합이 있으므로 soft constraint는 유지되고 최종 범위는 `4~7`이다. 
 교집합이 전혀 없다면 hard inline constraint가 유지되고 soft constraint가 제거된다. Class soft와 inline soft가 충돌하면 inline soft가 우선한다.
 
-## 9. rand_mode와 constraint_mode
+#### Must-obey와 scenario rule
+
+이 분류는 사양상 항상 지킬 조건과 특정 test가 선택한 조건을 나눠 관리하라는 설계 관점이다. 별도의 언어 keyword가 아니다. Scenario별 constraint를 이름별로 나누면 constraint_mode()로 의도를 드러내기 쉽다. Illegal stimulus를 검증할 때는 어떤 규칙을 의도적으로 해제했는지 기록한다.
+
+### 3.9. rand_mode와 constraint_mode
 
 ```systemverilog
 p.addr.rand_mode(0);          // addr 값을 새로 뽑지 않음
@@ -207,7 +243,7 @@ rand 활성화   → 현재값을 solver가 변경할 수 있음
 rand 비활성화 → 현재값이 고정되며 constraint 검사에는 계속 참여함
 ```
 
-## 10. pre_randomize와 post_randomize
+### 3.10. pre_randomize와 post_randomize
 
 ```systemverilog
 function void pre_randomize();
@@ -232,7 +268,11 @@ randomize() 호출
 `pre_randomize()`에서 rand field에 값을 대입해도 `rand_mode`가 켜져 있으면 solver가 그 값을 다시 바꿀 수 있다. 
 두 hook은 function이므로 simulation time을 소비할 수 없다.
 
-## 11. Constraint 상속과 override
+#### Solver 안의 function과 재현성
+
+Constraint 안의 function은 부작용 없는 계산으로 작성한다. 호출 횟수·순서를 로그 제어 수단으로 사용하거나 randomization mode를 함수 안에서 바꾸지 않는다. Seed, test 이름, simulator/UVM 버전, 실패한 constraint와 호출 위치를 함께 남겨 재현한다. 분포 설명은 값의 폭과 다른 활성 constraint를 명시한 예제에 한정한다.
+
+### 3.11. Constraint 상속과 override
 
 부모와 자식의 constraint 이름이 다르면 두 조건이 모두 적용된다.
 
@@ -259,7 +299,11 @@ endclass
 
 최종 가능한 값은 `12, 13, 14, 15`다.
 
-## 12. Conflicting, over-constrained, under-constrained
+#### Factory가 constraint를 교체하는 연결
+
+자식 transaction에 다른 이름의 constraint를 추가하면 부모의 조건과 함께 적용된다. 같은 이름이면 상속된 constraint를 대체한다. Factory override는 이런 자식 type을 생성하도록 선택하며, randomize()는 그 실제 object의 활성 constraint를 사용한다. Factory 자체가 rand field에 값을 넣는 것은 아니다.
+
+### 3.12. Conflicting, over-constrained, under-constrained
 
 | 상태 | 의미 | 결과 또는 위험 |
 |---|---|---|
@@ -270,7 +314,7 @@ endclass
 Over-constrained가 반드시 실패를 뜻하는 것은 아니다. 
 예를 들어 사양상 `1~8`이 모두 합법인데 `length == 4`만 허용하면 해는 있지만 다른 합법적 경우를 검증하지 못한다.
 
-## 13. 실패를 안전하게 처리하기
+### 3.13. 실패를 안전하게 처리하기
 
 ```systemverilog
 if (!item.randomize())
@@ -285,67 +329,58 @@ if (!item.randomize())
 4. 필요 이상으로 합법적 경우를 제외하지 않았는가?
 5. 실패를 즉시 보고하고 transaction 전달을 중단하는가?
 
-## 자주 틀렸던 부분
-
-1. 활성화된 `rand` field의 초기값은 solver가 변경할 수 있다.
-2. `rand_mode(0)`은 constraint를 끄지 않는다. 고정된 현재값도 활성 constraint를 만족해야 한다.
-3. Inline constraint는 기존 hard constraint를 자동으로 override하지 않는다.
-4. `soft`는 다른 조건이 추가됐다는 이유만으로 사라지지 않는다. 교집합이 있으면 함께 적용된다.
-5. `solve before`는 해의 집합이 아니라 분포를 바꾼다.
-6. `dist`의 숫자는 횟수 보장이 아니라 상대적인 weight다.
-
-## 현재 이해도와 다음 단계
-
-- 기본 randomization과 반환값: 3/5
-- `inside`, `dist`, implication, conditional: 2~3/5
-- `solve before`, `soft`: 2/5
-- `rand_mode`, `constraint_mode`, 실패 분석: 2~3/5
-- Constraint 상속과 상태 분류: 2~3/5
-
-다음 학습 주제는 4단계 Interface와 simulation timing이다.
-
-## PDF 보충 - Transaction의 값 공간 설계
-
-> 2026-10-07 보강. 추가 항목은 PDF 보충으로 읽었으며 개별 이해도는 미확인이다.
-> 연결: 01.03.04, 책 86~94쪽; 02.04 Transaction constraints/override, 책 168·171~172쪽.
-
-### 생성과 randomization을 분리한다
-
-PDF 책 87쪽의 new() 주석은 자동 randomization처럼 읽힐 수 있다. 일반적인 `new()`는 constructor를 실행하며 randomize()를 자동 호출하지 않는다. Constructor에 명시적으로 호출한 경우만 별도다. 성공 로그를 보지 않은 예제는 실행 통과로 판단하지 않는다.
-
-### Array의 크기와 각 element 조건
+## 4. 핵심 예제
 
 ```systemverilog
-class burst_item;
-  rand bit [7:0] payload[];
-  constraint c_payload {
-    payload.size() inside {[2:8]};
-    foreach (payload[i]) payload[i] inside {[1:15]};
-    payload.sum() with (int'(item)) <= 60;
-  }
+class item;
+  rand bit [7:0] data;
+  constraint valid_c { data inside {[1:10]}; }
 endclass
+item tr = new();
+if (!tr.randomize() with { data > 5; })
+  $fatal(1, "Randomization failed");
 ```
 
-Size, element 범위, 전체 합은 동시에 만족해야 하는 조건이다. 합계를 구하는 expression의 폭을 명시하고, 합과 size가 서로 모순되는지 확인한다. `unique { ... }`는 서로 다른 값을 요구하는 보충 문법이며 randc의 호출 간 cycle과 구분한다.
+기존 범위 1~10과 inline 조건 data > 5를 함께 만족해야 하므로 최종 허용 범위는 6~10이다.
 
-### Must-obey와 scenario rule
+## 5. 주의점
 
-PDF의 분류는 사양상 항상 지킬 조건과 특정 test가 선택한 조건을 나눠 관리하라는 설계 관점이다. 별도의 언어 keyword가 아니다. Scenario별 constraint를 이름별로 나누면 constraint_mode()로 의도를 드러내기 쉽다. Illegal stimulus를 검증할 때는 어떤 규칙을 의도적으로 해제했는지 기록한다.
+- 생성만으로 rand 필드가 자동 randomize되지는 않는다.
+- post_randomize에서 값을 바꾸면 조건을 어긴 값이 될 수 있다.
+- 실패 후 기존 값을 정상 자극인 것처럼 사용하지 않는다.
 
-### Factory가 constraint를 교체하는 연결
+## 6. 핵심 정리
 
-자식 transaction에 다른 이름의 constraint를 추가하면 부모의 조건과 함께 적용된다. 같은 이름이면 상속된 constraint를 대체한다. Factory override는 이런 자식 type을 생성하도록 선택하며, randomize()는 그 실제 object의 활성 constraint를 사용한다. Factory 자체가 rand field에 값을 넣는 것은 아니다.
+- **rand / randc**: rand는 무작위 값, randc는 변수의 유효 값 공간을 순환한다. 매번 새 객체를 만들면 이전 객체의 순환 상태는 이어지지 않는다.
+- **조건과 충돌**: Constraint는 대입 순서가 아닌 관계식이다. Inline constraint는 기존 조건에 더해지며 충돌하면 randomize()가 실패한다.
+- **범위와 확률**: inside는 허용 집합, dist는 가중치를 정한다. :=는 각 값에, :/는 범위 전체에 가중치를 배분한다.
+- **선택 순서와 기본값**: solve before는 선택 확률에 영향을 준다. soft constraint는 더 강한 조건과 충돌하면 양보하는 기본 조건이다.
+- **동작 제어와 hook**: rand_mode는 변수의 무작위화, constraint_mode는 조건 활성화를 제어한다. pre/post_randomize는 호출 전후 동작을 추가한다.
+- **상속과 실패 처리**: 같은 이름의 constraint는 자식에서 재정의할 수 있다. 실패를 검사하고 성공한 값만 자극으로 사용한다.
 
-### Solver 안의 function과 재현성
+## 7. 확인 문제와 해설
 
-Constraint 안의 function은 부작용 없는 계산으로 작성한다. 호출 횟수·순서를 로그 제어 수단으로 사용하거나 randomization mode를 함수 안에서 바꾸지 않는다. Seed, test 이름, simulator/UVM 버전, 실패한 constraint와 호출 위치를 함께 남겨 재현한다. 분포 설명은 값의 폭과 다른 활성 constraint를 명시한 예제에 한정한다.
+### 문제 1
 
-보충 확인 문제: payload.size()==8이고 모든 element가 10 이상인데 sum<=60이면 해가 존재하는가? 새 보충 문제이며 답변·실행은 아직 확인하지 않았다.
+data inside {[1:10]}에 data > 20을 추가하면?
 
-## 갱신 상태와 탐색
+**해설:** 조건이 충돌하므로 실패한다.
 
-원래 이해도 기록은 당시 평가를 유지한다. PDF 보충을 넣었다는 이유로 숙련도를 올리지 않았다. 현재 전체 진도는 8단계 기본 이론·해석까지이며 다음 시작점은 9단계다.
+### 문제 2
 
-[[SystemVerilog UVM 학습 진행 기록|최신 진도]] · [[SystemVerilog UVM 학습 홈|1~8단계 목차]]
+rand_mode(0)는 constraint도 끄는가?
 
-기준 PDF: `_uvm_tb_240705_214257.pdf`. 표기 쪽수는 책의 인쇄 쪽수이며 파일 페이지는 +11.
+**해설:** 아니다. 조건은 남아 고정된 변수값을 제한할 수 있다.
+
+### 문제 3
+
+Seed를 남기는 이유는?
+
+**해설:** 실패한 무작위 시나리오를 재현하기 위해서다.
+
+## 8. 참고 자료
+
+- IEEE 1800 SystemVerilog의 class·자료형·randomization·timing 문법
+- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
+
+[목차](<UVM 기초 - 목차.md>)

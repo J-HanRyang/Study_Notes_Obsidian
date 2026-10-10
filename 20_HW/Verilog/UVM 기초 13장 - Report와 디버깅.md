@@ -1,8 +1,29 @@
-# SystemVerilog UVM 13단계 - Report와 디버깅
+---
+tags:
+  - report
+  - verbosity
+  - debug
+  - topology
+  - timeout
+cssclasses:
+  - uvm-study-note
+---
 
-학습일: 2026-10-10. 기본 이론과 짧은 코드·상황 해석을 대화로 확인했다. 독립 구현, UVM simulator 실행, 실제 로그 디버깅은 미실행이다.
+# 13장. Report와 디버깅
 
-## 1. Report의 목적과 종류
+#report #verbosity #debug #topology #timeout
+
+## 1. 장 소개
+
+UVM report는 로그의 종류와 상세도를 관리하고 오류 원인을 추적할 정보를 남긴다. 최초 오류부터 실행 경로를 좁히고, 오류 횟수뿐 아니라 실제 비교와 완료 여부를 확인한다.
+
+## 2. 구조와 흐름
+
+![Report와 디버깅 구조](assets/uvm-book/chapter13.png)
+
+## 3. 핵심 개념
+
+### 3.1. Report의 목적과 종류
 
 Report는 검증 중 발생한 정보·경고·오류를 분류하고, 원인을 추적할 정보를 남기는 기능이다. 오류만 출력하는 것이 아니라 실행 경로와 검증 완료 여부를 확인하는 데 사용한다.
 
@@ -13,7 +34,7 @@ Report는 검증 중 발생한 정보·경고·오류를 분류하고, 원인을
 | `uvm_error` | 검증 실패 | 출력·오류 집계, 일반적으로 계속 실행 |
 | `uvm_fatal` | 계속 진행할 수 없는 상황 | 출력 후 종료 |
 
-이 표는 기본 report 설정 기준이다. Action, report catcher, quit count 등으로 동작을 바꿀 수 있다. `uvm_error`도 설정된 오류 횟수 제한에 도달하면 종료될 수 있다. 이 설정들의 상세 구현은 아직 학습하지 않았다.
+이 표는 기본 report 설정 기준이다. Action, report catcher, quit count 등으로 동작을 바꿀 수 있다. `uvm_error`도 설정된 오류 횟수 제한에 도달하면 종료될 수 있다. 
 
 데이터 한 건의 불일치 이후에도 비교를 계속할 수 있다면 error가 적절하다. Driver가 사용할 virtual interface가 없으면 정상 구동을 계속할 수 없으므로 fatal이 적절하다.
 
@@ -25,7 +46,7 @@ if (actual !== expected)
 
 `!==`는 X/Z까지 포함해 비교한다. 정상 데이터가 기대되는 유효한 출력 시점에 검사한다.
 
-## 2. Severity와 verbosity
+### 3.2. Severity와 verbosity
 
 Severity는 메시지 종류이고 verbosity는 정보 로그의 상세도다. 메시지 verbosity가 해당 reporter의 출력 설정 이하일 때 info가 출력된다.
 
@@ -48,9 +69,9 @@ Severity는 메시지 종류이고 verbosity는 정보 로그의 상세도다. �
 +UVM_VERBOSITY=UVM_HIGH
 ```
 
-이는 실행 옵션의 예이며 현재 simulator에서 실행한 기록은 아니다.
+실행 환경의 UVM library와 simulator 옵션을 맞춰 사용한다.
 
-## 3. Report ID와 메시지 본문
+### 3.3. Report ID와 메시지 본문
 
 ID는 메시지의 종류를 분류한다. 같은 데이터 불일치에는 같은 ID를 사용하고, 매번 달라지는 값은 본문에 넣는다. ID만 지정한다고 필터링이 자동으로 수행되는 것은 아니다.
 
@@ -62,7 +83,7 @@ ID는 메시지의 종류를 분류한다. 같은 데이터 불일치에는 같�
 
 주소가 있어야 어느 register의 비교인지 알 수 있다. 필요하면 transaction 번호나 동작 종류도 추가한다. 기본 UVM 로그의 시각·component 경로·ID와 본문을 함께 읽는다.
 
-## 4. 최초 오류와 config DB 디버깅
+### 3.4. 최초 오류와 config DB 디버깅
 
 ```text
 0 ns   driver     [NO_VIF]   Virtual interface not found
@@ -85,7 +106,7 @@ if (vif == null)
 
 확인 항목은 타입, field 이름, 조회 component 경로, 등록 시점이다. Get 성공과 non-null은 별도 조건이다. Config DB는 직접 보내는 통로보다 경로에 맞춰 조회할 설정을 등록하는 저장소로 이해한다.
 
-## 5. 타입·handle·instance 이름과 factory
+### 3.5. 타입·handle·instance 이름과 factory
 
 ```systemverilog
 fifo_driver driver_h;
@@ -113,7 +134,7 @@ driver_h = fifo_driver::type_id::create("drv", this);
 
 `uvm_top.print_topology()`는 생성된 계층을 확인하는 데 사용한다. End_of_elaboration_phase에서 출력하면 구성 이후 계층을 볼 수 있지만, build_phase의 fatal로 이미 종료되면 도달하지 못한다. 이 경우 실패 지점에서 `get_full_name()`을 출력한다.
 
-## 6. TLM 연결과 데이터 흐름 디버깅
+### 3.6. TLM 연결과 데이터 흐름 디버깅
 
 ```systemverilog
 // env connect_phase
@@ -129,7 +150,7 @@ ap.write(tr);
 
 두 로그가 표시되는 설정이라는 전제에서 MON_TX만 보이면 수신 단자까지의 연결을 먼저 확인한다. Analysis port는 수신자 없이 호출할 수도 있다. MON_TX는 관찰·송신 직전까지 실행했다는 증거이지 수신 증거는 아니다. 중간 export가 있으면 끝까지 연결을 따라간다.
 
-SB_RX도 보이면 scoreboard 내부 조건과 예상값 준비를 확인한다. 아래 코드에서 오류가 없다는 것은 통과와 비교 미실행을 구분하지 못한다.
+SB_RX도 보이면 scoreboard 내부 조건과 예상값 준비를 확인한다.
 
 ```systemverilog
 if (tr.read_valid) begin
@@ -143,7 +164,7 @@ end
 
 실제 코드에는 유효한 expected가 존재하는지, 올바른 응답에 대응하는지 확인하는 처리가 필요하다. 위 예제는 counter의 의미만 설명한다.
 
-## 7. 오류 0개와 검증 완료는 다르다
+### 3.7. 오류 0개와 검증 완료는 다르다
 
 | 결과 | 판단 |
 |---|---|
@@ -164,22 +185,59 @@ phase.drop_objection(this);
 
 이 예제는 완료 조건을 설명하며, 응답 누락 시 무한 대기를 막는 timeout이 생략되어 있다. 실제 구현에서는 완료와 timeout을 함께 처리해야 한다. 고정 `#100ns`는 지연이 길면 조기 종료하고 짧으면 불필요하게 기다린다. Request 전달 완료, driver 처리 완료, DUT 응답과 비교 완료는 항상 같은 시점이 아니다.
 
-## 8. 대화에서 확인한 이해와 보정
+## 4. 핵심 예제
 
-- LOW 설정에서 HIGH info는 숨겨지고 error는 출력됨을 확인했다.
-- Report ID로 데이터 불일치를 분류하고 register 주소로 오류 동작을 찾는 이유를 설명했다.
-- 최초 NO_VIF부터 확인하고 config DB의 이름·경로 일치를 점검했다.
-- 처음에는 factory override가 instance 이름도 바꾼다고 생각했으나, 타입과 이름이 별개임을 후속 문제에서 확인했다.
-- 처음에는 오류가 없으면 비교 통과로 보았으나, 조건 불성립으로 비교 미실행일 수 있음을 보정했다.
-- 비교 횟수 0건과 부족한 비교, objection 조기 drop, 고정 시간 대기의 위험을 설명했다.
-- 세미나 답변: “에러가 0개라고 검증 성공은 아니다. 비교가 전부 됐는지, 비교하지 않은 데이터가 남았는지 확인해야 한다.”
+```systemverilog
+`uvm_info("TRACE", "Item received", UVM_HIGH)
+if (actual !== expected)
+  `uvm_error("REG_DATA",
+    $sformatf("addr=%0h expected=%0h actual=%0h",
+              addr, expected, actual))
+// 실제 계층과 타입 확인
+uvm_top.print_topology();
+```
 
-## 9. 회사 PDF 연결과 남은 내용
+ID는 같은 종류의 메시지에 재사용하고 매번 달라지는 값은 본문에 넣는다. Topology 출력은 구조 구성 이후 phase에 배치한다.
 
-회사 PDF 02.02의 report configuration, run_test·test 선택, report macro·verbosity(책 154~156쪽)를 연결한다. 책의 HIGH 설정 설명은 HIGH 자신도 출력 범위에 포함된다는 점을 보충한다. 상세 factory/config/TLM 디버깅과 완료 조건은 이전 단계와 연결한 개인 학습 보충이다.
+## 5. 주의점
 
-Report action·catcher·quit count 상세 구현, factory/config trace 실제 실행, timeout 코드와 실제 실패 로그 분석은 미확인이다.
+- Error macro는 일반 info verbosity로 숨겨지는 로그가 아니다.
+- Factory override는 타입을 바꾸며 create 이름을 자동 변경하지 않는다.
+- 비교 0건·error 0건을 검증 성공으로 판단하지 않는다.
 
-공식 참고: [UVM 1.2 Report Macros](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/macros/uvm_message_defines-svh.html), [Report Object](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_report_object-svh.html).
+## 6. 핵심 정리
 
-다음 노트: [[SystemVerilog UVM 14단계 - Coverage와 Assertion]]
+- **Severity**: Info는 정보, warning은 주의, error는 검증 실패, fatal은 계속 진행할 수 없는 상황에 사용한다.
+- **Verbosity**: 메시지 수준이 출력 설정 이하이면 info가 보인다. 설정을 높이면 더 상세한 로그까지 출력한다.
+- **ID와 본문**: ID는 종류를 분류한다. 본문에는 주소·동작·예상값·실제값·transaction 정보 등 원인 추적에 필요한 값을 남긴다.
+- **최초 오류**: NO_VIF 같은 설정 오류가 뒤의 데이터 누락을 유발할 수 있다. 최초 오류와 이후 결과의 관계부터 확인한다.
+- **데이터 경로**: Monitor 송신과 scoreboard 수신 로그를 비교한다. 수신 후에는 유효 조건·예상값·비교 횟수를 확인한다.
+- **검증 완료**: 오류 0개가 비교 수행을 보장하지 않는다. 필요한 비교 횟수, pending 응답, 최종 상태와 timeout을 함께 확인한다.
+
+## 7. 확인 문제와 해설
+
+### 문제 1
+
+LOW 설정에서 HIGH info는 출력되는가?
+
+**해설:** 일반 설정에서는 숨겨진다.
+
+### 문제 2
+
+필요 비교 10건 중 8건만 완료하고 error 0이면?
+
+**해설:** 수행한 비교는 통과했지만 전체는 미완료다.
+
+### 문제 3
+
+수신 로그는 있는데 비교 횟수가 0이라면?
+
+**해설:** 내부 유효 조건과 예상값·비교 실행 경로를 확인한다.
+
+## 8. 참고 자료
+
+- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
+- [UVM 1.2 Report Macros](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/macros/uvm_message_defines-svh.html)
+- [Report Object](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_report_object-svh.html)
+
+[목차](<UVM 기초 - 목차.md>)
