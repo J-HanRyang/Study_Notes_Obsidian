@@ -15,12 +15,12 @@ updated: 2026-10-10
 
 Sequence는 어떤 요청을 어떤 순서로 발생시킬지 정의하는 재사용 가능한 시나리오다. FIFO에서는 쓰기 세 번 뒤 읽기 세 번 같은 흐름을 표현한다. 입력 신호를 직접 구동하는 코드는 driver에 두어 시나리오와 protocol timing을 분리한다.
 
-| 요소 | 계열과 역할 | 생성·실행 계기 |
-|---|---|---|
-| sequence item | `uvm_sequence_item` 상속, 요청 한 개의 데이터 | sequence 등이 생성하고 필드를 설정 |
-| sequence | `uvm_sequence#(REQ, RSP)` 상속, 요청의 순서·제약·하위 시나리오 | object 생성 후 `start()`로 실행 |
-| sequencer | `uvm_sequencer#(REQ, RSP)` 계열 component, 경쟁 요청 중재·전달 | 보통 agent의 build에서 생성 |
-| driver | `uvm_driver#(REQ, RSP)` 계열 component, 요청을 pin 동작으로 변환 | build에서 생성, run_phase에서 수신·구동 |
+| 요소            | 계열과 역할                                                | 생성·실행 계기                      |
+| ------------- | ----------------------------------------------------- | ----------------------------- |
+| sequence item | `uvm_sequence_item` 상속, 요청 한 개의 데이터                   | sequence 등이 생성하고 필드를 설정       |
+| sequence      | `uvm_sequence#(REQ, RSP)` 상속, 요청의 순서·제약·하위 시나리오       | object 생성 후 `start()`로 실행     |
+| sequencer     | `uvm_sequencer#(REQ, RSP)` 계열 component, 경쟁 요청 중재·전달  | 보통 agent의 build에서 생성          |
+| driver        | `uvm_driver#(REQ, RSP)` 계열 component, 요청을 pin 동작으로 변환 | build에서 생성, run_phase에서 수신·구동 |
 
 REQ/RSP는 요청·응답 타입 parameter다. `uvm_sequence`에는 이 타입의 `req`, `rsp` handle이 제공되지만 객체 생성까지 자동으로 된다고 생각하지 않는다. 아래 예제는 필요한 변수를 직접 선언하기도 한다.
 
