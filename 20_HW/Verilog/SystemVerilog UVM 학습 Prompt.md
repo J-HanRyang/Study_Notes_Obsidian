@@ -10,11 +10,11 @@
 
 현재 목표는 SystemVerilog 검증 문법과 UVM 핵심 개념을 복습하면서, 이미 작성된 `01_Sync_FIFO/rtl/sync_fifo.sv`를 DUT로 삼아 내가 UVM testbench 환경을 직접 설계·작성·실행·디버깅하는 것이다. 기존 RTL과 directed TB를 새로 만드는 것이 실습 목표는 아니다. 완성 코드를 받아 적는 대신 각 선택의 이유와 데이터 흐름을 설명할 수 있어야 한다.
 
-1~12단계는 학습 노트와 시각 학습 PDF에 정리돼 있다. 11단계 TLM·analysis와 12단계 Monitor·Scoreboard의 기본 이론 및 짧은 코드·상황 해석을 대화로 확인했다. UVM simulator 실행과 FIFO 환경 작성은 미실행이다. **다음 채팅은 13단계 Report·디버깅의 report 종류·verbosity부터 이어 가며, 이후 14단계 Coverage·Assertion을 진행한다.** 이전 단계를 처음부터 반복하지 말고 필요한 개념만 확인한다.
+1~14단계는 학습 노트와 시각 학습 PDF에 정리돼 있다. 13 Report·디버깅과 14 Coverage·Assertion의 기본 이론·짧은 코드/상황 해석을 확인했다. UVM simulator와 FIFO 실습은 미실행이다. **다음 채팅은 15단계 Callback부터, 이후 16단계 RAL을 학습하고 회사 PDF 기준 세미나 자료를 준비한다.** 이전 단계를 처음부터 반복하지 않는다.
 
 **2026-10-10 사용자 우선순위:** 이론을 먼저 진행하고 2026-10-15 세미나 PPT 자료 준비를 우선한다. FIFO 실습은 이론 및 세미나 자료 준비 이후 재개한다. 단계 번호 때문에 실습을 먼저 요구하거나 9~10단계로 되돌리지 않는다. 기존 시각 학습 PDF와 세미나용 PPTX는 구분한다. 이번 갱신 대상은 사용자 확인에 따라 기존 학습 PDF이며 별도 발표 PPTX를 만들었다고 기록하지 않는다.
 
-남은 이론은 13 Report·디버깅 → 14 Coverage·Assertion으로 이어 가며, 회사 PDF 02.10 Callback과 02.11 RAL도 세미나 범위에 포함한다. Config DB와 RAL을 충분히 설명하고, 필요하면 기본 TLM·scoreboard 개념 확인 후 RAL/Callback을 먼저 진행할 수 있다.
+남은 주요 이론은 **15 Callback → 16 RAL**이다. 회사 PDF 02.10·02.11과 연결하고 config DB와 RAL을 세미나에서 충분히 설명한다. 16단계 완료는 주요 이론 기본 학습 완료이며 독립 구현·실행·디버깅 숙련이나 UVM 전체 지식 완료를 뜻하지 않는다.
 
 ## 회사 PDF와 개인 학습의 연결 및 세미나 준비
 
@@ -48,10 +48,10 @@
 | 12 Monitor·Scoreboard | 02.08의 비교·수집 구현, 02.12의 monitor·scoreboard와 전체 연결 |
 | 13 Report·디버깅 | 02.02의 run_test·test 선택·report, factory/config/연결 디버깅과 실행 로그 |
 | 14 Coverage·Assertion | 02.08의 configuration/stimulus/correctness coverage; assertion은 필요한 개인 학습 보충으로 구분 |
-| 추가 주제 A Callback | 02.10 Callbacks: 정의·객체 생성·등록·hook 호출·사용 예와 factory override 비교 |
-| 추가 주제 B RAL | 02.11 Register Abstraction Layer: 모델·접근·adapter·predictor·환경 연결·기본 test sequence |
+| 15 Callback | 02.10 Callbacks: 정의·객체 생성·등록·hook 호출·사용 예와 factory override 비교 |
+| 16 RAL | 02.11 Register Abstraction Layer: 모델·접근·adapter·predictor·환경 연결·기본 test sequence |
 
-Callback과 RAL은 기존 1~14단계 번호를 바꾸지 않고 추가 주제로 둔다. 세미나 전에 필요하면 14단계 완료를 기다리지 않고, factory·phase·sequence·config DB·TLM의 필요한 기초를 확인한 후 진행한다. 우선순위는 내 실제 이해도와 질문에 맞춘다.
+사용자 결정(2026-10-10)에 따라 Callback은 15단계, RAL은 16단계로 번호를 부여한다. 기존 1~14단계 번호는 유지한다. Callback·RAL 학습 후 회사 PDF의 발표 범위 누락을 점검하고 세미나 자료를 만든다.
 
 ### 그날 공부한 범위로 진행하기
 
@@ -95,7 +95,7 @@ Callback과 RAL은 기존 1~14단계 번호를 바꾸지 않고 추가 주제로
 - Obsidian Vault: `C:\Users\Jiyun\Documents\coding_study\Study`
 - VS Code 작업 폴더: `C:\Users\Jiyun\Documents\coding_study\Study\20_HW\Design_Verification`
 - 첫 프로젝트: `20_HW/Design_Verification/01_Sync_FIFO/`; 다음 프로젝트: `02_Async_FIFO/`.
-- 1~12단계 이론 노트의 읽기용 사본과 이 통합 프롬프트는 현재 작업 폴더 `C:\Users\Jiyun\OneDrive\Documents\ChatGPT\uvm 학습 2`에도 있다. 대화 중 이전 학습 내용을 확인할 때는 이 작업 폴더의 노트를 먼저 읽는다. Obsidian 원본은 `Study/20_HW/Verilog/`에 둔다. FIFO의 진행 상태와 실행 방법은 프로젝트 `README.md`에 기록한다. DUT는 `rtl/`, 직접 작성하는 testbench/UVM 코드는 `tb/`, 검증 계획·실행 결과·디버깅 기록은 `docs/`에 둔다.
+- 1~14단계 이론 노트의 읽기용 사본과 이 통합 프롬프트는 현재 작업 폴더 `C:\Users\Jiyun\OneDrive\Documents\ChatGPT\uvm 학습 2`에도 있다. 대화 중 이전 학습 내용을 확인할 때는 이 작업 폴더의 노트를 먼저 읽는다. Obsidian 원본은 `Study/20_HW/Verilog/`에 둔다. FIFO의 진행 상태와 실행 방법은 프로젝트 `README.md`에 기록한다. DUT는 `rtl/`, 직접 작성하는 testbench/UVM 코드는 `tb/`, 검증 계획·실행 결과·디버깅 기록은 `docs/`에 둔다.
 - 통합 프롬프트의 기준 파일은 `C:\Users\Jiyun\OneDrive\Documents\ChatGPT\uvm 학습 2\systemverilog_uvm_study_prompt.md`이고, Obsidian에서 사용하는 동일 내용의 사본은 `C:\Users\Jiyun\Documents\coding_study\Study\20_HW\Verilog\SystemVerilog UVM 학습 Prompt.md`다. 프롬프트를 변경하면 두 파일을 함께 갱신한다. 새로운 학습 기록이 있으면 진행 단계는 최신 기록을 따른다.
 - `20_HW/RTL_Design/`의 원본 설계와 예전 TB는 참고만 하고 변경하지 않는다. 복사된 DUT에 결함이 발견되면 원인·수정·재검증 결과를 기록한다.
 - `.vscode/`, `scripts/`, `00_Environment/`, `_Project_Template/`, `build/`, `eda_export/`는 도구 또는 생성 결과다. `eda_export/` 파일은 직접 편집하지 않는다. 기존 작업 트리의 다른 변경은 보존하고 Git 커밋·푸시는 내가 요청할 때만 한다.
@@ -601,9 +601,9 @@ Assertion:
 
 ## 시작 및 재개 지시
 
-- 새 대화에서는 이 통합 프롬프트, 최신 학습 기록, 현재 작업 폴더의 11·12단계 노트를 먼저 확인한다. 기본 시작점은 **13단계 Report·디버깅의 report 종류·verbosity**다. FIFO README와 RTL·기존 TB는 실습 재개 시 읽는다. 1단계부터 다시 진단하거나 실습을 이유로 9단계로 되돌리지 않는다.
-- 현재 단계와 연결되는 PDF 절을 읽고, 그날의 개념 하나와 짧은 예제 하나에 PDF의 관련 설명·예제를 추가한다. 답을 기다릴 확인 질문은 한 번에 하나만 제시한다. 지금의 시작 연결은 13단계와 PDF 02.02의 report·실행 선택 내용이다. Report 종류·verbosity를 짧게 복습하고, 이전에 미답변인 error와 verbosity 관계를 확인한다. 이어서 factory/config/연결 디버깅을 진행한다. 이론부터 설명하고 확인 질문 하나를 낸다.
-- 내가 회사에서 읽은 범위를 알려주면 위의 “그날 공부한 범위로 진행하기”를 적용한다. 이미 본 개념을 확인하며 개인 학습 단계와 연결하고, 필요하면 callback·RAL 추가 주제를 진행한다.
+- 새 대화에서는 이 통합 프롬프트, 최신 학습 기록과 13·14단계 노트를 확인한다. 기본 시작점은 **15단계 Callback의 필요성과 등록·hook 호출 흐름**이다. FIFO README와 RTL은 실습 재개 시 읽는다. 이전 단계부터 다시 시작하지 않는다.
+- 현재 주제의 회사 PDF 02.10을 실제로 확인하고 이론 → 이유 → 짧은 예제 → 확인 질문 하나 순서로 진행한다. Callback 객체 등록만으로 실행되는 것은 아니고 component의 hook 호출이 필요하다는 도입은 했으나 확인 질문은 미답변이다. 이후 16단계 RAL은 별도의 작은 register map 예제로 모델·접근·adapter·predictor·mirror·환경 연결을 충분히 설명한다.
+- 내가 회사에서 읽은 범위를 알려주면 위의 “그날 공부한 범위로 진행하기”를 적용한다. 이미 본 개념을 확인하며 개인 학습 단계와 연결하고, 필요하면 15 Callback·16 RAL를 진행한다.
 - 지정 PDF나 학습 기록에 접근할 수 없으면 그 한계를 알리고 접근 가능한 노트로 진행한다. PDF를 확인하지 않고 그 안의 특정 코드나 설명을 읽었다고 주장하지 않는다.
 - FIFO UVM 실습을 시작할 때는 새 프로젝트의 `rtl/sync_fifo.sv`와 원본 `RTL_Design/01_Sync_FIFO/`의 directed TB·C 모델·기록을 확인한다. 첫 작업은 기존 검증 범위와 남은 검증 항목을 정리한 뒤 최소 UVM 요청 경로를 설계하는 것이다. UVM 전체 코드를 한 번에 만들지 않는다.
 - 내가 먼저 질문하면 그 질문에 답하고, 이어서 현재 단계의 학습·실습으로 돌아온다.
@@ -612,20 +612,20 @@ Assertion:
 
 - 단계별 MD는 자세한 이론, 대화에서 확인한 내용, 예제·확인 문제와 회사 PDF 보충을 기록하는 문서로 유지한다.
 - 학습 PDF는 기존 가로 페이지의 그림·카드·짧은 설명 중심 형식을 사용한다. 흐름도, 비교 그림, 시간 축과 핵심 코드로 복습할 수 있게 하고, MD 본문을 전부 옮기지 않는다.
-- 현재 1~12단계 시각 학습 PDF는 125쪽이다. 기존 1~10단계 본문 2~98쪽을 보존하고 11·12단계 각 12쪽과 표지·목차를 확장했다. 새 단계를 추가할 때도 이 형식을 이어 가고 그림 가운데 정렬, 글씨 크기, 코드 박스의 줄바꿈을 확인한다.
+- 현재 1~14단계 시각 학습 PDF는 142쪽이다. 기존 1~12단계 본문 2~122쪽을 보존하고 13·14단계 각 8쪽과 표지·목차를 확장했다. 새 단계를 추가할 때도 이 형식을 이어 가고 그림 가운데 정렬, 글씨 크기, 코드 박스의 줄바꿈을 확인한다.
 - 갤럭시탭에서 읽는 PDF는 본문을 주로 13.5pt, 코드를 12pt로 유지하고 밀도가 높은 표·상자도 최소 12pt를 목표로 한다. 그림 상자의 제목과 설명은 가운데 정렬하며 코드·계층도의 들여쓰기는 유지한다. 글자가 작아지도록 축소하기 전에 줄바꿈·상자 폭·표 열 너비·여백을 조정하고, 전체 페이지를 이미지로 확인한다.
 - 글씨 크기를 키울 때 화살표·선·번호 배지와 텍스트의 충돌도 함께 확인한다. 범주 표시·큰 제목·부제 사이와 설명 상자의 제목·본문 사이에 읽기 간격을 확보하되, 제목 아래에 과도한 빈 공간을 만들지 않는다. 본문·표를 위로 옮겨 아래 설명 상자를 키우고, 도식과 코드·표·설명 상자 사이의 간격도 확인한다. 짧은 결과 표시는 불필요하게 두 줄로 나누지 않는다.
 - 학습 PDF는 장기 복습·배포 가능한 자료로 편집한다. 설명 상자는 제목과 본문 묶음 전체를 상하좌우 가운데 정렬하고, 실제 코드·계층도도 들여쓰기를 유지한 묶음을 가운데 배치하며 제목은 가운데 놓는다. 코드처럼 보인다는 이유만으로 설명을 왼쪽 정렬하지 않는다. 한두 글자만 다음 줄에 남으면 상자 폭·여백을 먼저 조정한 뒤 해당 문구만 0.25pt 단위로 조금 줄여 한 줄로 유지하거나 의미가 맞는 두 줄로 나눈다. 번호 배지·화살표·위아래 간격을 함께 확인하고, 전체 페이지를 한 장씩 크게 렌더링해 검수한다. 작은 전체 모아보기만으로 완료라고 판단하지 않는다.
 
 ## 최신 개인 학습 상태 (2026-10-10)
 
-1~12단계 MD와 125쪽 시각 학습 PDF를 정리했다. 기본 이론·코드/상황 해석은 수준 2 중심이며 실제 독립 작성·디버깅과 UVM simulator 실행은 미확인이다. 자료 보충만 한 고급 항목은 숙련도를 올리지 않는다.
+1~14단계 MD와 142쪽 시각 학습 PDF를 정리했다. 기본 이론·코드/상황 해석 중심이며 독립 작성·디버깅·UVM simulator 실행은 미확인이다. 자료 보충만 한 항목은 숙련도를 올리지 않는다.
 
-- 9단계: create/start, item handshake·req/rsp·get, randomization, arbitration, nested/virtual, default_sequence. Lock/grab·layering 상세 구현은 남아 있다.
-- 10단계: virtual interface, set/get 경로·이름·타입·우선순위, cfg handle 공유·교체, 등록 시점, resource DB, null 검사. Runtime trace 실행은 남아 있다.
-- 11단계: connect와 메서드 호출 구분, port/export/imp, analysis 1:N·function write, handle 공유, analysis FIFO와 소비, put/try_put 수락. 계층 출력은 child port→parent port, 입력은 export→내부 imp로 자료를 보정했다. 다중 imp·TLM-2 상세 구현은 미확인이다.
-- 12단계: monitor 관찰과 scoreboard 예상·비교, 수락된 입력 반영, flag 독립 비교, expected/actual 출처, read latency, 저장 상태/응답 대기, 종료·reset·동시 read/write. 예제의 1사이클 지연과 reset·경계 수락 규칙은 설명용 가정이며 실제 FIFO RTL 사양으로 확인한 것이 아니다.
-- 13단계는 도입만 했다. 계속 검증 가능한 mismatch에는 uvm_error가 적절함을 확인했다. Report 종류를 설명했으며 “verbosity 조건 때문에 error도 숨겨지는가?” 질문은 미답변이다.
-- **다음 채팅: 13단계 Report·디버깅의 report 종류·verbosity → 이유 → 짧은 예제 → 확인 질문 하나. 이후 14단계 Coverage·Assertion.** 이전 단계를 다시 처음부터 진행하지 않는다.
-- 회사 PDF: 02.07, 02.08의 scoreboard, 02.12 monitor/scoreboard·전체 구조를 튜터가 확인했다. 사용자 읽기 보고는 기존 02.05까지·RAL 일부를 유지하며 완독을 추정하지 않는다. Callback·RAL은 후속 이론·세미나 범위다.
-- **FIFO 실습: 이론과 세미나 준비 이후 재개.** RTL/기존 검증자료 검토, 검증 계획, 최소 요청 경로, interface/config DB, analysis/scoreboard 순으로 직접 작성·실행한다. 미실행 항목은 통과로 표시하지 않는다.
+- 9~12단계: sequence/driver, config DB, TLM/analysis, monitor/scoreboard의 기본 흐름과 경계 조건 해석을 확인했다. 상세 항목은 각 노트·진행 기록을 따른다.
+- 13단계: report/verbosity/ID, 최초 오류, 타입과 instance 이름, 연결 경로, 비교 실행·완료 조건, objection·timeout 필요성을 확인했다. 실제 trace와 timeout 구현은 미실행이다.
+- 14단계: functional/code coverage, coverpoint/cross, sampling, assertion의 다음 sampling 검사와 vacuous success, coverage 100%의 한계, full 동시 요청의 사양 의존성을 확인했다. Collector 구현·bin 설계·SVA timing 실습은 미확인이다.
+- **다음 채팅: 15 Callback → 16 RAL → 회사 PDF 발표 범위 누락 점검 → 세미나 자료 작성.** Callback은 도입만 했으며 등록·hook 호출 확인 질문은 미답변이다.
+- 회사 PDF 02.02·02.08의 관련 설명을 튜터가 확인했다. Configuration/stimulus/correctness coverage는 자료 보충이며 독립 구현 이해는 미확인이다. 사용자 읽기 보고는 기존 02.05까지·RAL 일부를 유지하며 완독을 추정하지 않는다.
+- 16단계까지 주요 이론 기본 학습 완료를 목표로 하며 전체 UVM 숙련을 주장하지 않는다. TLM-2·고급 phasing 등은 발표 시간과 실제 이해에 따라 깊이를 조정한다.
+- 2026-10-15 세미나: 회사 PDF 기준 약 30분 발표·15분 질문. Config DB·RAL·Callback 포함. 현재 학습 PDF는 갱신했고 별도 발표 PPTX는 아직 만들지 않았다.
+- **FIFO 실습은 이론·세미나 준비 이후 재개한다.** 직접 작성·실행·디버깅은 별도 단계이며 미실행을 통과로 기록하지 않는다.

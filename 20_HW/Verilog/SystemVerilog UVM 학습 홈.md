@@ -1,6 +1,6 @@
 # SystemVerilog/UVM 학습 홈
 
-갱신: 2026-10-10. 1~12단계 대화 학습 노트와 회사 PDF 보충을 함께 정리했다.
+갱신: 2026-10-10. 1~14단계 대화 학습 노트와 회사 PDF 보충을 함께 정리했다.
 
 ## 학습 노트
 
@@ -16,10 +16,12 @@
 - [[SystemVerilog UVM 10단계 - config DB와 virtual interface]]
 - [[SystemVerilog UVM 11단계 - TLM과 analysis]]
 - [[SystemVerilog UVM 12단계 - Monitor와 Scoreboard]]
+- [[SystemVerilog UVM 13단계 - Report와 디버깅]]
+- [[SystemVerilog UVM 14단계 - Coverage와 Assertion]]
 
 ## 학습 PDF
 
-[[SystemVerilog_UVM_시각학습노트.pdf|1~12단계 시각 학습 PDF · 125쪽]]
+[[SystemVerilog_UVM_시각학습노트.pdf|1~14단계 시각 학습 PDF · 142쪽]]
 
 기존 가로 페이지의 그림·카드·짧은 설명 형식으로 복습한다. 자세한 이론과 회사 PDF 보충은 위의 단계별 MD에서 읽는다.
 
@@ -29,12 +31,10 @@
 
 ## 현재 진도
 
-**12단계까지 기본 이론과 코드·상황 해석을 진행했다. 다음 채팅은 13단계 Report·디버깅의 report 종류·verbosity부터 시작하고, 이어서 14단계 Coverage·Assertion을 진행한다.**
+**14단계까지 기본 이론과 짧은 코드·상황 해석을 확인했다. 다음 채팅은 15 Callback → 16 RAL → 회사 PDF 기준 세미나 자료 준비 순서다.**
 
-11단계는 PDF 99쪽, 12단계는 111쪽부터다. 13단계는 도입만 했으며 확인 질문은 미답변이다.
+13단계는 PDF 123쪽, 14단계는 131쪽부터다. 전체 142쪽이며 기존 2~122쪽 본문을 보존했다. 새 표지·13/14단계·목차 21쪽을 개별 이미지로 검수하고 문자·영역·상자 충돌·목차 목적지·책갈피를 확인했다.
 
-실제 UVM simulator와 FIFO 실습은 미실행이다. 이론과 2026-10-15 세미나 자료 준비를 우선하고 실습은 이후 재개한다. 남은 순서는 13~14단계 및 추가 Callback·RAL이며 필요하면 RAL/Callback의 순서를 조정한다.
+독립 구현·UVM simulator·FIFO 실습은 미실행이다. 16단계까지 주요 이론 기본 학습을 마치고, 이론과 2026-10-15 세미나 준비 이후 실습을 재개한다. 발표 PPTX는 아직 만들지 않았다.
 
 [[SystemVerilog UVM 학습 진행 기록|세부 진도와 보충 범위]] · [[SystemVerilog UVM 학습 Prompt|통합 프롬프트]]
-
-새로운 PDF 보충 항목은 이해도 확인 전이다. 각 노트의 기존 평가, 확인 문제와 미해결 지점을 함께 읽는다.

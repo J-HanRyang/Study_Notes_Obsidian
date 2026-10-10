@@ -1,5 +1,20 @@
 # SystemVerilog/UVM 학습 진행 기록
 
+## 2026-10-10 - 13·14단계 확인과 15·16단계 확정
+
+- 개인 학습: 13 Report·디버깅, 14 Coverage·Assertion 기본 이론·짧은 코드/상황 해석을 확인했다. 독립 작성·실행은 미확인이다.
+- 13단계 확인: severity/verbosity, report ID·주소 정보, 최초 오류, config DB 경로, factory 타입과 instance 이름, analysis 송수신 로그, 내부 조건, 비교 횟수·미처리 응답, check/report phase, objection과 완료·timeout.
+- 보정: factory override는 타입을 교체하며 create 이름은 별도다. 오류가 없더라도 read_valid가 false여서 비교를 건너뛸 수 있다. 비교 8/10건에서 테스트가 종료됐다면 검증 미완료다.
+- 14단계 확인: scoreboard/functional coverage/assertion/code coverage 역할, 같은 sampling 시점의 cross, empty 요청·포인터 규칙, vacuous success, coverage hole 분석, full 동시 요청과 사양별 예상 queue, coverage 100%의 한계.
+- 보정: functional coverage는 정의한 상황 발생을 측정하며 올바른 동작을 보장하지 않는다. 모델의 pop 후 push 계산은 DUT가 시간상 순서대로 실행한다는 뜻이 아니다.
+- 회사 PDF 연결: 튜터가 추출 자료의 02.02 report·verbosity(책 154~156쪽), 02.08 coverage(225~229쪽)를 확인했다. Configuration/stimulus/correctness coverage의 구현은 문서 보충이며 사용자 이해 확인으로 간주하지 않는다. 사용자 완독 여부도 추정하지 않는다.
+- 생성·실행·연결의 남은 항목: 실제 report·trace 실행, timeout 구현, coverage collector 연결·sampling, bin 설계, SVA scheduling·reset·race. Simulator 미실행 / FIFO 실습 미진행.
+- 사용자 결정: 추가 A/B 대신 **15단계 Callback, 16단계 RAL**로 번호를 확정했다. 16단계까지 주요 이론 기본 학습을 마치되 UVM 전체 숙련·실습 완료로 기록하지 않는다.
+- 자료: 13·14단계 상세 MD 추가. 기존 PDF 2~122쪽 본문을 보존하고 13·14단계 각 8쪽, 표지·목차를 갱신해 총 142쪽이다. 13단계 시작 123쪽, 14단계 시작 131쪽. 변경 21쪽을 개별 이미지로 검수하고 문자·영역·상자 충돌·목차 목적지·14단계 책갈피를 확인했다.
+- 다음 시작점: **15 Callback의 필요성 → 짧은 예제 → 확인 질문 하나**. 등록과 hook 호출은 구분해야 한다는 도입만 했고, 마지막 질문은 미답변이므로 Callback 숙련도를 올리지 않는다. 이후 16 RAL을 충분히 학습하고 회사 PDF 범위 누락 점검 후 2026-10-15 세미나 자료를 만든다. 현재 발표 PPTX는 만들지 않았다.
+- 예상 시간은 계획용 추정: Callback 30~60분, RAL 기본 이론·예제 1~2시간. 코드 구현·디버깅을 포함하면 추가 시간이 필요하다. 실제 이해도에 맞춰 조정한다.
+- 현재 작업 폴더와 Obsidian 노트·프롬프트·진행 기록·학습 PDF를 동기화했다.
+
 ## 2026-10-10 - 11·12단계 이론 정리와 다음 채팅 준비
 
 - 개인 학습: 11단계 TLM·analysis와 12단계 Monitor·Scoreboard 기본 이론·짧은 코드/상황 해석까지 대화로 확인했다. 수준 2 중심이며 독립 작성·디버깅·simulator 실행은 미확인이다.
