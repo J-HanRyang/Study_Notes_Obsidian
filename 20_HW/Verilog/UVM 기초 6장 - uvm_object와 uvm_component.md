@@ -9,21 +9,20 @@ cssclasses:
   - uvm-study-note
 ---
 
-# 6장. uvm_object와 uvm_component
-
 #uvm_object #uvm_component #hierarchy #constructor #phase
 
-## 1. 장 소개
+# **1. 소개**
 
-UVM의 데이터를 표현하는 객체와 검증 계층을 이루는 component는 생성 방식과 실행 책임이 다르다. Class 상속, component parent, factory context를 서로 구분해야 한다.
+- UVM의 데이터를 표현하는 객체와 검증 계층을 이루는 component는 생성 방식과 실행 책임이 다르다.
+- Class 상속, component parent, factory context를 서로 구분해야 한다.
 
-## 2. 구조와 흐름
+# **2. 구조와 흐름**
 
 ![uvm_object와 uvm_component 구조](assets/uvm-book/chapter06.png)
 
-## 3. 핵심 개념
+# **3. 핵심 개념**
 
-### 3.1. 이 장의 핵심
+## **3.1. 이 장의 핵심**
 
 UVM class는 크게 두 부류로 나눠 이해할 수 있다.
 
@@ -42,7 +41,7 @@ uvm_component 계열
 - UVM phase scheduler가 method를 호출해야 하는가?
 - transaction처럼 필요할 때 만들고 처리하는 대상인가?
 
-#### Component도 상속상 uvm_object의 후손이다
+### **Component도 상속상 uvm_object의 후손이다**
 
 ```text
 uvm_object
@@ -50,9 +49,13 @@ uvm_object
 └─ uvm_report_object → uvm_component → test/env/agent/driver 등
 ```
 
-여기서 object 계열/component 계열이라는 실무 분류는 hierarchy와 phase 책임을 구분하는 표현이다. 상속상 완전히 독립된 두 뿌리가 아니다. `uvm_component`도 object 기능을 상속하지만 component 전체를 transaction처럼 clone해 hierarchy를 복제하는 용도로 사용하지 않는다.
+- 여기서 object 계열/component 계열이라는 실무 분류는 hierarchy와 phase 책임을 구분하는 표현이다.
+- 상속상 완전히 독립된 두 뿌리가 아니다.
+- `uvm_component`도 object 기능을 상속하지만 component 전체를 transaction처럼 clone해 hierarchy를 복제하는 용도로 사용하지 않는다.
 
-### 3.2. `uvm_object` 계열
+## **3.2. `uvm_object` 계열**
+
+![핵심 개념 그림 1](assets/uvm-book/chapter06-concept1.png)
 
 대표적인 object 계열 class는 다음과 같다.
 
@@ -66,9 +69,10 @@ uvm_object
             └─ write_sequence 같은 sequence
 ```
 
-상속 구조는 UVM 버전과 class 종류에 따라 더 세부적일 수 있다. 여기서는 sequence item과 sequence가 모두 `uvm_object` 계열이라는 점이 중요하다.
+- 상속 구조는 UVM 버전과 class 종류에 따라 더 세부적일 수 있다.
+- 여기서는 sequence item과 sequence가 모두 `uvm_object` 계열이라는 점이 중요하다.
 
-#### `uvm_sequence_item`
+### **`uvm_sequence_item`**
 
 한 번의 요청이나 전송을 표현하는 transaction의 기반 class다.
 
@@ -84,9 +88,10 @@ class bus_item extends uvm_sequence_item;
 endclass
 ```
 
-`bus_item`은 “무슨 동작을 할지”를 담는다. Protocol pin timing은 보통 driver가 담당한다.
+- `bus_item`은 “무슨 동작을 할지”를 담는다.
+- Protocol pin timing은 보통 driver가 담당한다.
 
-#### `uvm_sequence`
+### **`uvm_sequence`**
 
 Transaction을 만들고 어떤 순서로 보낼지 표현하는 시나리오의 기반 class다.
 
@@ -98,9 +103,11 @@ class write_sequence extends uvm_sequence #(bus_item);
 endclass
 ```
 
-Sequence는 UVM class이지만 component hierarchy에 들어가지 않는다. 생성만으로 `body()`가 실행되는 것도 아니다. Sequence를 `start(sequencer)`해야 시나리오가 실행된다.
+- Sequence는 UVM class이지만 component hierarchy에 들어가지 않는다.
+- 생성만으로 `body()`가 실행되는 것도 아니다.
+- Sequence를 `start(sequencer)`해야 시나리오가 실행된다.
 
-#### Object 계열 특징
+### **Object 계열 특징**
 
 - component hierarchy에 속하지 않는다.
 - component parent를 갖지 않는다.
@@ -108,17 +115,22 @@ Sequence는 UVM class이지만 component hierarchy에 들어가지 않는다. �
 - 필요한 시점에 만들고 전달·처리할 수 있다.
 - 이름이 있어도 component instance path가 생기지는 않는다.
 
-#### Object create()의 parent 인수와 hierarchy
+### **Object create()의 parent 인수와 hierarchy**
 
 ```systemverilog
 item = fifo_item::type_id::create("item", this);
 ```
 
-Object registry의 create()는 선택적으로 component를 받아 factory 검색 context에 사용할 수 있다. 이 인수가 object constructor의 parent가 되거나 object를 component hierarchy의 자식으로 등록하는 것은 아니다. Object의 new(name)과 component의 new(name,parent)를 구분한다.
+- Object registry의 create()는 선택적으로 component를 받아 factory 검색 context에 사용할 수 있다.
+- 이 인수가 object constructor의 parent가 되거나 object를 component hierarchy의 자식으로 등록하는 것은 아니다.
+- Object의 new(name)과 component의 new(name,parent)를 구분한다.
 
-### 3.3. `uvm_component` 계열
+## **3.3. `uvm_component` 계열**
 
-대표적인 component 계열 class는 다음과 같다. 아래 목록은 계열을 보여주기 위한 것으로 중간 상속 class를 생략했다.
+![핵심 개념 그림 2](assets/uvm-book/chapter06-concept2.png)
+
+- 대표적인 component 계열 class는 다음과 같다.
+- 아래 목록은 계열을 보여주기 위한 것으로 중간 상속 class를 생략했다.
 
 ```text
 uvm_component
@@ -132,9 +144,10 @@ uvm_component
 └─ uvm_subscriber
 ```
 
-이 class들은 모두 component 계열이지만 서로가 모두 부모·자식 class인 것은 아니다. 각 class가 `uvm_component`를 바탕으로 서로 다른 역할을 제공한다.
+- 이 class들은 모두 component 계열이지만 서로가 모두 부모·자식 class인 것은 아니다.
+- 각 class가 `uvm_component`를 바탕으로 서로 다른 역할을 제공한다.
 
-#### Component hierarchy 예
+### **Component hierarchy 예**
 
 ```text
 uvm_test_top
@@ -146,19 +159,25 @@ uvm_test_top
    └─ scoreboard
 ```
 
-이 hierarchy는 component 생성 때 parent 관계를 전달하여 만든다. 생성된 driver는 agent 객체 아래에 배치된다.
+- 이 hierarchy는 component 생성 때 parent 관계를 전달하여 만든다.
+- 생성된 driver는 agent 객체 아래에 배치된다.
 
 Component는 보통 환경 구성 중 생성되어 simulation 동안 유지되고 phase에 참여한다.
 
-#### UVM root와 test parent
+### **UVM root와 test parent**
 
-일반적인 run_test() 경로는 root 아래에 uvm_test_top을 만든다. Constructor에 parent=null을 전달하면 UVM component 기반 class가 root 아래의 최상위 component로 관리한다. 사용자 환경의 env, agent, driver는 각 생성된 부모 object를 전달한다. Root를 HDL top module과 혼동하지 않는다.
+- 일반적인 run_test() 경로는 root 아래에 uvm_test_top을 만든다.
+- Constructor에 parent=null을 전달하면 UVM component 기반 class가 root 아래의 최상위 component로 관리한다.
+- 사용자 환경의 env, agent, driver는 각 생성된 부모 object를 전달한다.
+- Root를 HDL top module과 혼동하지 않는다.
 
-### 3.4. 상속 관계와 hierarchy 배치 관계
+## **3.4. 상속 관계와 hierarchy 배치 관계**
+
+![핵심 개념 그림 3](assets/uvm-book/chapter06-concept3.png)
 
 이 둘은 서로 다른 관계다.
 
-#### Class 상속 관계
+### **Class 상속 관계**
 
 ```systemverilog
 class bus_driver extends uvm_driver #(bus_item);
@@ -170,13 +189,14 @@ class bus_driver extends uvm_driver #(bus_item);
 bus_driver class → uvm_driver class의 기능을 상속
 ```
 
-#### 생성된 component의 부모·자식 관계
+### **생성된 component의 부모·자식 관계**
 
 ```systemverilog
 driver = bus_driver::type_id::create("driver", this);
 ```
 
-이 코드가 agent 안에 있다면 `this`는 현재 agent 객체다. 생성된 driver component는 해당 agent의 자식으로 배치된다.
+- 이 코드가 agent 안에 있다면 `this`는 현재 agent 객체다.
+- 생성된 driver component는 해당 agent의 자식으로 배치된다.
 
 ```text
 bus_agent object
@@ -185,7 +205,7 @@ bus_agent object
 
 따라서 “driver가 agent 아래에 있다”는 사실만으로 driver class가 agent class를 상속하는 것은 아니다.
 
-### 3.5. Constructor 인수 차이
+## **3.5. Constructor 인수 차이**
 
 Object constructor는 보통 이름만 받는다.
 
@@ -206,7 +226,8 @@ endfunction
 - `name`: 생성할 object 또는 component의 이름
 - `parent`: hierarchy에서 component를 포함할 상위 component 객체
 
-Transaction에는 component hierarchy 위치가 없으므로 parent가 필요 없다. Driver, monitor, agent 등은 hierarchy에 놓여야 하므로 parent가 필요하다.
+- Transaction에는 component hierarchy 위치가 없으므로 parent가 필요 없다.
+- Driver, monitor, agent 등은 hierarchy에 놓여야 하므로 parent가 필요하다.
 
 중요한 표현 차이:
 
@@ -215,13 +236,16 @@ parent는 bus_env class 자체가 아니다.
 parent는 실제로 생성된 bus_env 객체(this)다.
 ```
 
-일반적인 run_test() 경로에서 test는 parent 인수로 `null`을 전달하고 UVM root 아래에 배치된다. 그 아래 component는 상위 component 객체를 parent로 받는다.
+- 일반적인 run_test() 경로에서 test는 parent 인수로 `null`을 전달하고 UVM root 아래에 배치된다.
+- 그 아래 component는 상위 component 객체를 parent로 받는다.
 
-#### Constructor를 누가 언제 부르는가
+### **Constructor를 누가 언제 부르는가**
 
-Factory는 선택된 type의 constructor를 호출한다. Component의 constructor는 parent 관계를 만들고, build_phase()는 UVM scheduler가 나중에 호출해 하위 구조와 설정을 구성한다. Constructor, build_phase(), run_phase()를 같은 실행 단계로 생각하지 않는다.
+- Factory는 선택된 type의 constructor를 호출한다.
+- Component의 constructor는 parent 관계를 만들고, build_phase()는 UVM scheduler가 나중에 호출해 하위 구조와 설정을 구성한다.
+- Constructor, build_phase(), run_phase()를 같은 실행 단계로 생각하지 않는다.
 
-### 3.6. 이름과 instance path
+## **3.6. 이름과 instance path**
 
 Component 생성에서 class 이름과 instance 이름을 구분한다.
 
@@ -241,7 +265,8 @@ Environment의 경로가 `uvm_test_top.env`라면 위 driver의 경로는 다음
 uvm_test_top.env.agent.driver
 ```
 
-같은 parent 아래에 같은 instance 이름의 component를 중복 생성하면 경로가 충돌한다. 두 agent는 다른 이름을 사용해야 한다.
+- 같은 parent 아래에 같은 instance 이름의 component를 중복 생성하면 경로가 충돌한다.
+- 두 agent는 다른 이름을 사용해야 한다.
 
 ```systemverilog
 agent0 = bus_agent::type_id::create("agent0", this);
@@ -250,11 +275,13 @@ agent1 = bus_agent::type_id::create("agent1", this);
 
 Transaction object는 component hierarchy에 등록되지 않으므로 이름이 같아도 이 component 경로 충돌은 발생하지 않는다.
 
-#### 이름을 얻는 API
+### **이름을 얻는 API**
 
-Component의 get_name()은 leaf 이름, get_full_name()은 component hierarchy의 전체 경로, get_type_name()은 class type 이름을 나타낸다. Factory/config/debug에 쓰는 경로와 class type 문자열은 서로 다른 기준이다. Object의 이름이나 sequence의 실행 context를 component의 구조적 parent-child 관계로 해석하지 않는다.
+- Component의 get_name()은 leaf 이름, get_full_name()은 component hierarchy의 전체 경로, get_type_name()은 class type 이름을 나타낸다.
+- Factory/config/debug에 쓰는 경로와 class type 문자열은 서로 다른 기준이다.
+- Object의 이름이나 sequence의 실행 context를 component의 구조적 parent-child 관계로 해석하지 않는다.
 
-### 3.7. Phase와 실행 방식
+## **3.7. Phase와 실행 방식**
 
 UVM은 component hierarchy에 있는 component의 phase method를 정해진 순서로 호출한다.
 
@@ -264,7 +291,8 @@ connect_phase() → 통신 연결
 run_phase()     → 시간에 따른 동작
 ```
 
-Driver와 monitor의 `run_phase()`는 UVM이 실행한다. Sequence는 component가 아니므로 `run_phase()`가 자동 호출되지 않는다.
+- Driver와 monitor의 `run_phase()`는 UVM이 실행한다.
+- Sequence는 component가 아니므로 `run_phase()`가 자동 호출되지 않는다.
 
 ```text
 driver 생성
@@ -279,7 +307,7 @@ sequence 생성
 
 Sequence의 `body()`는 component phase와 별개의 sequence 실행 method다.
 
-### 3.8. 역할과 계열 한눈에 보기
+## **3.8. 역할과 계열 한눈에 보기**
 
 | Class 또는 대상 | 계열 | Hierarchy | 핵심 역할 |
 |---|---|---:|---|
@@ -294,7 +322,7 @@ Sequence의 `body()`는 component phase와 별개의 sequence 실행 method다.
 | `bus_scoreboard` | `uvm_component` | 있음 | expected와 actual 비교 |
 | Coverage subscriber | `uvm_component` | 있음 | transaction을 받아 coverage 기록 |
 
-## 4. 핵심 예제
+# **4. 핵심 예제**
 
 ```systemverilog
 // Component의 생성
@@ -306,44 +334,55 @@ seq = write_sequence::type_id::create("seq");
 seq.start(sqr);
 ```
 
-같은 create 호출 모양이어도 registry 계열에 따라 parent의 의미가 다르다. Sequence의 실행에는 start가 추가로 필요하다.
+- 같은 create 호출 모양이어도 registry 계열에 따라 parent의 의미가 다르다.
+- Sequence의 실행에는 start가 추가로 필요하다.
 
-## 5. 주의점
+![핵심 예제의 동작](assets/uvm-book/chapter06-example.png)
+
+# **5. 주의점**
 
 - Component parent는 클래스 이름이 아니라 생성된 부모 객체다.
 - Sequence에는 component phase가 자동 호출되지 않는다.
 - UVM root와 HDL top module을 구분한다.
 
-## 6. 핵심 정리
+# **6. 핵심 정리**
 
-- **실무적인 계열 구분**: Item·sequence는 object 계열, driver·monitor·env는 component 계열이다. Component도 상속상 uvm_object의 후손이다.
-- **Object 실행**: Object는 component hierarchy에 등록되지 않는다. Sequence 생성만으로 body()가 실행되지 않으며 start()가 필요하다.
-- **Component 계층**: Component는 name과 실제 parent 객체로 계층을 구성한다. 같은 부모 아래의 중복 instance 이름은 충돌한다.
-- **Constructor**: Object의 new는 보통 name을 받고 component의 new는 name과 parent를 받는다. Constructor와 build_phase는 별도 호출 시점이다.
-- **상속과 배치**: extends는 타입 사이의 상속이다. create("drv", this)는 생성된 component의 parent 관계를 정한다.
-- **이름과 context**: get_name은 leaf 이름, get_full_name은 전체 경로다. Object create의 parent 인수는 factory context이며 component 자식 등록이 아니다.
+- **실무적인 계열 구분**: Item·sequence는 object 계열, driver·monitor·env는 component 계열이다.  
+  Component도 상속상 uvm_object의 후손이다.
+- **Object 실행**: Object는 component hierarchy에 등록되지 않는다.  
+  Sequence 생성만으로 body()가 실행되지 않으며 start()가 필요하다.
+- **Component 계층**: Component는 name과 실제 parent 객체로 계층을 구성한다.  
+  같은 부모 아래의 중복 instance 이름은 충돌한다.
+- **Constructor**: Object의 new는 보통 name을 받고 component의 new는 name과 parent를 받는다.  
+  Constructor와 build_phase는 별도 호출 시점이다.
+- **상속과 배치**: extends는 타입 사이의 상속이다.  
+  create("drv", this)는 생성된 component의 parent 관계를 정한다.
+- **이름과 context**: get_name은 leaf 이름, get_full_name은 전체 경로다.  
+  Object create의 parent 인수는 factory context이며 component 자식 등록이 아니다.
 
-## 7. 확인 문제와 해설
+# **7. 확인 문제와 해설**
 
-### 문제 1
+## **문제 1**
 
 Driver가 agent 아래에 있으면 agent를 상속한 것인가?
 
-**해설:** 아니다. 포함 계층과 클래스 상속은 다르다.
+- **해설:** 아니다.
+- 포함 계층과 클래스 상속은 다르다.
 
-### 문제 2
+## **문제 2**
 
 Object create에 this를 넘기면 component 자식이 되는가?
 
-**해설:** 아니다. Factory 검색 context로 사용된다.
+- **해설:** 아니다.
+- Factory 검색 context로 사용된다.
 
-### 문제 3
+## **문제 3**
 
 Sequence body는 언제 실행되는가?
 
 **해설:** start() 등 sequence 실행 절차가 시작될 때다.
 
-## 8. 참고 자료
+# **8. 참고 자료**
 
 - [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
 
