@@ -1,5 +1,22 @@
 # SystemVerilog/UVM 학습 진행 기록
 
+## 2026-10-10 - 11·12단계 이론 정리와 다음 채팅 준비
+
+- 개인 학습: 11단계 TLM·analysis와 12단계 Monitor·Scoreboard 기본 이론·짧은 코드/상황 해석까지 대화로 확인했다. 수준 2 중심이며 독립 작성·디버깅·simulator 실행은 미확인이다.
+- 11단계 확인: connect와 호출 구분, port/export/imp, 타입과 변수 이름, analysis 1:N, 미연결 수신자, function write, handle 공유, analysis FIFO의 get·누적, put/try_put의 수락 차이. 통로 관점의 발표 설명에 호출·구현 역할을 보충했다.
+- 12단계 확인: 실제 수락된 입력만 예상 상태에 반영, flag 별도 검증, 예상값/실제값 출처, FIFO 순서, 읽기 수락과 출력 latency, 저장 queue/응답 대기 구분, 종료·objection·의도한 잔여 데이터, reset 취소, full/empty 동시 read/write 사양 의존성.
+- 혼동·보정: write가 연결을 만드는 것은 아님; DUT rdata는 실제값이며 그것을 예상값으로도 쓰면 자기 비교; full 동시 수락 문제의 새 데이터는 E(F 오타 보정); 모델 코드 순차 처리와 DUT 동시 동작은 다름.
+- 회사 PDF 연결: 02.07(책 206~221), 02.08의 scoreboard(222~224), 02.12의 monitor/scoreboard와 전체 구조(260~266). 튜터가 관련 설명과 코드 그림을 확인했다. 사용자 회사 읽기 보고는 기존 02.05까지·RAL 일부를 유지하며 완독을 추정하지 않는다.
+- 자료 보충: 계층 송신은 child port→parent port, 수신은 parent export→내부 imp로 정리했다. 대화의 agent export 도식은 개념 설명으로 구분했다. TLM-2·다중 imp·comparator/out-of-order·구체적 sampling timing의 구현은 미확인이다.
+- 예제 계약: 읽기 1사이클 지연, reset 응답 취소, 경계 동시 수락은 설명용 가정이다. 실제 01_Sync_FIFO RTL 사양을 확인하거나 구현·검증한 것으로 기록하지 않는다.
+- 13단계는 도입만 진행: 데이터 mismatch에는 uvm_error가 적절함을 확인했다. report 종류를 설명했으며 verbosity와 error 관계에 대한 확인 질문은 미답변이다. **다음 채팅은 13단계 Report·디버깅의 report 종류·verbosity부터, 이후 14단계 Coverage·Assertion으로 이어간다.**
+- 자료: 상세 MD 11·12단계와 개념 그림 추가, 기존 학습 PDF를 1~12단계 125쪽으로 확장했다. 11단계 시작 99쪽, 12단계 시작 111쪽이며 목차·링크·12개 단계 책갈피를 갱신했다. 발표 PPTX 신규 제작은 아니다.
+- 문서 검수: 변경한 표지·추가·목차 28쪽을 한 장씩 큰 이미지로 확인했다. 표·설명 상자 겹침과 코드의 한글 font를 보정 후 재확인했다. 기존 본문 2~98쪽 보존, 전체 125쪽 영역 이탈, 추가 글자 누락·상자 충돌, 가운데 정렬, 목차 12개 목적지를 검사했다.
+- 생성·실행·연결의 남은 항목: 전체 환경의 독립 생성·connect, monitor sampling·race, reference model 코드, reset/완료 처리와 실제 실행 로그 검증.
+- 복습 핵심 3개: 연결과 호출은 다름; analysis handle 전달과 snapshot 복사는 다름; 예상 모델은 수락·timing·reset·경계 사양을 반영해야 함.
+- 저장: 현재 작업 폴더와 Obsidian Study/20_HW/Verilog의 MD·학습 홈·진행 기록·통합 프롬프트·학습 PDF·11/12단계 그림을 동기화했다.
+- 실행 상태: **UVM simulator 미실행 / FIFO 실습 미진행.** 이론과 2026-10-15 세미나 준비를 우선한다. Callback·RAL은 후속 범위이며 실습은 이후 재개한다.
+
 ## 2026-10-10 - 배포용 PDF 전체 정렬·줄바꿈 최종 보정
 
 - 사용자 기준: 나중에 혼자 공부하거나 다른 사람에게 전달하기 좋은 자료로 만든다. 큰 글씨는 유지하되 한두 글자만 다음 줄에 남을 때는 해당 문구만 조금 줄이고, 필요하면 의미가 맞는 두 줄로 나눈다.
