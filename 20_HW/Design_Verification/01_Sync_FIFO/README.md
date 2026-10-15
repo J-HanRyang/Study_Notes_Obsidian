@@ -19,17 +19,31 @@
 - DUT: [[20_HW/Design_Verification/01_Sync_FIFO/rtl/sync_fifo.sv|sync_fifo.sv]]
 - 원본 프로젝트: [[20_HW/RTL_Design/01_Sync_FIFO/README|RTL Design - Sync FIFO]]
 
+## 현재 상태 (2026-10-13)
+
+기초 1~16장의 이론 학습과 교재 정리는 완료했다. 이제 이 프로젝트의 FIFO UVM 실습을 시작한다. UVM 환경 작성·실행·검증은 아직 완료하지 않았다. 회사 SFR 업무는 별도다.
+
 ## 검증 진행 순서
 
-- [ ] 9장: 기존 RTL·directed TB·C 모델·실행 기록에서 확인된 동작과 미검증 동작 구분
-- [ ] 9장: `docs/검증계획.md`에 UVM에서 확인할 입력·기대 결과·관찰 지점 정리
-- [ ] 9장: 최소 UVM 요청 경로(`sequence_item` → sequencer → driver) 구성
-- [ ] 10장: virtual interface/config DB 연결
-- [ ] 11장: monitor와 analysis 통신 연결
-- [ ] 12장: scoreboard/reference model로 데이터 순서와 경계 조건 검사
-- [ ] 13~14장: 디버깅 기록 후 coverage와 assertion 추가
+- [ ] 기존 RTL·directed TB·C 모델·실행 기록에서 사양과 검증된 범위 확인
+- [ ] reset·수락·full/empty·동시 요청·출력 latency를 실제 RTL 기준으로 정리
+- [ ] `docs/검증계획.md`에 입력·기대 결과·관찰 시점·통과 기준 작성
+- [ ] 기존 환경 안내를 확인하고 UVM smoke test를 실제 실행
+- [ ] interface/top과 최소 UVM 요청 경로(sequence_item → sequencer → driver → DUT) 구성
+- [ ] virtual interface/config DB, agent/env/test와 port 연결 확인
+- [ ] monitor/analysis에서 실제 수락·응답 수집
+- [ ] scoreboard/reference model로 순서·경계·동시 요청·reset 검사
+- [ ] objection·완료 조건·timeout·미처리 응답 점검
+- [ ] 의도적인 오류가 검출되는지 확인한 후 코드 복원
+- [ ] coverage·assertion·무작위 자극·seed 재현 추가
 
-개념과 예제는 [[20_HW/Verilog/UVM 기초 - 목차|UVM 기초 교재]]에서 확인할 수 있습니다. 실행하지 않은 항목은 통과로 표시하지 않습니다.
+단계 번호는 교재 진도와 분리한다. 필요한 이론만 [[20_HW/Verilog/UVM 기초 - 목차|UVM 기초 교재]]에서 찾아본다. 실행하지 않은 항목은 통과로 표시하지 않는다. 다음 작업은 **실제 RTL과 원본 검증 자료 확인**이다.
+
+## 실행과 기록
+
+실행 절차는 [[20_HW/Design_Verification/00_Environment/EDA_Playground_연동|기존 UVM 환경 안내]]를 먼저 확인하고 사용 가능 여부와 설정을 실제 실행으로 점검한다. 기본 SystemVerilog 실행 성공을 UVM 실행 성공으로 기록하지 않는다.
+
+검증 계획과 상세 실행·디버깅 기록은 `docs/`에, 직접 작성하는 UVM 코드는 `tb/`에 둔다. 실행 시 simulator·UVM 버전·test 이름·seed·로그·비교 건수·미처리 응답을 남긴다.
 
 ## 원본과의 관계
 
