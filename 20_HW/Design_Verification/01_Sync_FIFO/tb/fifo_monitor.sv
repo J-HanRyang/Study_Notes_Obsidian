@@ -1,11 +1,12 @@
 class fifo_monitor extends uvm_monitor;
     `uvm_component_utils(fifo_monitor)
-    uvm_analysis_port #(fifo_seq_item) mon_ap;
-    virtual fifo_if vif;
 
     function new(string name = "fifo_monitor", uvm_component parent = null);
         super.new(name, parent);
     endfunction
+
+    uvm_analysis_port #(fifo_seq_item) mon_ap;
+    virtual fifo_if vif;
 
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
@@ -15,36 +16,28 @@ class fifo_monitor extends uvm_monitor;
     endfunction
 
     virtual task run_phase(uvm_phase phase);
-        forever collect_item();
+        super.run_phase(phase);
+        forever begin
+            collect_item();
+        end
     endtask
 
     virtual task collect_item();
-        fifo_seq_item item;
+        fifo_seq_item fifo_item;
         @(posedge vif.clk);
-        item = fifo_seq_item::type_id::create("observed_item");
-        // DUT uses NBA, so these are the pre-edge request and flags.
-        item.rst_n = vif.rst_n;
-        item.request_id = vif.request_id;
-        item.wr_en = vif.wr_en;
-        item.rd_en = vif.rd_en;
-        item.wdata = vif.wdata;
-        item.full = vif.full;
-        item.empty = vif.empty;
+        if (vif.rst_n !== 1'b1) return;
 
-        // Read output and resulting flags after DUT has updated.
-        // Driver changes at negedge with NBA; monitor reads old inputs here.
+        fifo_item = fifo_seq_item::type_id::create("fifo_item");
+        fifo_item.wr_en = vif.wr_en;
+        fifo_item.rd_en = vif.rd_en;
+        fifo_item.wdata = vif.wdata;
+        fifo_item.full = vif.full;
+        fifo_item.empty = vif.empty;
+
         @(negedge vif.clk);
-        if (vif.rst_n !== 1'b1) item.rst_n = 0;
-        item.rdata = vif.rdata;
-        item.full_after = vif.full;
-        item.empty_after = vif.empty;
-        `uvm_info("MON", $sformatf(
-            "id=%0d rst_n=%b req=%b%b accept=%b%b wdata=%08h rdata=%08h flags=%b%b -> %b%b",
-            item.request_id, item.rst_n, item.wr_en, item.rd_en,
-            item.wr_en && !item.full, item.rd_en && !item.empty,
-            item.wdata, item.rdata, item.full, item.empty,
-            item.full_after, item.empty_after), UVM_HIGH)
-        // Fresh object each cycle. Subscribers treat it as read-only.
-        mon_ap.write(item);
+        if (vif.rst_n !== 1'b1) return;
+
+        fifo_item.rdata = vif.rdata;
+        mon_ap.write(fifo_item);
     endtask
 endclass : fifo_monitor

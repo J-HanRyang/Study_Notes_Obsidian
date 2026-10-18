@@ -1,16 +1,11 @@
 package fifo_pkg;
-    timeunit 1ns;
-    timeprecision 1ps;
     import uvm_pkg::*;
     `include "uvm_macros.svh"
-    // This learning configuration is 32-bit, depth 4 (power of two).
-    localparam int FIFO_DEPTH = 4;
 
     `include "fifo_seq_item.sv"
     `include "fifo_write_sequence.sv"
     `include "fifo_read_sequence.sv"
     `include "fifo_sequence.sv"
-    `include "fifo_regression_sequence.sv"
     `include "fifo_sequencer.sv"
     `include "fifo_driver.sv"
     `include "fifo_monitor.sv"

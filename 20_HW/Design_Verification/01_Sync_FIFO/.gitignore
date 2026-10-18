@@ -4,3 +4,4 @@ logs/
 core
 core.*
 *.vcd
+obj_dir_extend/

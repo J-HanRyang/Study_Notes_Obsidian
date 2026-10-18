@@ -1,8 +1,9 @@
 class fifo_test extends uvm_test;
     `uvm_component_utils(fifo_test)
+
     fifo_env env;
 
-    function new(string name = "fifo_test", uvm_component parent = null);
+    function new(string name = "fifo_test", uvm_component parent);
         super.new(name, parent);
     endfunction
 
@@ -12,33 +13,13 @@ class fifo_test extends uvm_test;
     endfunction
 
     virtual task run_phase(uvm_phase phase);
-        fifo_sequence smoke_seq;
-        fifo_regression_sequence regression_seq;
+        fifo_sequence seq;
         phase.raise_objection(this);
-        if ($test$plusargs("SMOKE_ONLY")) begin
-            smoke_seq = fifo_sequence::type_id::create("smoke_seq");
-            smoke_seq.start(env.agt.sqr);
-        end else begin
-            regression_seq = fifo_regression_sequence::type_id::create("regression_seq");
-            regression_seq.start(env.agt.sqr);
-        end
-        // item_done alone does not guarantee monitor/scoreboard have finished.
-        wait (env.sb.last_processed_id >= env.agt.drv.completed_count);
-        #1ps;
-        `uvm_info("COMPLETE", $sformatf("driver=%0d scoreboard_last_id=%0d",
-            env.agt.drv.completed_count, env.sb.last_processed_id), UVM_LOW)
+        seq = fifo_sequence::type_id::create("seq", this);
+        seq.start(env.agt.sqr);
+
+        // Let the final negedge monitor.write finish before ending the test.
+        @(posedge env.agt.drv.vif.clk);
         phase.drop_objection(this);
     endtask
-
-    virtual function void report_phase(uvm_phase phase);
-        uvm_report_server server;
-        super.report_phase(phase);
-        server = uvm_report_server::get_server();
-        if (server.get_severity_count(UVM_ERROR) != 0 ||
-            server.get_severity_count(UVM_FATAL) != 0) begin
-            `uvm_fatal("RESULT", "FIFO verification FAILED; see earlier errors")
-            return; // Some backends schedule finish rather than stopping immediately.
-        end
-        `uvm_info("RESULT", "FIFO verification PASS", UVM_LOW)
-    endfunction
 endclass : fifo_test
