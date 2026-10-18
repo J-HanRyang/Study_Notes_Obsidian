@@ -1,0 +1,6 @@
+obj_dir/
+logs/
+*.fst
+core
+core.*
+*.vcd

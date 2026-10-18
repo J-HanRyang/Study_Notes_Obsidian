@@ -7,7 +7,7 @@ SystemVerilog와 UVM을 이용한 설계 검증 학습 프로젝트입니다.
 
 - [[20_HW/Verilog/UVM 기초 - 목차|UVM 기초 교재]]: SystemVerilog 문법부터 Callback과 RAL까지의 설명과 예제
 - [[20_HW/Design_Verification/01_Sync_FIFO/README|01_Sync_FIFO 프로젝트]]: 첫 실습의 상태와 파일
-- [[20_HW/Design_Verification/00_Environment/EDA_Playground_연동|EDA Playground 연동]]: UVM 코드 내보내기와 실행
+- [[20_HW/Design_Verification/00_Environment/README|실행 환경 확인]]: 로컬 SystemVerilog·UVM smoke test
 
 
 ## 프로젝트 구성 원칙
@@ -37,7 +37,7 @@ SystemVerilog와 UVM을 이용한 설계 검증 학습 프로젝트입니다.
 ## UVM 실행
 
 RTL 문법과 기본 SystemVerilog Testbench는 Icarus Verilog로 확인합니다.
-UVM 실습은 EDA Playground의 UVM 지원 시뮬레이터를 사용합니다.
+UVM 실습은 VS Code에서 코드를 편집하고, WSL Ubuntu 터미널에서 Verilator 5.052와 UVM 2020.3.1로 빌드·실행합니다. UVM smoke test 실행을 확인했으며, FIFO 검증 통과 여부는 별도로 확인합니다.
 
 ## 사용 방법
 
@@ -48,4 +48,4 @@ UVM 실습은 EDA Playground의 UVM 지원 시뮬레이터를 사용합니다.
 
 > [!note] 시뮬레이터 범위
 > Icarus Verilog는 SystemVerilog 기초 문법과 RTL/Testbench 연습에 적합합니다.
-> 클래스 기반 UVM 전체 실행은 Questa, VCS 등 UVM 지원 시뮬레이터가 필요합니다.
+> 클래스 기반 UVM은 로컬 Verilator와 UVM 라이브러리로 실행합니다. Icarus 실행과 UVM 실행 결과는 구분합니다.
