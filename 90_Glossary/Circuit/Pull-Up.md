@@ -1,7 +1,6 @@
 ---
 aliases: ["풀업"]
 tags: [glossary, circuit]
-created: 2026-10-19
 ---
 # Pull Up
 

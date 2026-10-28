@@ -1,7 +1,6 @@
 ---
 aliases: ["High-Z"]
 tags: [glossary, circuit]
-created: 2026-10-19
 ---
 # High Impedance
 

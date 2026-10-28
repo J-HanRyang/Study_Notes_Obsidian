@@ -1,7 +1,6 @@
 ---
 aliases: ["System Management Bus", "SMBus 3.0"]
 tags: [study, protocol, smbus]
-created: 2026-10-19
 specification: "SMBus 3.0, 2014-12-20"
 ---
 # SMBus 3.0

@@ -1,7 +1,6 @@
 ---
 aliases: ["클럭 동기화"]
 tags: [glossary, protocol]
-created: 2026-10-19
 ---
 # Clock Synchronization
 

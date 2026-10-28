@@ -1,7 +1,6 @@
 ---
 aliases: ["클럭 스트레칭"]
 tags: [glossary, protocol]
-created: 2026-10-19
 ---
 # Clock Stretching
 

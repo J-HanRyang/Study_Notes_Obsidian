@@ -1,7 +1,6 @@
 ---
 aliases: ["중재"]
 tags: [glossary, protocol]
-created: 2026-10-19
 ---
 # Arbitration
 

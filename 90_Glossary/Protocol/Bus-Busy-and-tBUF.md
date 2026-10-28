@@ -1,7 +1,6 @@
 ---
 aliases: ["버스 점유와 버스 프리 시간"]
 tags: [glossary, protocol]
-created: 2026-10-19
 ---
 # Bus Busy and tBUF
 

@@ -1,7 +1,6 @@
 ---
 aliases: ["명령 코드"]
 tags: [glossary, protocol]
-created: 2026-10-19
 ---
 # Command Code
 

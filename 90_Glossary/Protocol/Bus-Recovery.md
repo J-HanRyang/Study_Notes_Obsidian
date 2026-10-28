@@ -1,7 +1,6 @@
 ---
 aliases: ["버스 복구"]
 tags: [glossary, protocol]
-created: 2026-10-19
 ---
 # Bus Recovery
 

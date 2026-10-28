@@ -1,7 +1,6 @@
 ---
 aliases: ["트랜잭션"]
 tags: [glossary, protocol]
-created: 2026-10-19
 ---
 # Transaction
 

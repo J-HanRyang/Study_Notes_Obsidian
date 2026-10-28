@@ -1,7 +1,6 @@
 ---
 aliases: ["듀티비"]
 tags: [glossary, circuit]
-created: 2026-10-19
 ---
 # Duty Cycle
 

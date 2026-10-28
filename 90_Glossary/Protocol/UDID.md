@@ -1,7 +1,6 @@
 ---
 aliases: ["Unique Device Identifier"]
 tags: [glossary, protocol]
-created: 2026-10-19
 ---
 # UDID
 

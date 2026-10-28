@@ -1,7 +1,6 @@
 ---
 aliases: ["I²C", "아이투씨"]
 tags: [study, protocol, i2c]
-created: 2026-10-19
 ---
 # I2C
 

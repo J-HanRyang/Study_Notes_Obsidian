@@ -1,7 +1,6 @@
 ---
 aliases: ["리플"]
 tags: [glossary, circuit]
-created: 2026-10-19
 ---
 # Ripple
 

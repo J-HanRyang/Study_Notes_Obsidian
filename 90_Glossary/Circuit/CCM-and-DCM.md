@@ -1,7 +1,6 @@
 ---
 aliases: ["연속·불연속 전도 모드"]
 tags: [glossary, circuit]
-created: 2026-10-19
 ---
 # CCM and DCM
 

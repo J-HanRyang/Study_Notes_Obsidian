@@ -1,7 +1,6 @@
 ---
 aliases: ["벅부스트", "벅", "부스트"]
 tags: [study, circuit, power]
-created: 2026-10-19
 ---
 # Buck / Boost / Buck-Boost
 

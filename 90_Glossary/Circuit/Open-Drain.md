@@ -1,7 +1,6 @@
 ---
 aliases: ["오픈드레인"]
 tags: [glossary, circuit]
-created: 2026-10-19
 ---
 # Open Drain
 

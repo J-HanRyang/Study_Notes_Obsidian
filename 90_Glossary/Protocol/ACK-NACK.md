@@ -1,7 +1,6 @@
 ---
 aliases: ["응답·비응답"]
 tags: [glossary, protocol]
-created: 2026-10-19
 ---
 # ACK NACK
 

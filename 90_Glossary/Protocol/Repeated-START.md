@@ -1,7 +1,6 @@
 ---
 aliases: ["반복 시작"]
 tags: [glossary, protocol]
-created: 2026-10-19
 ---
 # Repeated START
 

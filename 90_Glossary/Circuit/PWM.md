@@ -1,7 +1,6 @@
 ---
 aliases: ["펄스 폭 변조"]
 tags: [glossary, circuit]
-created: 2026-10-19
 ---
 # PWM
 

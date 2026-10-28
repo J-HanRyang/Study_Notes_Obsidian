@@ -1,7 +1,6 @@
 ---
 aliases: ["푸시풀", "푸시풀 출력"]
 tags: [study, circuit, digital]
-created: 2026-10-19
 ---
 # Push-Pull
 

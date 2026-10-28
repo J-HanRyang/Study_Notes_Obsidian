@@ -1,7 +1,6 @@
 ---
 aliases: ["Packet Error Code"]
 tags: [glossary, protocol]
-created: 2026-10-19
 ---
 # PEC
 
