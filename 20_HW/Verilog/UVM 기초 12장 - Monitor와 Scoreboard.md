@@ -156,7 +156,7 @@ if (actual !== expected)
 
 - Monitor는 clocking block 등의 샘플링 규칙에 따라 요청 수락용 신호와 출력 결과를 관찰해야 한다.
 - NBA 갱신 전후의 값과 clocking input skew를 구분한다.
-- 특정 #delay를 임의로 넣어 문제를 가리는 대신 DUT 계약과 sampling event를 맞춘다.
+- 특정 #delay 를 임의로 넣어 문제를 가리는 대신 DUT 계약과 sampling event를 맞춘다.
 
 ## **3.8. 저장 queue와 응답 대기 queue**
 

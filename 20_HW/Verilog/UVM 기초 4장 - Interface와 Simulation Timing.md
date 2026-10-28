@@ -460,7 +460,7 @@ endinterface
 - **Sampling 기준**: Clocking input #1step은 에지 직전 안정값, input #0은 같은 에지의 Observed 영역 값에 대응한다.  
   프로토콜 계약에 맞춰 선택한다.
 - **요청과 응답 timing**: 요청 수락 때의 상태와 등록된 출력의 유효 시점은 다를 수 있다.  
-  Arbitrary #delay보다 사양과 scheduling을 기준으로 관찰한다.
+  Arbitrary #delay 보다 사양과 scheduling을 기준으로 관찰한다.
 
 # **7. 확인 문제와 해설**
 
