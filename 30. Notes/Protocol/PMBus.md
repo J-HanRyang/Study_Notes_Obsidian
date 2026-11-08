@@ -52,6 +52,7 @@
 - `VOUT_COMMAND`를 1.0 V로 설정해도 `READ_VOUT`은 시동 중이거나 부하가 변하는 동안 1.0 V와 다를 수 있다.
 - 목표값을 쓴 뒤에는 명령 수락, 선택된 PAGE의 설정값, 출력 활성 조건, 측정값과 상태를 구분해 확인한다.
 - 내부 SFR 주소와 PMBus 명령 코드는 같은 번호 체계가 아니며 둘의 매핑은 장치 구현에 달려 있다.
+- [[30. Notes/Protocol/AVSBus|AVSBus]]도 지원하는 장치에서는 전압 제어권을 넘기기 전에 현재 목표값을 새 제어 경로에 반영해 전압이 불필요하게 바뀌지 않게 한다.
 
 # 6. Warning, Fault와 상태 보고
 - Warning은 감시값이 경고 임계값을 넘은 상태를 알리고 Fault는 보호 동작을 유발할 수 있는 이상 조건을 알린다.
@@ -83,6 +84,7 @@
 
 # 9. 관련 노트와 참고 자료
 - [[30. Notes/Protocol/SMBus|SMBus]]
+- [[30. Notes/Protocol/AVSBus|AVSBus]]
 - [[30. Notes/Protocol/I2C|I2C]]
 - [[30. Notes/Power/PSI|PSI]]
 - [[30. Notes/Power/FAULT|FAULT]]

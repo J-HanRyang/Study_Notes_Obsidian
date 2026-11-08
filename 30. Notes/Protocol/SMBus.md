@@ -210,6 +210,28 @@ S | AddrW | A_S | Cmd | A_S | Sr | AddrR | A_S | Lo | A_M | Hi | A_M | PEC | N_M
 | Alert Response | SMBALERT# 후 Host가 ARA를 Read | 알림을 요청한 장치 식별 |
 | Host Notify | 알릴 장치가 Master가 되어 Host에 Write | 자기 주소와 상태 Word 통보 |
 
+## SMBALERT#와 ARA
+
+- `SMBALERT#`는 장치가 Host에게 확인할 일이 있음을 알리는 선택적 공유 신호선이다.
+- 여러 장치가 Open-Drain 방식으로 공유할 수 있어 한 장치라도 LOW를 당기면 선은 LOW가 된다.
+- Host는 Alert Response Address인 7-bit `0x0C`에 Read를 보내 알림을 낸 장치를 찾는다.
+- 버스에 보내는 Read 주소 바이트는 `0x19`다.
+- 응답 바이트의 상위 7비트에는 알림 장치의 주소가 들어가고 최하위 비트는 0 또는 1일 수 있다.
+- 여러 장치가 동시에 응답하면 주소가 낮은 장치가 중재에서 먼저 이긴다.
+- 주소 응답을 Host가 ACK하면 그 장치는 `SMBALERT#` 구동을 해제한다.
+- 선이 계속 LOW라면 Host는 ARA Read를 반복해 남은 장치를 찾는다.
+- ARA 응답으로 알림 장치를 식별한 뒤에는 해당 장치의 Status를 읽어 원인을 확인한다.
+- ARA의 응답 중재는 일반 장치 두 개가 같은 주소로 충돌하는 상황과 다르다.
+
+## Host Notify
+
+- Host Notify에서는 알릴 장치가 Master가 되어 Host 주소 `0x08`에 Write한다.
+- 이 전송은 수정된 Write Word 형식이며 송신 장치 주소와 장치별 의미를 가진 16-bit Status를 담는다.
+- Host는 자기 주소로 들어온 메시지의 송신 장치를 확인하고 Status를 해석한다.
+- Host Notify는 별도의 `SMBALERT#` 선이 없어도 장치가 먼저 알림을 보낼 수 있게 한다.
+- SMBus 3.0의 Host는 Host Notify 수신을 지원해야 하지만 개별 장치의 Host Notify 송신 지원은 별도로 확인한다.
+- Host Notify에는 일반 PEC를 덧붙이는 형식이 없다.
+
 ## ARP의 큰 흐름
 
 ```mermaid

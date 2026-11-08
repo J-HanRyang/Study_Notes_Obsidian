@@ -2,6 +2,7 @@
 - 여기서 PSI는 Power Sequence Interface를 가리키며, 대상 제품에서 쓰는 정식 명칭은 제품 명세로 확인한다.
 - Main PMIC와 Sub PMIC의 전원 순서를 맞추는 역할로 이해하고 질문했다.
 - 실제 제품에서 쓰는 PSI의 정식 의미와 신호 구성은 대상 명세로 확정해야 한다.
+- [[30. Notes/Protocol/SVI3|SVI3]]에서 학습한 전력 상태 변경 PSI 명령은 이 노트의 Power Sequence Interface와 다른 맥락이다.
 
 # 2. 먼저 확인할 구조
 - Main과 Sub 중 어느 쪽이 시퀀스를 시작하는지 확인한다.
