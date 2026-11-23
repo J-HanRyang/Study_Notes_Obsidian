@@ -20,7 +20,7 @@
 - Target Sub-frame에서는 명령에 대한 응답, 상태와 반환 데이터의 관계를 읽는다.
 - 2.0의 시작 코드는 8비트 `00000000`이며, Marker 비트는 데이터가 시작 코드처럼 오인되지 않게 돕는다.
 - 각 Sub-frame의 CRC-3은 전송 비트 오류를 검출하는 데 사용한다.
-- CRC-3은 [[90_Glossary/Protocol/PEC|SMBus PEC]]의 CRC-8과 같은 계산이 아니다.
+- CRC-3은 [[30. Notes/Protocol/PEC|SMBus PEC]]의 CRC-8과 같은 계산이 아니다.
 - 실제 필드 위치와 예약 비트 값은 검증 대상의 AVSBus 개정판 원문을 기준으로 결정한다.
 
 # 4. 전압 명령과 응답

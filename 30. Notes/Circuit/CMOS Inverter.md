@@ -16,7 +16,7 @@
 - VTC는 입력 전압에 따른 정상상태 출력 전압을 그린 Voltage Transfer Characteristic이다.
 - 가로축은 입력 전압이고 세로축은 출력 전압이다.
 - 인버터의 스위칭점 $V_M$은 VTC와 $V_{out}=V_{in}$이 만나는 점이다.
-- [[90_Glossary/Circuit/Noise Margin|Noise Margin]] 계산에는 입력 판정 한계인 $V_{IL}$과 $V_{IH}$ 및 출력 보장 범위가 필요하다.
+- [[30. Notes/Circuit/Noise Margin|Noise Margin]] 계산에는 입력 판정 한계인 $V_{IL}$과 $V_{IH}$ 및 출력 보장 범위가 필요하다.
 
 # 4. 연결과 참고 자료
 

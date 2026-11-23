@@ -7,7 +7,7 @@
 - FAULT 출력이 Open-Drain이라면 출력단은 보통 LOW 구동과 해제 상태를 가진다.
 - 실제 선의 HIGH 상태는 풀업 경로가 만든다.
 - 여러 장치가 한 선을 공유할 때 한 장치가 LOW를 구동하면 선은 LOW가 된다.
-- FAULT의 전기적 연결은 [[90_Glossary/Circuit/Open-Drain|Open-Drain]]을 참고한다.
+- FAULT의 전기적 연결은 [[30. Notes/Circuit/Open-Drain|Open-Drain]]을 참고한다.
 - Open-Drain이라는 사실만으로 FAULT 발생 조건이나 복구 동작까지 알 수는 없다.
 
 # 3. 제품 명세에서 확인할 것

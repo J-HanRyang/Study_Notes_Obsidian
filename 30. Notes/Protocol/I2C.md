@@ -20,7 +20,7 @@ SCL/SDA 각각 풀업 1개가 기본 개념이며,
 
 # 2. Open-Drain이 핵심인 이유
 
-- LOW 구동과 출력 해제의 기본 뜻은 [[90_Glossary/Circuit/Open-Drain|Open-Drain]]에서 확인한다.
+- LOW 구동과 출력 해제의 기본 뜻은 [[30. Notes/Circuit/Open-Drain|Open-Drain]]에서 확인한다.
 - I2C에서 한 장치가 1을 보내려고 선을 놓아도 다른 장치가 LOW를 유지하면 실제 버스는 0이다.
 - 각 장치는 출력 의도와 별도로 핀의 실제 전압을 관찰한다.
 - 출력 해제와 입력 경로의 활성화가 반드시 번갈아 전환되는 것은 아니다.
@@ -48,7 +48,7 @@ SDA: ‾‾\__       ---안정---               __/‾‾
 
 # 4. ACK는 누가 보내는가?
 
-- [[90_Glossary/Protocol/ACK|ACK]]와 [[90_Glossary/Protocol/NACK|NACK]]의 기본 뜻은 용어 노트에서 확인한다.
+- [[30. Notes/Protocol/ACK|ACK]]와 [[30. Notes/Protocol/NACK|NACK]]의 기본 뜻은 용어 노트에서 확인한다.
 - 이 절에서는 전송 구간마다 누가 응답하는지를 구분한다.
 - 송신자는 그 Clock에서 SDA를 놓는다.
 
@@ -63,8 +63,8 @@ SDA: ‾‾\__       ---안정---               __/‾‾
 
 - ACK는 바이트 수신에 대한 응답이다.
 - 내부 레지스터 갱신 완료나 데이터 전체의 무결성을 모두 보장하지 않는다.
-- [[90_Glossary/Protocol/ACK|ACK]]
-- [[90_Glossary/Protocol/NACK|NACK]]
+- [[30. Notes/Protocol/ACK|ACK]]
+- [[30. Notes/Protocol/NACK|NACK]]
 
 # 5. Register 읽기 예시
 
@@ -105,8 +105,8 @@ LOW 시작 → 각자 LOW 시간 계산 → 준비된 Controller부터 SCL 해�
 - 결과적으로 LOW는 가장 긴 LOW 시간, HIGH는 가장 짧은 HIGH 시간의 영향을 받는다.
 - Duty가 50%일 필요는 없지만 타이밍 조건은 지켜야 한다.
 
-- [[90_Glossary/Protocol/Clock-Stretching|Stretching]]은 대기 연장이고,
-- [[90_Glossary/Protocol/Clock-Synchronization|Synchronization]]은 여러 Clock의 정렬이다.
+- [[30. Notes/Protocol/Clock-Stretching|Stretching]]은 대기 연장이고,
+- [[30. Notes/Protocol/Clock-Synchronization|Synchronization]]은 여러 Clock의 정렬이다.
 
 # 7. Arbitration: 처음 다른 비트에서 결정
 
@@ -137,7 +137,7 @@ Controller B    1  0  0  1
 - 읽기를 계속할지 결정하는 ACK/NACK 구간이나 다음 제어 동작에서 차이가 생길 수 있다.
 - STOP·Repeated START와 데이터 비트가 겹치는 조합 등은 정상 중재가 보장하는 범위를 벗어날 수 있다.
 - **정상 동시 시작 중재와, Busy 중 잘못 끼어드는 동작을 구분한다.**
-- [[90_Glossary/Protocol/Arbitration|중재의 정의와 예시]]
+- [[30. Notes/Protocol/Arbitration|중재의 정의와 예시]]
 
 # 8. Bus Busy와 tBUF
 
@@ -154,8 +154,8 @@ Controller B    1  0  0  1
 
 - 4.7 µs를 모든 모드의 Idle 판정 시간으로 일반화하지 않는다.
 - 전원 투입이나 중간 합류로 과거 START를 놓친 경우에는 별도의 초기화·복구 정책도 필요하다.
-- [[90_Glossary/Protocol/Bus-Busy|Bus Busy]]
-- [[90_Glossary/Protocol/tBUF|tBUF]]
+- [[30. Notes/Protocol/Bus-Busy|Bus Busy]]
+- [[30. Notes/Protocol/tBUF|tBUF]]
 
 # 9. 충돌과 Bus Hang을 구분
 
@@ -171,7 +171,7 @@ Controller B    1  0  0  1
 - SDA stuck LOW에서는 최대 9개의 Clock 펄스로 수신 장치가 바이트·ACK를 빠져나오게 하는 복구를 시도할 수 있다.
 - 각 Clock의 실제 HIGH를 확인하고, 선이 해제되면 STOP 및 정상 상태 복귀를 확인한다.
 - **9번이면 항상 해결된다는 보장은 없다.**
-- [[90_Glossary/Protocol/Bus-Recovery|Bus Recovery]]
+- [[30. Notes/Protocol/Bus-Recovery|Bus Recovery]]
 
 # 10. 풀업과 데이터 검사
 
@@ -200,3 +200,6 @@ $$R_{p,max}\approx\frac{t_{r,max}}{0.8473C_b}$$
 
 - [NXP I2C-bus specification 원문 열기 (PDF, §3.1·§6)](https://www.nxp.com/docs/en/user-guide/UM10204.pdf).
 - [TI I2C 풀업 저항 계산 자료 열기 (PDF, 풀업 계산식)](https://www.ti.com/lit/an/slva689/slva689.pdf).
+
+# 13. 학습 PDF
+- [I2C 학습자료 열기 (PDF)](<../../_Attachment/프로토콜 학습자료/I2C_학습자료.pdf>)

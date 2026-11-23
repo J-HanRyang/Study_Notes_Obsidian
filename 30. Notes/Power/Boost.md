@@ -15,8 +15,8 @@
 
 - ON 동안 출력 다이오드는 차단된다.
 - OFF 동안 인덕터 전류를 유지하려고 SW 노드 전압이 올라간다.
-- [[90_Glossary/Circuit/CCM|CCM]]의 이상적인 정상상태에서 출력 전압은 $V_o=V_{in}/(1-D)$다.
-- $D$는 [[90_Glossary/Circuit/Duty-Cycle|Duty Cycle]]이다.
+- [[30. Notes/Circuit/CCM|CCM]]의 이상적인 정상상태에서 출력 전압은 $V_o=V_{in}/(1-D)$다.
+- $D$는 [[30. Notes/Circuit/Duty-Cycle|Duty Cycle]]이다.
 
 # 4. 전력과 실제 출력
 - 인덕터가 에너지를 새로 만드는 것은 아니다.
@@ -26,7 +26,7 @@
 
 # 5. 헷갈리는 점
 - 스위치 ON 때 인덕터 전류가 증가해도 그 순간 부하를 주로 공급하는 것은 출력 커패시터다.
-- [[90_Glossary/Circuit/DCM|DCM]]에서는 CCM 변환비를 그대로 적용하지 않는다.
+- [[30. Notes/Circuit/DCM|DCM]]에서는 CCM 변환비를 그대로 적용하지 않는다.
 - 시동·부하 변화와 정상상태 수식을 구분한다.
 
 # 6. 복습

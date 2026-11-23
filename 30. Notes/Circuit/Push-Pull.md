@@ -32,7 +32,7 @@
 
 # 3. Open-Drain과 비교
 
-| 항목 | Push-Pull | [[90_Glossary/Circuit/Open-Drain\|Open-Drain]] |
+| 항목 | Push-Pull | [[30. Notes/Circuit/Open-Drain\|Open-Drain]] |
 |---|---|---|
 | LOW | 직접 구동 | 직접 구동 |
 | HIGH | 직접 구동 | 출력 해제 후 풀업으로 상승 |
@@ -83,7 +83,7 @@
 
 # 8. 관련 노트
 
-- [[90_Glossary/Circuit/Open-Drain|Open-Drain]] · [[90_Glossary/Circuit/High-Impedance|High-Z]] · [[90_Glossary/Circuit/Pull-Up|Pull-Up]] · [[90_Glossary/Protocol/Arbitration|Arbitration]]
+- [[30. Notes/Circuit/Open-Drain|Open-Drain]] · [[30. Notes/Circuit/High-Impedance|High-Z]] · [[30. Notes/Circuit/Pull-Up|Pull-Up]] · [[30. Notes/Protocol/Arbitration|Arbitration]]
 
 # 9. 참고자료
 

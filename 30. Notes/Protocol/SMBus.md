@@ -123,7 +123,7 @@ Block Read : S | AddrW | A_S | Cmd | A_S | Sr | AddrR | A_S | Count | A_M | D1 |
 
 # 6. PEC를 붙이면 달라지는 것
 
-- [[90_Glossary/Protocol/PEC|PEC]]는 CRC-8 기반 오류 검사용 바이트다.
+- [[30. Notes/Protocol/PEC|PEC]]는 CRC-8 기반 오류 검사용 바이트다.
 
 - 다항식: $x^8+x^2+x+1$ (`0x07`).
 - 주소 + R/W를 포함한 **전송 바이트**가 계산에 들어간다.
@@ -151,7 +151,7 @@ S | AddrW | A_S | Cmd | A_S | Sr | AddrR | A_S | Lo | A_M | Hi | A_M | PEC | N_M
 
 # 7. ACK/NACK는 구간별로 해석
 
-- 기본 응답 동작은 [[90_Glossary/Protocol/ACK|ACK]]와 [[90_Glossary/Protocol/NACK|NACK]]에서 확인한다.
+- 기본 응답 동작은 [[30. Notes/Protocol/ACK|ACK]]와 [[30. Notes/Protocol/NACK|NACK]]에서 확인한다.
 - 여기서는 SMBus에서 추가로 확인할 조건만 정리한다.
 
 | 상황 | 해석 |
@@ -206,7 +206,7 @@ S | AddrW | A_S | Cmd | A_S | Sr | AddrR | A_S | Lo | A_M | Hi | A_M | PEC | N_M
 
 | 기능 | 시작 주체·방식 | 목적 |
 |---|---|---|
-| [[90_Glossary/Protocol/ARP\|ARP]] | ARP Master가 UDID 조회·주소 할당 | 지원 장치 식별과 주소 관리 |
+| [[30. Notes/Protocol/ARP\|ARP]] | ARP Master가 UDID 조회·주소 할당 | 지원 장치 식별과 주소 관리 |
 | Alert Response | SMBALERT# 후 Host가 ARA를 Read | 알림을 요청한 장치 식별 |
 | Host Notify | 알릴 장치가 Master가 되어 Host에 Write | 자기 주소와 상태 Word 통보 |
 
@@ -242,7 +242,7 @@ flowchart LR
     D --> B
 ```
 
-- [[90_Glossary/Protocol/UDID|UDID]]는 장치를 식별하는 128-bit 정보이고, 7-bit 통신 주소와 다르다.
+- [[30. Notes/Protocol/UDID|UDID]]는 장치를 식별하는 128-bit 정보이고, 7-bit 통신 주소와 다르다.
 - 지원 장치가 응답 중재를 거쳐 식별된다.
 - ARP가 지원되지 않는 고정 주소 충돌까지 자동 해결하는 것은 아니다.
 
@@ -272,8 +272,11 @@ flowchart LR
 
 # 12. 관련 용어
 
-- [[90_Glossary/Protocol/Command-Code|Command Code]] · [[90_Glossary/Protocol/Transaction|Transaction]] · [[90_Glossary/Protocol/PEC|PEC]] · [[90_Glossary/Protocol/ARP|ARP]] · [[90_Glossary/Protocol/UDID|UDID]]
+- [[30. Notes/Protocol/Command-Code|Command Code]] · [[30. Notes/Protocol/Transaction|Transaction]] · [[30. Notes/Protocol/PEC|PEC]] · [[30. Notes/Protocol/ARP|ARP]] · [[30. Notes/Protocol/UDID|UDID]]
 
 # 13. 원문
 
 - [SMIF SMBus 3.0 규격 원문 열기 (PDF, §4.2 시간 조건·§5 ACK와 Clock·§6.4 PEC·§6.5 전송 형식·§6.6 ARP)](https://smbus.org/specs/SMBus_3_0_20141220.pdf).
+
+# 14. 학습 PDF
+- [SMBus 학습자료 열기 (PDF)](<../../_Attachment/프로토콜 학습자료/SMBus_학습자료.pdf>)

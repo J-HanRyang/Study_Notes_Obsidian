@@ -16,3 +16,10 @@
 - APB3 이후의 PSLVERR는 선택된 전송의 완료 주기에 오류를 알릴 수 있다.
 - 예를 들어 ACCESS 첫 주기에 PREADY=0이고 다음 주기에 1이면 대기가 한 주기 추가되고 레지스터 쓰기는 완료 시점에 한 번만 반영한다.
 - [Arm APB 규격 열기](https://developer.arm.com/documentation/ihi0024/latest/).
+
+# 4. 학습 PDF
+- [APB GPIO Complete Workbook 열기 (PDF)](<../../_Attachment/프로토콜 학습자료/APB_GPIO_Complete_Workbook.pdf>)
+- [APB GPIO Design Specification 열기 (PDF)](<../../_Attachment/프로토콜 학습자료/APB_GPIO_Design_Specification.pdf>)
+- [APB GPIO Verification Plan 열기 (PDF)](<../../_Attachment/프로토콜 학습자료/APB_GPIO_Verification_Plan.pdf>)
+- [APB GPIO Supplement 열기 (PDF)](<../../_Attachment/프로토콜 학습자료/APB_GPIO_Supplement.pdf>)
+- [APB GPIO 5 Day Plan 열기 (PDF)](<../../_Attachment/프로토콜 학습자료/APB_GPIO_5_Day_Plan.pdf>)

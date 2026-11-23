@@ -7,8 +7,8 @@
 - ON 동안 인덕터에 에너지가 저장되고 출력 커패시터가 부하를 공급한다.
 - OFF 동안 인덕터의 전압 극성이 바뀌고 저장된 에너지가 출력으로 이동한다.
 - 공통 GND에 대한 출력 전압의 극성은 음수다.
-- 이상적인 [[90_Glossary/Circuit/CCM|CCM]] 정상상태에서는 $V_o=-D V_{in}/(1-D)$다.
-- $D$는 [[90_Glossary/Circuit/Duty-Cycle|Duty Cycle]]이다.
+- 이상적인 [[30. Notes/Circuit/CCM|CCM]] 정상상태에서는 $V_o=-D V_{in}/(1-D)$다.
+- $D$는 [[30. Notes/Circuit/Duty-Cycle|Duty Cycle]]이다.
 
 | $V_{in}=5\,V$일 때 $D$ | 이상적인 반전형 출력 |
 |---|---|
@@ -26,8 +26,8 @@
 
 # 4. 파형과 조건
 - 인덕터 전류의 증가·감소 구간을 스위치 상태와 함께 본다.
-- [[90_Glossary/Circuit/DCM|DCM]]에서는 부하와 인덕턴스, 주파수도 변환비에 영향을 준다.
-- 출력 [[90_Glossary/Circuit/Ripple|Ripple]]과 시동 Overshoot는 다른 현상이다.
+- [[30. Notes/Circuit/DCM|DCM]]에서는 부하와 인덕턴스, 주파수도 변환비에 영향을 준다.
+- 출력 [[30. Notes/Circuit/Ripple|Ripple]]과 시동 Overshoot는 다른 현상이다.
 - 효율이 $\eta$이면 평균 전력의 크기는 $P_o=\eta P_{in}$이다.
 
 # 5. 복습

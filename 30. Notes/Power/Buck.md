@@ -15,15 +15,15 @@
 | OFF | GND → 다이오드 → 인덕터 → 부하 | $-V_o$ | 감소 |
 
 - OFF여도 인덕터는 부하에 전류를 계속 공급한다.
-- [[90_Glossary/Circuit/CCM|CCM]]의 이상적인 정상상태에서 인덕터 전압의 주기 평균은 0이다.
+- [[30. Notes/Circuit/CCM|CCM]]의 이상적인 정상상태에서 인덕터 전압의 주기 평균은 0이다.
 - 이 조건에서 출력 전압은 $V_o=D V_{in}$이다.
-- $D$는 [[90_Glossary/Circuit/Duty-Cycle|Duty Cycle]]이다.
+- $D$는 [[30. Notes/Circuit/Duty-Cycle|Duty Cycle]]이다.
 
 # 4. 파형을 볼 때
 - 인덕터 전류가 주기 내내 0보다 크면 CCM이다.
-- 인덕터 전류가 0에 도달해 머무는 구간이 있으면 [[90_Glossary/Circuit/DCM|DCM]]이다.
+- 인덕터 전류가 0에 도달해 머무는 구간이 있으면 [[30. Notes/Circuit/DCM|DCM]]이다.
 - DCM에서는 출력이 듀티만으로 정해지지 않는다.
-- 출력의 [[90_Glossary/Circuit/Ripple|Ripple]]과 시동 과도응답은 구분한다.
+- 출력의 [[30. Notes/Circuit/Ripple|Ripple]]과 시동 과도응답은 구분한다.
 
 # 5. 헷갈리는 점
 - 스위치를 끈다고 인덕터 전류가 즉시 0이 되지는 않는다.

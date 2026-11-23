@@ -5,7 +5,7 @@ SystemVerilog와 UVM을 이용한 설계 검증 학습 프로젝트입니다.
 
 ## 시작 문서
 
-- [[20_HW/Verilog/UVM 기초 - 목차|UVM 기초 교재]]: SystemVerilog 문법부터 Callback과 RAL까지의 설명과 예제
+- [[30. Notes/UVM/UVM 기초 - 목차|UVM 기초 교재]]: SystemVerilog 문법부터 Callback과 RAL까지의 설명과 예제
 - [[20_HW/Design_Verification/01_Sync_FIFO/README|01_Sync_FIFO 프로젝트]]: 첫 실습의 상태와 파일
 - [[20_HW/Design_Verification/00_Environment/README|실행 환경 확인]]: 로컬 SystemVerilog·UVM smoke test
 
@@ -27,12 +27,12 @@ SystemVerilog와 UVM을 이용한 설계 검증 학습 프로젝트입니다.
 
 ## UVM 학습 자료
 
-- [[20_HW/Verilog/UVM 기초 1장 - 객체지향 문법|1장 - 객체지향 복습]]
-- [[20_HW/Verilog/UVM 기초 2장 - 데이터 구조와 프로세스 통신|2장 - 데이터 구조와 프로세스 통신]]
-- [[20_HW/Verilog/UVM 기초 3장 - Randomization과 Constraint|3장 - Randomization과 Constraint]]
-- [[20_HW/Verilog/UVM 기초 4장 - Interface와 Simulation Timing|4장 - Interface와 Simulation Timing]]
-- [[20_HW/Verilog/UVM 기초 5장 - UVM 개요와 전체 구조|5장 - UVM 개요와 전체 구조]]
-- [[20_HW/Verilog/UVM 기초 6장 - uvm_object와 uvm_component|6장 - uvm_object와 uvm_component]]
+- [[30. Notes/SystemVerilog/UVM 기초 1장 - 객체지향 문법|1장 - 객체지향 복습]]
+- [[30. Notes/SystemVerilog/UVM 기초 2장 - 데이터 구조와 프로세스 통신|2장 - 데이터 구조와 프로세스 통신]]
+- [[30. Notes/SystemVerilog/UVM 기초 3장 - Randomization과 Constraint|3장 - Randomization과 Constraint]]
+- [[30. Notes/SystemVerilog/UVM 기초 4장 - Interface와 Simulation Timing|4장 - Interface와 Simulation Timing]]
+- [[30. Notes/UVM/UVM 기초 5장 - UVM 개요와 전체 구조|5장 - UVM 개요와 전체 구조]]
+- [[30. Notes/UVM/UVM 기초 6장 - uvm_object와 uvm_component|6장 - uvm_object와 uvm_component]]
 
 ## UVM 실행
 
