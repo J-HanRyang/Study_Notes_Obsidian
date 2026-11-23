@@ -17,7 +17,6 @@
 - 같은 NMOS에서 Source가 0.8 V로 올라가면 $V_{GS}=0.2\,\mathrm V$가 된다.
 - 문턱전압을 0.4 V로 단순화하면 첫 상태는 켜지고 두 번째 상태는 꺼진다.
 
-# 4. 연결과 참고 자료
+# 4. 관련 노트
 
 - [[30. Notes/Circuit/CMOS Inverter|CMOS Inverter]]에서 NMOS와 PMOS의 역할을 출력 파형과 연결한다.
-- [MIT CMOS 강의 열기 (MOSFET 스위치 모델)](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c3/c3s1/).

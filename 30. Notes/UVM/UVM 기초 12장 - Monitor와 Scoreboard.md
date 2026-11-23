@@ -308,8 +308,6 @@ Full에서 거부된 쓰기를 예상 queue에 넣는가?
 
 **해설:** 응답 처리와 완료 조건을 확인한 뒤 종료한다.
 
-# **8. 참고 자료**
-
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
+# 8. 관련 노트
 
 [목차](<UVM 기초 - 목차.md>)

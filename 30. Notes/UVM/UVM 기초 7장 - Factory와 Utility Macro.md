@@ -379,13 +379,6 @@ Override 설정 뒤 기존 a의 타입은 바뀌는가?
 
 **해설:** 내부 객체의 handle을 공유할 수 있다.
 
-# **8. 참고 자료**
-
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
-- [UVM 1.2 Factory](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_factory-svh.html)
-- [UVM 1.2 Registry](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_registry-svh.html)
-- [UVM Utility/Field Macros](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/macros/uvm_object_defines-svh.html)
-- [UVM Object](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_object-svh.html)
-- [UVM Comparer](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_comparer-svh.html)
+# 8. 관련 노트
 
 [목차](<UVM 기초 - 목차.md>)

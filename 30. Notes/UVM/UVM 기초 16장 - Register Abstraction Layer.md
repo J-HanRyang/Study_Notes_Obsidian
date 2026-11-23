@@ -402,13 +402,6 @@ W1C 현재값 1111에 0101을 쓰면?
 
 **해설:** 1을 쓴 비트를 지워 1010이 된다.
 
-# **8. 참고 자료**
-
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
-- [Register](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/reg/uvm_reg-svh.html)
-- [Register field](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/reg/uvm_reg_field-svh.html)
-- [Register map](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/reg/uvm_reg_map-svh.html)
-- [Adapter](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/reg/uvm_reg_adapter-svh.html)
-- [Predictor](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/reg/uvm_reg_predictor-svh.html)
+# 8. 관련 노트
 
 [목차](<UVM 기초 - 목차.md>)

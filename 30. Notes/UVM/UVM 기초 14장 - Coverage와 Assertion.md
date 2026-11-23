@@ -230,9 +230,6 @@ Functional coverage 100%의 범위는?
 - **해설:** 정의한 coverage 목표의 범위다.
 - 계획 누락은 별도 검토한다.
 
-# **8. 참고 자료**
-
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
-- [Accellera SystemVerilog tutorial - implication과 vacuous success](https://accellera.com/images/resources/videos/systemverilog-design-tutorial-2015.pdf)
+# 8. 관련 노트
 
 [목차](<UVM 기초 - 목차.md>)

@@ -358,10 +358,6 @@ Subscriber 하나가 공유 tr을 수정하면?
 
 **해설:** 다른 수신자나 보관한 handle에 영향이 생길 수 있다.
 
-# **8. 참고 자료**
-
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
-- [UVM 1.2 Analysis Ports](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/tlm1/uvm_analysis_port-svh.html)
-- [UVM 1.2 TLM FIFO Classes](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/tlm1/uvm_tlm_fifos-svh.html)
+# 8. 관련 노트
 
 [목차](<UVM 기초 - 목차.md>)

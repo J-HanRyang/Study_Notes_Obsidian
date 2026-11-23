@@ -38,9 +38,7 @@
 - PWM 변경과 Fault가 겹칠 때 어느 경로가 우선하는지 명세에 맞춰 확인한다.
 - Phase별 Fault 보고와 전체 Rail 보호 상태를 혼동하지 않는다.
 
-# 7. 연결과 참고 자료
+# 7. 관련 노트
 - [[30. Notes/Power/VR Controller|VR Controller]]
 - [[30. Notes/Power/Buck|Buck]]
 - [[30. Notes/Power/OCP|OCP]]
-- [Infineon DrMOS 자료 열기 (PDF, Gate Driver·전류 감지·보호)](https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlf12500-datasheet-en.pdf).
-- [Infineon DrMOS 자료 열기 (PDF, Shoot-through 방지·Gate 지연)](https://www.infineon.com/dgdl/TDA21220_DrMOS_V1.0_DS_Rev1.9.pdf?fileId=db3a304328c6bd5c0128d3df67f200b0&folderId=db3a3043240e85fe0124160b44183655).

@@ -19,7 +19,3 @@
 - 클록 주기가 10 ns이고 $t_{CQ}=1\,\mathrm{ns}$, $t_{logic}=7\,\mathrm{ns}$, $t_{setup}=1\,\mathrm{ns}$이면 Setup Slack은 $10-(1+7+1)=1\,\mathrm{ns}$이다.
 - 같은 경로의 조합논리 지연이 9 ns로 늘면 Setup Slack은 $-1\,\mathrm{ns}$가 된다.
 - 실제 STA 결과에서는 적용한 클록 제약과 Skew, Uncertainty 및 동작 조건을 함께 확인한다.
-
-# 4. 참고 자료
-
-- [MIT 순차논리 강의 열기 (Register-to-Register Setup 조건)](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c5/c5s1/).

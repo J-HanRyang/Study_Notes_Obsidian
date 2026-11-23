@@ -389,10 +389,6 @@ Create("drv", this)의 경로 leaf는?
 - **해설:** drv다.
 - Handle 변수 이름과 별개다.
 
-# **8. 참고 자료**
-
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
-- [UVM 1.2 Configuration Database Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_config_db-svh.html)
-- [Accellera UVM 표준·참고 구현](https://www.accellera.org/downloads/standards/uvm)
+# 8. 관련 노트
 
 [목차](<UVM 기초 - 목차.md>)

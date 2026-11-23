@@ -16,4 +16,3 @@
 - 4바이트 INCR4 전송이 0x20에서 시작하면 주소는 0x20, 0x24, 0x28, 0x2C 순서다.
 - ERROR 응답은 첫 주기에 HRESP=ERROR와 HREADY=0을, 다음 주기에 HRESP=ERROR와 HREADY=1을 표시한다.
 - 이 두 주기 덕분에 마스터는 이미 제시한 다음 전송을 취소할 시간을 확보한다.
-- [Arm AHB-Lite 규격 열기](https://developer.arm.com/documentation/ihi0033/latest/).

@@ -16,7 +16,6 @@
 - 실제 상승 지연은 PMOS 크기와 출력 부하의 영향도 받는다.
 - 3입력 NOR에서 입력 하나만 HIGH여도 출력이 방전되는 이유를 전류 경로로 설명해 본다.
 
-# 4. 연결과 참고 자료
+# 4. 관련 노트
 
 - [[30. Notes/Circuit/NAND|NAND]]에서는 NMOS 쪽에 직렬 경로가 생긴다.
-- [MIT 6.012 강의 노트 열기 (PDF, Recitation 13의 NAND와 NOR 비교)](https://live.ocw.mit.edu/courses/6-012-microelectronic-devices-and-circuits-spring-2009/4eaff509f8c5f4d19f99a616cf66a906_MIT6_012S09_rec13.pdf).

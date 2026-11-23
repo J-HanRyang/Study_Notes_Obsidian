@@ -273,10 +273,3 @@ flowchart LR
 # 12. 관련 용어
 
 - [[30. Notes/Protocol/Command-Code|Command Code]] · [[30. Notes/Protocol/Transaction|Transaction]] · [[30. Notes/Protocol/PEC|PEC]] · [[30. Notes/Protocol/ARP|ARP]] · [[30. Notes/Protocol/UDID|UDID]]
-
-# 13. 원문
-
-- [SMIF SMBus 3.0 규격 원문 열기 (PDF, §4.2 시간 조건·§5 ACK와 Clock·§6.4 PEC·§6.5 전송 형식·§6.6 ARP)](https://smbus.org/specs/SMBus_3_0_20141220.pdf).
-
-# 14. 학습 PDF
-- [SMBus 학습자료 열기 (PDF)](<../../_Attachment/프로토콜 학습자료/SMBus_학습자료.pdf>)

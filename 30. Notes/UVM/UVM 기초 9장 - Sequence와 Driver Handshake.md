@@ -391,10 +391,6 @@ Item_done이 빠지면 어떤 일이 생기는가?
 - **해설:** 그런 재배열 기능은 아니다.
 - 다른 sequence 요청이 끼어들 수는 있다.
 
-# **8. 참고 자료**
-
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
-- [UVM 1.2 Sequence Base Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/seq/uvm_sequence_base-svh.html)
-- [UVM 1.2 Sequencer Interface Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/tlm1/uvm_sqr_ifs-svh.html)
+# 8. 관련 노트
 
 [목차](<UVM 기초 - 목차.md>)

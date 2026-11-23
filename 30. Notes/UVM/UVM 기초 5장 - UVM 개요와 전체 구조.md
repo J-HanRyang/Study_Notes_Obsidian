@@ -367,8 +367,6 @@ Scoreboard의 예상값은 어디서 오는가?
 
 **해설:** 사양 기반 reference model과 관찰한 입력에서 만든다.
 
-# **8. 참고 자료**
-
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
+# 8. 관련 노트
 
 [목차](<UVM 기초 - 목차.md>)

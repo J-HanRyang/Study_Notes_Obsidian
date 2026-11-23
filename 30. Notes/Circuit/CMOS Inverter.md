@@ -18,7 +18,6 @@
 - 인버터의 스위칭점 $V_M$은 VTC와 $V_{out}=V_{in}$이 만나는 점이다.
 - [[30. Notes/Circuit/Noise Margin|Noise Margin]] 계산에는 입력 판정 한계인 $V_{IL}$과 $V_{IH}$ 및 출력 보장 범위가 필요하다.
 
-# 4. 연결과 참고 자료
+# 4. 관련 노트
 
 - [[30. Notes/Circuit/RC Delay|RC Delay]]에서 충전과 방전의 시간상수를 확인한다.
-- [MIT CMOS 강의 열기 (CMOS Inverter VTC와 지연)](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c3/c3s1/).

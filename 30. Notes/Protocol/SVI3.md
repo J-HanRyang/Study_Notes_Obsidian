@@ -80,14 +80,8 @@
 - VCC·VDDIO·Reset 순서를 바꾼 시나리오에서 수신과 출력 동작을 DUT 명세에 맞춰 확인한다.
 - VID 요청이 반영된 뒤 실제 출력의 Slew와 안정화는 [[30. Notes/Power/VR Controller|VR Controller]] 및 전력단 모델의 검증 범위와 연결한다.
 
-# 8. 연결과 참고 자료
+# 8. 관련 노트
 - [[30. Notes/Power/VR Controller|VR Controller]]
 - [[30. Notes/Power/DrMOS|DrMOS]]
 - [[30. Notes/Power/PSI|Power Sequence Interface]]
-- [Richtek SVI3 VR Controller 자료 열기 (PDF, 핀 설명·블록도)](https://www.richtek.com/assets/product_file/RT3674FE/RT3674FE_DS-00.pdf).
-- [Infineon SVI3 다중 Phase VR Controller 자료 열기 (PDF, 제품 개요)](https://www.infineon.com/assets/row/public/documents/24/49/infineon-xdpe192c3b-0000-datasheet-en.pdf).
-- 위 제조사 자료는 공개 구현 사례이며 실제 Command 비트와 Timing의 기준은 업무에서 사용하는 SVI3 원문이다.
-
-# 9. 학습 PDF
-- [SVI3 Study Guide 열기 (PDF)](<../../_Attachment/프로토콜 학습자료/SVI3_Study_Guide.pdf>)
-- [SVI3 Detailed Study 열기 (PDF)](<../../_Attachment/프로토콜 학습자료/SVI3_Detailed_Study.pdf>)
+- Command 비트와 Timing은 사용하는 SVI3 개정판을 기준으로 확인한다.

@@ -28,10 +28,6 @@ SystemVerilog의 객체와 실행 문법에서 UVM 환경 구성, 검증, Callba
 - [15장. Callback](<UVM 기초 15장 - Callback.md>)
 - [16장. Register Abstraction Layer](<UVM 기초 16장 - Register Abstraction Layer.md>)
 
-# **PDF**
-
-[UVM 기초 · 그림 교재](UVM_기초.pdf)
-
 # **교재의 예제**
 
 - API 코드는 UVM 1.2를 기준으로 설명합니다.

@@ -17,7 +17,3 @@
 - HIGH의 여유는 $NM_H=V_{OH(min)}-V_{IH(min)}$이다.
 - $V_{OH(min)}=3.0\,\mathrm V$이고 $V_{IH(min)}=2.3\,\mathrm V$이면 HIGH의 여유는 0.7 V다.
 - $V_{OL(max)}=0.4\,\mathrm V$이고 $V_{IL(max)}=0.8\,\mathrm V$이면 LOW의 여유는 0.4 V다.
-
-# 4. 참고 자료
-
-- [MIT 디지털 신호 강의 열기 (Logic Levels와 Noise Margins)](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c2/c2s1/).

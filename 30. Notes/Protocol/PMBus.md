@@ -82,14 +82,10 @@
 - 호스트는 `READ_VOUT`과 Status 명령으로 실제 보고값과 이상 여부를 확인한다.
 - 설정을 전원 재인가 후에도 보존하려면 장치가 지원하는 STORE 동작과 저장 정책을 확인한다.
 
-# 9. 관련 노트와 참고 자료
+# 9. 관련 노트
 - [[30. Notes/Protocol/SMBus|SMBus]]
 - [[30. Notes/Protocol/AVSBus|AVSBus]]
 - [[30. Notes/Protocol/I2C|I2C]]
 - [[30. Notes/Power/PSI|PSI]]
 - [[30. Notes/Power/FAULT|FAULT]]
-- [PMBus 공식 FAQ (웹페이지)](https://pmbus.org/resources/faq/).
-- [PMBus 공식 규격 안내 (웹페이지)](https://pmbus.org/current-specifications/).
-- [PMBus 1.3.1 Part I 원문 (PDF, 5.6절 Group·Extended·Zone 전송)](https://pmbusprod.wpenginepowered.com/wp-content/uploads/2022/01/PMBus-Specification-Rev-1-3-1-Part-I-20150313.pdf).
-- [PMBus 1.3.1 Part II 원문 (PDF, 6~17절 메모리·수치·Fault·주요 명령)](https://pmbus.org/wp-content/uploads/2022/01/PMBus-Specification-Rev-1-3-1-Part-II-20150313.pdf).
 - 이 노트의 공통 개념은 공개된 1.3.1 원문으로 확인했으며, 1.5의 세부 차이는 사용 중인 1.5 원문과 대조해야 한다.

@@ -41,9 +41,7 @@
 - Fault가 계속 남은 경우의 재시도와 원인이 사라진 경우의 복귀를 따로 확인한다.
 - Scoreboard는 감지, 판정, 응답, 보고, 복구의 기대 시점을 분리해 비교한다.
 
-# 7. 연결과 참고 자료
+# 7. 관련 노트
 - [[30. Notes/Power/VR Controller|VR Controller]]
 - [[30. Notes/Power/DrMOS|DrMOS]]
 - [[30. Notes/Power/FAULT|FAULT]]
-- [Analog Devices 전원 관리 IC 자료 열기 (PDF, Current Limit·Hiccup·Latch-off 사례)](https://www.analog.com/media/en/technical-documentation/data-sheets/ADP5051.pdf).
-- [Infineon DrMOS 자료 열기 (PDF, Cycle-by-cycle OCP 사례)](https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlf12500-datasheet-en.pdf).

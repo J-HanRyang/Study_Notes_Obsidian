@@ -246,10 +246,6 @@ A가 F0 대입, B가 FF XOR, A→B면 결과는?
 
 **해설:** Scoreboard 예상 queue에 추가하지 않는다.
 
-# **8. 참고 자료**
-
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
-- [Callback classes](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_callback-svh.html)
-- [Callback macros](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/macros/uvm_callback_defines-svh.html)
+# 8. 관련 노트
 
 [목차](<UVM 기초 - 목차.md>)

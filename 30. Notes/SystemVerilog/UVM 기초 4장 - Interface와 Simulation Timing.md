@@ -483,9 +483,6 @@ Modport와 clocking block의 역할 차이는?
 
 **해설:** 출력 latency와 유효 시점을 먼저 확인해야 한다.
 
-# **8. 참고 자료**
-
-- IEEE 1800 SystemVerilog의 class·자료형·randomization·timing 문법
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
+# 8. 관련 노트
 
 [목차](<../UVM/UVM 기초 - 목차.md>)

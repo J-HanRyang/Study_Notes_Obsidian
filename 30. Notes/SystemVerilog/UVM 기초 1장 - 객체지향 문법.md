@@ -340,9 +340,6 @@ a = new(); b = a; 이후 객체는 몇 개인가?
 
 **해설:** 실제 객체 타입의 구현을 선택한다.
 
-# **8. 참고 자료**
-
-- IEEE 1800 SystemVerilog의 class·자료형·randomization·timing 문법
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
+# 8. 관련 노트
 
 [목차](<../UVM/UVM 기초 - 목차.md>)

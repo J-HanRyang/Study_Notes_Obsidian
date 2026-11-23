@@ -382,8 +382,6 @@ Sequence body는 언제 실행되는가?
 
 **해설:** start() 등 sequence 실행 절차가 시작될 때다.
 
-# **8. 참고 자료**
-
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
+# 8. 관련 노트
 
 [목차](<UVM 기초 - 목차.md>)

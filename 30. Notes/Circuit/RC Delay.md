@@ -17,7 +17,6 @@
 - 같은 근사 조건의 50% 도달 시간은 약 $41.6\,\mathrm{ns}$이다.
 - 실제 셀에서는 MOSFET의 전류가 동작점에 따라 달라지므로 등가 저항 계산은 파형의 경향을 보는 데 쓴다.
 
-# 4. 연결과 참고 자료
+# 4. 관련 노트
 
 - [[30. Notes/Circuit/CMOS Inverter|CMOS Inverter]]에서 출력 부하가 어떻게 충전되고 방전되는지 확인한다.
-- [MIT 6.012 강의 노트 열기 (PDF, Recitation 13의 첫 페이지)](https://live.ocw.mit.edu/courses/6-012-microelectronic-devices-and-circuits-spring-2009/4eaff509f8c5f4d19f99a616cf66a906_MIT6_012S09_rec13.pdf#page=1).

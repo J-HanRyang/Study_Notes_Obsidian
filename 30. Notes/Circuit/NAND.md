@@ -15,7 +15,6 @@
 - 각 NMOS를 $2\,\mathrm{k\Omega}$으로 근사한 3입력 NAND와 $10\,\mathrm{pF}$ 부하에서는 [[30. Notes/Circuit/RC Delay|RC 시간상수]]가 60 ns다.
 - 입력이 세 개로 늘었을 때 어느 입력 조합에서만 방전 경로가 완성되는지 그려 본다.
 
-# 4. 연결과 참고 자료
+# 4. 관련 노트
 
 - [[30. Notes/Circuit/NOR|NOR]]의 Pull-up과 Pull-down 배치를 비교한다.
-- [MIT 조합논리 강의 열기 (CMOS NAND와 NOR 구조)](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c4/c4s1/).

@@ -16,7 +16,3 @@
 - 한 경로에서 AND 지연이 40 ps이고 이어지는 OR 지연이 25 ps라면 고정 지연을 가정했을 때 합은 65 ps다.
 - 실제 타이밍 분석에서는 이전 셀의 출력 Slew와 배선·부하가 다음 셀의 지연에 반영된다.
 - 병렬 경로는 각 경로의 도착 시각을 비교해 [[30. Notes/Digital/Timing/Critical Path|Critical Path]]를 찾는다.
-
-# 4. 참고 자료
-
-- [MIT CMOS 강의 열기 (Propagation Delay 측정)](https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c3/c3s1/).

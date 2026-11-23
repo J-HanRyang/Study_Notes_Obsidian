@@ -379,9 +379,6 @@ Mailbox 수신 객체를 독립시키려면?
 
 **해설:** 새 객체에 필요한 필드와 중첩 객체를 복사한다.
 
-# **8. 참고 자료**
-
-- IEEE 1800 SystemVerilog의 class·자료형·randomization·timing 문법
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
+# 8. 관련 노트
 
 [목차](<../UVM/UVM 기초 - 목차.md>)

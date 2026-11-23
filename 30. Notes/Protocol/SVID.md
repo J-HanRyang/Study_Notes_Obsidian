@@ -17,4 +17,3 @@
 - Rev 1.7 학습 예시에서 두 대상이 각각 10과 01을 구동하면 CPU는 00을 관찰하므로 응답만으로 각 대상 결과를 복원할 수 없다.
 - 학습 때 대조한 명령표에서 00h는 Rev 1.7의 확장 명령이고 Rev 1.9에서는 Reserved로 표시된다.
 - 명령 지원 여부와 샘플링 에지는 대상 판본과 송수신 방향을 함께 보고 해석한다.
-- [Intel 자료 열기 (PDF, §9.2 표 9-2 SVID 신호)](https://cdrdv2-public.intel.com/330061/atom-c2000-microserver-datasheet.pdf#page=153).

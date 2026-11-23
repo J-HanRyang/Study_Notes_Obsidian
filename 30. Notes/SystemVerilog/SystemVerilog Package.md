@@ -89,7 +89,3 @@ endmodule
 
 - def::ins는 구조체 타입이고 iw는 모듈 인스턴스가 실제로 받는 값이다.
 - 타입을 import하면 선언에서 ins라는 짧은 이름을 쓸 수 있으며 필드는 iw.a로 읽는다.
-
-# 5. 참고 자료
-
-- [IEEE 1800 SystemVerilog 표준 열기 (Clause 22의 Compiler Directives와 Clause 26의 Packages)](https://standards.ieee.org/ieee/1800/7743/).

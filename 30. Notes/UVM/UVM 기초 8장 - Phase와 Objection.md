@@ -284,13 +284,6 @@ Drop은 즉시 $finish와 같은가?
 - **해설:** 아니다.
 - 관련 종료 조건 이후 cleanup phase가 진행된다.
 
-# **8. 참고 자료**
-
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
-- [UVM Common Phases](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_common_phases-svh.html)
-- [UVM Runtime Phases](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_runtime_phases-svh.html)
-- [UVM Objection](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_objection-svh.html)
-- [UVM Phase](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_phase-svh.html)
-- [UVM Sequence Base](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/seq/uvm_sequence_base-svh.html)
+# 8. 관련 노트
 
 [목차](<UVM 기초 - 목차.md>)

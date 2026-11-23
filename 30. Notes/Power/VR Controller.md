@@ -45,9 +45,7 @@
 - VID 변경과 Phase 추가·제거가 겹칠 때 응답 순서와 출력 허용 범위를 검증한다.
 - Fault가 발생하면 명령 응답, PWM 차단, 상태 보고가 각각 언제 일어나는지 구분한다.
 
-# 8. 연결과 참고 자료
+# 8. 관련 노트
 - [[30. Notes/Power/Buck|Buck]]
 - [[30. Notes/Power/DrMOS|DrMOS]]
 - [[30. Notes/Power/OCP|OCP]]
-- [Infineon SVI3 다중 Phase VR Controller 자료 열기 (PDF, 제어·Telemetry 개요)](https://www.infineon.com/assets/row/public/documents/24/49/infineon-xdpe192c3b-0000-datasheet-en.pdf).
-- [Analog Devices 다중 Phase Buck 설명 열기 (웹 문서, 리플·과도응답)](https://www.analog.com/en/resources/analog-dialogue/articles/output-current-and-volt-ripple-in-multiphase-buck.html).

@@ -279,10 +279,6 @@ LOW 설정에서 HIGH info는 출력되는가?
 
 **해설:** 내부 유효 조건과 예상값·비교 실행 경로를 확인한다.
 
-# **8. 참고 자료**
-
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
-- [UVM 1.2 Report Macros](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/macros/uvm_message_defines-svh.html)
-- [Report Object](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/files/base/uvm_report_object-svh.html)
+# 8. 관련 노트
 
 [목차](<UVM 기초 - 목차.md>)

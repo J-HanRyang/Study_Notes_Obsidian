@@ -84,8 +84,3 @@
 # 8. 관련 노트
 
 - [[30. Notes/Circuit/Open-Drain|Open-Drain]] · [[30. Notes/Circuit/High-Impedance|High-Z]] · [[30. Notes/Circuit/Pull-Up|Pull-Up]] · [[30. Notes/Protocol/Arbitration|Arbitration]]
-
-# 9. 참고자료
-
-- [TI Comparator Output Types 열기 (PDF, 출력단 구조)](https://www.ti.com/lit/an/slca006/slca006.pdf).
-- [TI A Basic Guide to I2C 열기 (PDF, 공유선의 전기적 동작)](https://www.ti.com/lit/an/sbaa565/sbaa565.pdf).

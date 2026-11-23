@@ -56,10 +56,8 @@
 - PMBus와 AVSBus 사이의 제어권 전환 시점에 출력 목표값이 불필요하게 바뀌지 않는지 확인한다.
 - 아날로그 전압 응답은 DUT에 연결된 모델 또는 실제 측정 경로로 확인하고 디지털 인터페이스 결과와 구분한다.
 
-# 8. 관련 노트와 근거
+# 8. 관련 노트
 - [[30. Notes/Protocol/PMBus|PMBus]]
 - [[30. Notes/Protocol/SMBus|SMBus]]
 - [[30. Notes/Protocol/I2C|I2C]]
-- [PMBus 공식 현재 규격 안내 (웹페이지, AVSBus 2.0 판본 확인)](https://pmbus.org/current-specifications/).
-- [Synopsys AVSBus 2.0 설명 (웹페이지, 48비트 Sub-frame·주소·Hold/Commit·DV)](https://www.synopsys.com/blogs/chip-design/multi-domain-voltage-control-verification-avsbus-2-vip.html).
 - 전압 수치 인코딩, 비트 위치와 타이밍의 정확한 기준은 실제 사용 중인 AVSBus 원문과 DUT 명세다.

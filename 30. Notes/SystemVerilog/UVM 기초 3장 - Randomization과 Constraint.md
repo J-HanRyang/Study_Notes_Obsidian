@@ -418,9 +418,6 @@ Seed를 남기는 이유는?
 
 **해설:** 실패한 무작위 시나리오를 재현하기 위해서다.
 
-# **8. 참고 자료**
-
-- IEEE 1800 SystemVerilog의 class·자료형·randomization·timing 문법
-- [UVM 1.2 Class Reference](https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.2/html/)
+# 8. 관련 노트
 
 [목차](<../UVM/UVM 기초 - 목차.md>)

@@ -35,6 +35,5 @@
 - ON과 OFF 동안 인덕터 전류 경로를 그릴 수 있는가?
 - CCM 식을 적용할 수 없는 조건을 말할 수 있는가?
 
-# 6. 연결과 출처
+# 6. 관련 노트
 - [[30. Notes/Power/Buck|Buck]]과 [[30. Notes/Power/Boost|Boost]]의 에너지 경로를 먼저 비교한다.
-- [TI 반전형 Buck-Boost 설명 열기 (PDF 참고자료)](https://www.ti.com/lit/an/slva059a/slva059a.pdf).

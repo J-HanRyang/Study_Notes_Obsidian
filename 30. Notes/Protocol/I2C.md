@@ -195,11 +195,3 @@ $$R_{p,max}\approx\frac{t_{r,max}}{0.8473C_b}$$
 3. Read 마지막 NACK와 오류 NACK를 구분한다.
 4. 긴 LOW가 정상 Clock, Stretching, 동기화, stuck 중 무엇인지 판단한다.
 5. 동시 접근 시 최초로 다른 비트와 패배자의 동작을 확인한다.
-
-# 12. 원문과 참고자료
-
-- [NXP I2C-bus specification 원문 열기 (PDF, §3.1·§6)](https://www.nxp.com/docs/en/user-guide/UM10204.pdf).
-- [TI I2C 풀업 저항 계산 자료 열기 (PDF, 풀업 계산식)](https://www.ti.com/lit/an/slva689/slva689.pdf).
-
-# 13. 학습 PDF
-- [I2C 학습자료 열기 (PDF)](<../../_Attachment/프로토콜 학습자료/I2C_학습자료.pdf>)
