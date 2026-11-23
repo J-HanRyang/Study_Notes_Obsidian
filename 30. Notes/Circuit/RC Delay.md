@@ -1,0 +1,23 @@
+# 1. 뜻
+
+- RC 지연은 저항을 거쳐 커패시터를 충전하거나 방전할 때 전압이 서서히 변하면서 생기는 지연이다.
+- 단일 저항과 커패시터의 시간상수는 $\tau = RC$이며 단위는 초다.
+
+# 2. 파형 읽기
+
+- 0 V에서 충전을 시작하면 $t=\tau$에서 최종 전압의 약 63%에 도달한다.
+- 0 V를 향해 방전하면 $t=\tau$에서 초기 전압의 약 37%가 남는다.
+- 이상적인 입력 스텝을 가정한 1차 RC에서 전압 변화폭의 50%에 도달하는 시간은 $\ln(2)RC \approx 0.69RC$다.
+- $\tau$와 50% 도달 시간은 서로 다른 기준으로 재는 값이다.
+
+# 3. 계산 예시
+
+- 켜진 NMOS 세 개를 각각 $2\,\mathrm{k\Omega}$으로 근사하면 직렬 등가 저항은 $6\,\mathrm{k\Omega}$이다.
+- 부하가 $10\,\mathrm{pF}$이면 $\tau = 6\,\mathrm{k\Omega} \times 10\,\mathrm{pF} = 60\,\mathrm{ns}$이다.
+- 같은 근사 조건의 50% 도달 시간은 약 $41.6\,\mathrm{ns}$이다.
+- 실제 셀에서는 MOSFET의 전류가 동작점에 따라 달라지므로 등가 저항 계산은 파형의 경향을 보는 데 쓴다.
+
+# 4. 연결과 참고 자료
+
+- [[30. Notes/Circuit/CMOS Inverter|CMOS Inverter]]에서 출력 부하가 어떻게 충전되고 방전되는지 확인한다.
+- [MIT 6.012 강의 노트 열기 (PDF, Recitation 13의 첫 페이지)](https://live.ocw.mit.edu/courses/6-012-microelectronic-devices-and-circuits-spring-2009/4eaff509f8c5f4d19f99a616cf66a906_MIT6_012S09_rec13.pdf#page=1).

@@ -256,6 +256,22 @@ Agent cfg ─> 객체 A
 
 - 이전에 받은 agent의 cfg는 자동으로 B를 가리키지 않는다.
 - 다시 get해야 새 handle을 얻는다.
+
+- 아래 예시는 Test의 `this`를 기준으로 하위 `env.agent`에 설정을 전달한다.
+- 첫 번째 줄의 대입은 Test 안에서 핸들을 복사하며 `set`과 `get`은 타입·경로·키를 통해 같은 핸들을 Agent에 전달한다.
+
+```systemverilog
+// test::build_phase (direct_cfg와 cfg는 agent_cfg 타입)
+direct_cfg = cfg;
+uvm_config_db#(agent_cfg)::set(this, "env.agent", "cfg", cfg);
+
+// agent::build_phase
+if (!uvm_config_db#(agent_cfg)::get(this, "", "cfg", cfg))
+  `uvm_fatal("NO_CFG", "agent_cfg was not configured")
+```
+
+- Test에서 `cfg = new();`를 실행하면 Test의 `cfg` 변수만 새 객체를 가리킨다.
+- `direct_cfg`, 이미 받아 둔 Agent의 `cfg`, DB에 저장된 값은 기존 객체를 계속 가리킨다.
 - 기존 객체 내용 수정, 새 객체 handle 등록, 정숫값 복사를 각각 구분한다.
 
 ## **3.11. Set 시점과 build 순서**

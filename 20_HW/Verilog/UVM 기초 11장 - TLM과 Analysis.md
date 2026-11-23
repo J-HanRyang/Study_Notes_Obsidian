@@ -253,6 +253,10 @@ rx_fifo.get(tr);
 
 ## **3.10. Hierarchical connection**
 
+- Env가 Monitor와 Scoreboard의 핸들을 직접 가지고 있다면 Env의 `connect_phase()`에서 `mon.ap.connect(sb.analysis_imp);`로 연결할 수 있다.
+- 이 경우 Monitor의 Port에서 Scoreboard의 Imp까지의 연결 한 줄이면 `ap.write(txn)`이 Scoreboard의 `write(txn)`에 도달한다.
+- Agent 내부 Monitor를 직접 참조하지 않는 구조에서는 Agent의 Port를 공개해 아래처럼 연결한다.
+
 외부 env에 전달하는 monitor의 출력은 parent agent의 analysis port로 노출하는 것이 일반적인 구조다.
 
 ```systemverilog

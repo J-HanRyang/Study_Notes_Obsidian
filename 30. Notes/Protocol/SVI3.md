@@ -42,7 +42,7 @@
 - Daisy-chain에서는 값을 만든 장치와 그 값을 다음 단계로 전달하는 장치를 구분한다.
 - ACK는 명령 수신 또는 처리 결과를 나타내며 실제 출력 전압 도달을 단독으로 보증하지 않는다.
 - CRC는 전송 중 비트 오류를 검출하는 정보이며 CRC 오류 뒤의 응답과 상태 갱신은 대상 개정판을 따른다.
-- Telemetry 응답이 한 명령 뒤에 도착할 수 있으므로 요청과 응답의 대응 시점을 확인한다.
+- Telemetry와 명령 ACK는 같은 반환 경로를 사용할 수 있으므로 패킷 종류와 요청의 대응 시점을 확인한다.
 - 실제 측정값, 목표값, 응답 상태는 서로 다른 항목으로 기록한다.
 
 # 6. 초기화와 연속 명령
@@ -52,6 +52,24 @@
 - Back-to-Back 전송에서는 각 명령의 끝과 다음 명령의 시작을 규격의 경계 규칙으로 찾는다.
 - 모든 명령에 동일한 Idle 간격이나 동일한 START·END 구성을 반복한다고 단정하지 않는다.
 - 초기화 시간, CRC 적용 범위와 연속 명령의 예외는 사용 중인 개정판 원문으로 확인한다.
+
+## 6.1. Back-to-Back ACK와 Telemetry 예시
+
+- Rev 2.00 학습 예시에서는 Controller가 T4 Read와 T6 Read를 하나의 Back-to-Back Stream으로 보낸다.
+- T5가 보고 중이면 T6 쪽에서 온 ACK가 T5의 Telemetry 패킷 경계에 삽입되어 전달될 수 있다.
+- 그 ACK가 T4를 지나갈 때 T4의 명령 결과가 반영되며 Controller에서는 Stream에 대응하는 최종 ACK를 관찰한다.
+- Controller 쪽 반환선에서는 예를 들어 `T5 보고 1 → 최종 ACK → T5 보고 2` 순서로 보일 수 있다.
+- T5 송신 시점과 Controller 수신 시점은 Daisy-chain 전달 지연만큼 차이가 날 수 있다.
+- 이 학습 예시에서는 다음 독립 Command Stream을 시작하기 전에 앞선 Stream의 최종 ACK를 확인한다.
+- 최종 ACK 뒤에도 기존 Telemetry는 이어질 수 있으며 새 Global Telemetry Request의 허용 시점은 해당 개정판의 조건으로 따로 확인한다.
+- DV에서는 명령 Stream, 반환 패킷 경계, 기존 Telemetry 종료를 각각 관찰한다.
+
+## 6.2. 명령 실행과 Register Readback
+
+- Rev 2.00 학습 사례에서 같은 대상에 Write A, Read B, Write C를 연속으로 보내고 Read B에서 NACK가 발생하면 완료된 Write A의 효과는 남고 뒤의 Write C는 실행되지 않는다.
+- Controller가 전체 Stream을 재전송하면 Write A도 다시 실행될 수 있으므로 쓰기의 부작용을 확인한다.
+- 성공한 Register Read는 보고할 요청을 남기고 Readback 값은 이후 Global Telemetry Request에 따른 보고 차례에 전송된다.
+- 한 대상에 Telemetry Request 전에 여러 번 Read를 요청한 학습 예시에서는 가장 최근 요청이 보고 대상으로 남는다.
 
 # 7. DV에서 확인할 흐름
 - Monitor는 SVC의 정의된 샘플링 시점에서 SVD와 Telemetry를 수집한다.

@@ -57,6 +57,10 @@ endclass
 - Object constructor는 name, component constructor는 name과 parent를 받는다.
 - UVM 1.2 object factory용 constructor에는 name 인수를 준비한다.
 
+- 예를 들어 `uvm_component_utils(fifo_driver)`로 등록한 Driver에 Type Override를 설정하면 이후 `fifo_driver::type_id::create("driver", this)`는 대체 Driver를 만들 수 있다.
+- 같은 자리에서 `drv = new("driver", this);`를 실행하면 선언된 `fifo_driver`의 생성자를 직접 호출한다.
+- 생성 코드의 `"driver"`는 인스턴스 이름이고 `this`는 부모 Agent 핸들이다.
+
 ```systemverilog
 // agent의 build_phase 안: this는 생성된 agent 객체
 drv = fifo_driver::type_id::create("driver", this);
