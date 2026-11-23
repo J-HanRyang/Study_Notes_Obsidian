@@ -18,5 +18,5 @@
 
 # 5. 관련 학습 노트
 
-- [[30. Notes/Protocol/I2C#10. 풀업과 데이터 검사|I2C 풀업 계산]]
+- [[30. Notes/Protocol/I2C-SMBus/I2C#10. 풀업과 데이터 검사|I2C 풀업 계산]]
 - [[30. Notes/Circuit/Open-Drain|Open-Drain]]

@@ -1,6 +1,6 @@
 # 1. PMBus가 정의하는 것
 - PMBus는 전력 변환 장치를 설정하고 상태를 읽기 위한 명령 언어를 정의한다.
-- [[30. Notes/Protocol/I2C|I2C]]는 신호와 기본 전송을, [[30. Notes/Protocol/SMBus|SMBus]]는 명령 코드와 데이터가 오가는 트랜잭션 형식을 설명한다.
+- [[30. Notes/Protocol/I2C-SMBus/I2C|I2C]]는 신호와 기본 전송을, [[30. Notes/Protocol/I2C-SMBus/SMBus|SMBus]]는 명령 코드와 데이터가 오가는 트랜잭션 형식을 설명한다.
 - PMBus Part I은 일반 요구사항과 전송 방식을, Part II는 명령의 의미·수치 형식·Fault 처리를 다룬다.
 - SMBus의 Write Word는 두 데이터 바이트를 보내는 형식이고, PMBus의 `VOUT_COMMAND`는 그 값을 목표 출력 전압으로 쓰라는 의미다.
 - 버스에서 ACK를 받았다는 사실과 전원 출력이 목표값에 도달했다는 사실은 다른 단계다.
@@ -52,7 +52,7 @@
 - `VOUT_COMMAND`를 1.0 V로 설정해도 `READ_VOUT`은 시동 중이거나 부하가 변하는 동안 1.0 V와 다를 수 있다.
 - 목표값을 쓴 뒤에는 명령 수락, 선택된 PAGE의 설정값, 출력 활성 조건, 측정값과 상태를 구분해 확인한다.
 - 내부 SFR 주소와 PMBus 명령 코드는 같은 번호 체계가 아니며 둘의 매핑은 장치 구현에 달려 있다.
-- [[30. Notes/Protocol/AVSBus|AVSBus]]도 지원하는 장치에서는 전압 제어권을 넘기기 전에 현재 목표값을 새 제어 경로에 반영해 전압이 불필요하게 바뀌지 않게 한다.
+- [[30. Notes/Protocol/Power Management/AVSBus|AVSBus]]도 지원하는 장치에서는 전압 제어권을 넘기기 전에 현재 목표값을 새 제어 경로에 반영해 전압이 불필요하게 바뀌지 않게 한다.
 
 # 6. Warning, Fault와 상태 보고
 - Warning은 감시값이 경고 임계값을 넘은 상태를 알리고 Fault는 보호 동작을 유발할 수 있는 이상 조건을 알린다.
@@ -83,9 +83,9 @@
 - 설정을 전원 재인가 후에도 보존하려면 장치가 지원하는 STORE 동작과 저장 정책을 확인한다.
 
 # 9. 관련 노트
-- [[30. Notes/Protocol/SMBus|SMBus]]
-- [[30. Notes/Protocol/AVSBus|AVSBus]]
-- [[30. Notes/Protocol/I2C|I2C]]
+- [[30. Notes/Protocol/I2C-SMBus/SMBus|SMBus]]
+- [[30. Notes/Protocol/Power Management/AVSBus|AVSBus]]
+- [[30. Notes/Protocol/I2C-SMBus/I2C|I2C]]
 - [[30. Notes/Power/PSI|PSI]]
 - [[30. Notes/Power/FAULT|FAULT]]
 - 이 노트의 공통 개념은 공개된 1.3.1 원문으로 확인했으며, 1.5의 세부 차이는 사용 중인 1.5 원문과 대조해야 한다.

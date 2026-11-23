@@ -18,5 +18,5 @@
 
 # 5. 관련 학습 노트
 
-- [[30. Notes/Protocol/I2C#6. Clock Stretching과 Clock 동기화|동기화 동작]]
-- [[30. Notes/Protocol/Clock-Stretching|Clock Stretching]]
+- [[30. Notes/Protocol/I2C-SMBus/I2C#6. Clock Stretching과 Clock 동기화|동기화 동작]]
+- [[30. Notes/Protocol/I2C-SMBus/Clock-Stretching|Clock Stretching]]

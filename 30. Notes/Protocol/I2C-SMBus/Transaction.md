@@ -17,5 +17,5 @@
 
 # 5. 관련 학습 노트
 
-- [[30. Notes/Protocol/I2C#5. Register 읽기 예시|I2C Read]]
-- [[30. Notes/Protocol/SMBus#4. 대표 전송을 먼저 읽기|SMBus Read]]
+- [[30. Notes/Protocol/I2C-SMBus/I2C#5. Register 읽기 예시|I2C Read]]
+- [[30. Notes/Protocol/I2C-SMBus/SMBus#4. 대표 전송을 먼저 읽기|SMBus Read]]

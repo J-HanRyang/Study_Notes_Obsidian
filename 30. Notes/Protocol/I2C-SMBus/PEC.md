@@ -18,4 +18,4 @@
 
 # 5. 관련 학습 노트
 
-- [[30. Notes/Protocol/SMBus#6. PEC를 붙이면 달라지는 것|PEC 형식과 입력 순서]]
+- [[30. Notes/Protocol/I2C-SMBus/SMBus#6. PEC를 붙이면 달라지는 것|PEC 형식과 입력 순서]]

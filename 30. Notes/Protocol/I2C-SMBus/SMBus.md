@@ -3,7 +3,7 @@
 - SMBus는 시스템 관리 장치가 공통 전송 형식과 시간·오류 처리 규칙으로 통신하는 버스다.
 - 이 노트의 기준은 **SMBus Specification 3.0**이다.
 - 후속 버전의 변경 사항을 섞지 않는다.
-- [[30. Notes/Protocol/I2C|I2C]]의 Open-Drain, 비트·바이트 전송, 중재를 먼저 이해하면 읽기 쉽다.
+- [[30. Notes/Protocol/I2C-SMBus/I2C|I2C]]의 Open-Drain, 비트·바이트 전송, 중재를 먼저 이해하면 읽기 쉽다.
 
 # 2. I2C와 무엇이 다른가?
 
@@ -123,7 +123,7 @@ Block Read : S | AddrW | A_S | Cmd | A_S | Sr | AddrR | A_S | Count | A_M | D1 |
 
 # 6. PEC를 붙이면 달라지는 것
 
-- [[30. Notes/Protocol/PEC|PEC]]는 CRC-8 기반 오류 검사용 바이트다.
+- [[30. Notes/Protocol/I2C-SMBus/PEC|PEC]]는 CRC-8 기반 오류 검사용 바이트다.
 
 - 다항식: $x^8+x^2+x+1$ (`0x07`).
 - 주소 + R/W를 포함한 **전송 바이트**가 계산에 들어간다.
@@ -151,7 +151,7 @@ S | AddrW | A_S | Cmd | A_S | Sr | AddrR | A_S | Lo | A_M | Hi | A_M | PEC | N_M
 
 # 7. ACK/NACK는 구간별로 해석
 
-- 기본 응답 동작은 [[30. Notes/Protocol/ACK|ACK]]와 [[30. Notes/Protocol/NACK|NACK]]에서 확인한다.
+- 기본 응답 동작은 [[30. Notes/Protocol/I2C-SMBus/ACK|ACK]]와 [[30. Notes/Protocol/I2C-SMBus/NACK|NACK]]에서 확인한다.
 - 여기서는 SMBus에서 추가로 확인할 조건만 정리한다.
 
 | 상황 | 해석 |
@@ -200,13 +200,13 @@ S | AddrW | A_S | Cmd | A_S | Sr | AddrR | A_S | Lo | A_M | Hi | A_M | PEC | N_M
 - 같은 주소의 일반 Slave 여러 개는 ACK만으로 개수를 판별할 수 없다.
 - ARP·ARA의 규정된 응답 중재와 일반적인 주소 중복은 서로 다르다.
 
-- 기본 전기적 설명은 [[30. Notes/Protocol/I2C#7. Arbitration: 처음 다른 비트에서 결정|I2C 중재]]와 연결된다.
+- 기본 전기적 설명은 [[30. Notes/Protocol/I2C-SMBus/I2C#7. Arbitration: 처음 다른 비트에서 결정|I2C 중재]]와 연결된다.
 
 # 10. ARP, ARA, Host Notify
 
 | 기능 | 시작 주체·방식 | 목적 |
 |---|---|---|
-| [[30. Notes/Protocol/ARP\|ARP]] | ARP Master가 UDID 조회·주소 할당 | 지원 장치 식별과 주소 관리 |
+| [[30. Notes/Protocol/I2C-SMBus/ARP\|ARP]] | ARP Master가 UDID 조회·주소 할당 | 지원 장치 식별과 주소 관리 |
 | Alert Response | SMBALERT# 후 Host가 ARA를 Read | 알림을 요청한 장치 식별 |
 | Host Notify | 알릴 장치가 Master가 되어 Host에 Write | 자기 주소와 상태 Word 통보 |
 
@@ -242,7 +242,7 @@ flowchart LR
     D --> B
 ```
 
-- [[30. Notes/Protocol/UDID|UDID]]는 장치를 식별하는 128-bit 정보이고, 7-bit 통신 주소와 다르다.
+- [[30. Notes/Protocol/I2C-SMBus/UDID|UDID]]는 장치를 식별하는 128-bit 정보이고, 7-bit 통신 주소와 다르다.
 - 지원 장치가 응답 중재를 거쳐 식별된다.
 - ARP가 지원되지 않는 고정 주소 충돌까지 자동 해결하는 것은 아니다.
 
@@ -272,4 +272,4 @@ flowchart LR
 
 # 12. 관련 용어
 
-- [[30. Notes/Protocol/Command-Code|Command Code]] · [[30. Notes/Protocol/Transaction|Transaction]] · [[30. Notes/Protocol/PEC|PEC]] · [[30. Notes/Protocol/ARP|ARP]] · [[30. Notes/Protocol/UDID|UDID]]
+- [[30. Notes/Protocol/I2C-SMBus/Command-Code|Command Code]] · [[30. Notes/Protocol/I2C-SMBus/Transaction|Transaction]] · [[30. Notes/Protocol/I2C-SMBus/PEC|PEC]] · [[30. Notes/Protocol/I2C-SMBus/ARP|ARP]] · [[30. Notes/Protocol/I2C-SMBus/UDID|UDID]]

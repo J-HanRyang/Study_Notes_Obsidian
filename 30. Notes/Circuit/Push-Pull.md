@@ -57,7 +57,7 @@
 
 - 반면 Open-Drain에서 HIGH를 보낸다는 것은 선을 놓는 동작이다.
 - 다른 장치가 LOW를 구동하면 버스는 LOW가 되고, 풀업 저항이 전류를 제한한다.
-- 이 성질이 [[30. Notes/Protocol/I2C|I2C]]와 [[30. Notes/Protocol/SMBus|SMBus]]의 중재를 가능하게 한다.
+- 이 성질이 [[30. Notes/Protocol/I2C-SMBus/I2C|I2C]]와 [[30. Notes/Protocol/I2C-SMBus/SMBus|SMBus]]의 중재를 가능하게 한다.
 
 # 5. 왜 무조건 Push-Pull을 쓰지 않는가?
 
@@ -83,4 +83,4 @@
 
 # 8. 관련 노트
 
-- [[30. Notes/Circuit/Open-Drain|Open-Drain]] · [[30. Notes/Circuit/High-Impedance|High-Z]] · [[30. Notes/Circuit/Pull-Up|Pull-Up]] · [[30. Notes/Protocol/Arbitration|Arbitration]]
+- [[30. Notes/Circuit/Open-Drain|Open-Drain]] · [[30. Notes/Circuit/High-Impedance|High-Z]] · [[30. Notes/Circuit/Pull-Up|Pull-Up]] · [[30. Notes/Protocol/I2C-SMBus/Arbitration|Arbitration]]

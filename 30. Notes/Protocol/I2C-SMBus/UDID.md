@@ -17,5 +17,5 @@
 
 # 5. 관련 학습 노트
 
-- [[30. Notes/Protocol/ARP|ARP]]
-- [[30. Notes/Protocol/SMBus#10. ARP, ARA, Host Notify|주소와 장치 식별]]
+- [[30. Notes/Protocol/I2C-SMBus/ARP|ARP]]
+- [[30. Notes/Protocol/I2C-SMBus/SMBus#10. ARP, ARA, Host Notify|주소와 장치 식별]]

@@ -17,5 +17,5 @@
 
 # 5. 관련 학습 노트
 
-- [[30. Notes/Protocol/I2C#7. Arbitration: 처음 다른 비트에서 결정|I2C 중재]]
-- [[30. Notes/Protocol/Clock-Synchronization|Clock Synchronization]]
+- [[30. Notes/Protocol/I2C-SMBus/I2C#7. Arbitration: 처음 다른 비트에서 결정|I2C 중재]]
+- [[30. Notes/Protocol/I2C-SMBus/Clock-Synchronization|Clock Synchronization]]

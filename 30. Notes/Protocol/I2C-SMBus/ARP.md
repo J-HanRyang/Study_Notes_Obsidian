@@ -18,5 +18,5 @@
 
 # 5. 관련 학습 노트
 
-- [[30. Notes/Protocol/SMBus#10. ARP, ARA, Host Notify|ARP 흐름]]
-- [[30. Notes/Protocol/UDID|UDID]]
+- [[30. Notes/Protocol/I2C-SMBus/SMBus#10. ARP, ARA, Host Notify|ARP 흐름]]
+- [[30. Notes/Protocol/I2C-SMBus/UDID|UDID]]

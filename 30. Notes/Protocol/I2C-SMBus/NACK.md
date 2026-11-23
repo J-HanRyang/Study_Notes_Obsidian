@@ -13,6 +13,6 @@
 - 앞의 바이트가 주소인지 데이터인지에 따라 의미가 달라진다.
 
 # 5. 관련 학습 노트
-- [[30. Notes/Protocol/ACK|ACK]]
-- [[30. Notes/Protocol/I2C#4. ACK는 누가 보내는가?|I2C의 응답 구간]]
-- [[30. Notes/Protocol/SMBus#7. ACK/NACK는 구간별로 해석|SMBus의 응답 구간]]
+- [[30. Notes/Protocol/I2C-SMBus/ACK|ACK]]
+- [[30. Notes/Protocol/I2C-SMBus/I2C#4. ACK는 누가 보내는가?|I2C의 응답 구간]]
+- [[30. Notes/Protocol/I2C-SMBus/SMBus#7. ACK/NACK는 구간별로 해석|SMBus의 응답 구간]]

@@ -17,4 +17,4 @@
 
 # 5. 관련 학습 노트
 
-- [[30. Notes/Protocol/I2C#9. 충돌과 Bus Hang을 구분|고정 LOW와 복구]]
+- [[30. Notes/Protocol/I2C-SMBus/I2C#9. 충돌과 Bus Hang을 구분|고정 LOW와 복구]]

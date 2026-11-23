@@ -21,5 +21,5 @@
 - 각 이상 조건에서 기대한 장치가 FAULT를 주장하는지 본다.
 - 공유선이라면 각 장치의 구동 의도와 실제 선 값을 구분해 관찰한다.
 - Fault 해제와 재시도 후 상태 전이가 명세에 맞는지 확인한다.
-- [[30. Notes/Protocol/PMBus|PMBus]] Status가 있다면 핀 FAULT와 상태 레지스터의 관계를 따로 확인한다.
+- [[30. Notes/Protocol/Power Management/PMBus|PMBus]] Status가 있다면 핀 FAULT와 상태 레지스터의 관계를 따로 확인한다.
 

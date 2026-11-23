@@ -1,6 +1,6 @@
 # 1. 어떤 역할을 하는가
 - AVSBus는 프로세서 등의 요청에 따라 전원 장치의 목표 전압을 동적으로 바꾸는 인터페이스다.
-- [[30. Notes/Protocol/PMBus|PMBus]]가 설정·상태·Fault 관리에 쓰인다면 AVSBus는 빠른 전압 조정에 초점을 둔다.
+- [[30. Notes/Protocol/Power Management/PMBus|PMBus]]가 설정·상태·Fault 관리에 쓰인다면 AVSBus는 빠른 전압 조정에 초점을 둔다.
 - 두 인터페이스를 모두 지원하는 전원 장치도 있지만 어느 쪽이 현재 출력 전압을 제어하는지는 장치의 제어권 정책에 달려 있다.
 - AVSBus는 PMBus 명령을 SMBus에 실어 나르는 전송 방식이 아니라 별도의 직렬 인터페이스다.
 - 공식 PMBus 사이트에서 확인되는 현재 AVSBus 규격 안내는 2.0이다.
@@ -8,7 +8,7 @@
 
 # 2. 신호와 전송 방향
 - 현재 규격의 기본 연결은 Controller가 보내는 Clock과 Command Data, Target이 돌려주는 Target Data의 세 신호로 이해한다.
-- Command Data와 Target Data가 분리되어 있으므로 [[30. Notes/Protocol/I2C|I2C]]의 공유 SDA, START/STOP, Clock Stretching을 그대로 적용하지 않는다.
+- Command Data와 Target Data가 분리되어 있으므로 [[30. Notes/Protocol/I2C-SMBus/I2C|I2C]]의 공유 SDA, START/STOP, Clock Stretching을 그대로 적용하지 않는다.
 - Controller는 목표 장치와 출력 Rail을 지정하고 명령 및 데이터를 전송한다.
 - Target은 명령 처리 결과, 상태와 읽기 데이터를 응답한다.
 - 같은 장치 안의 여러 Rail을 구분하는 값과 버스의 여러 Target을 구분하는 주소는 별개다.
@@ -20,7 +20,7 @@
 - Target Sub-frame에서는 명령에 대한 응답, 상태와 반환 데이터의 관계를 읽는다.
 - 2.0의 시작 코드는 8비트 `00000000`이며, Marker 비트는 데이터가 시작 코드처럼 오인되지 않게 돕는다.
 - 각 Sub-frame의 CRC-3은 전송 비트 오류를 검출하는 데 사용한다.
-- CRC-3은 [[30. Notes/Protocol/PEC|SMBus PEC]]의 CRC-8과 같은 계산이 아니다.
+- CRC-3은 [[30. Notes/Protocol/I2C-SMBus/PEC|SMBus PEC]]의 CRC-8과 같은 계산이 아니다.
 - 실제 필드 위치와 예약 비트 값은 검증 대상의 AVSBus 개정판 원문을 기준으로 결정한다.
 
 # 4. 전압 명령과 응답
@@ -45,7 +45,7 @@
 - CRC가 잘못된 전압 변경 명령이 출력 목표값을 바꾸지 않는지 확인한다.
 - Target이 응답하지 않거나 명령을 처리할 수 없을 때의 응답과 재시도 정책을 구분한다.
 - 2.0은 Controller가 프레임을 중단하고 다시 동기화하는 절차를 정의한다.
-- AVSBus의 복구와 Timeout을 [[30. Notes/Protocol/SMBus|SMBus]]의 25~35 ms Clock LOW Timeout으로 대체하지 않는다.
+- AVSBus의 복구와 Timeout을 [[30. Notes/Protocol/I2C-SMBus/SMBus|SMBus]]의 25~35 ms Clock LOW Timeout으로 대체하지 않는다.
 
 # 7. DV에서 연결해 볼 것
 - VIP가 Frame과 CRC를 검사하더라도 DUT의 전압 목표값 갱신과 상태 전이는 별도로 확인한다.
@@ -57,7 +57,7 @@
 - 아날로그 전압 응답은 DUT에 연결된 모델 또는 실제 측정 경로로 확인하고 디지털 인터페이스 결과와 구분한다.
 
 # 8. 관련 노트
-- [[30. Notes/Protocol/PMBus|PMBus]]
-- [[30. Notes/Protocol/SMBus|SMBus]]
-- [[30. Notes/Protocol/I2C|I2C]]
+- [[30. Notes/Protocol/Power Management/PMBus|PMBus]]
+- [[30. Notes/Protocol/I2C-SMBus/SMBus|SMBus]]
+- [[30. Notes/Protocol/I2C-SMBus/I2C|I2C]]
 - 전압 수치 인코딩, 비트 위치와 타이밍의 정확한 기준은 실제 사용 중인 AVSBus 원문과 DUT 명세다.

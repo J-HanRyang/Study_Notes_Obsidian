@@ -20,5 +20,5 @@
 # 5. 관련 학습 노트
 
 - [[30. Notes/Circuit/Push-Pull|Push-Pull]]
-- [[30. Notes/Protocol/I2C|I2C]]
+- [[30. Notes/Protocol/I2C-SMBus/I2C|I2C]]
 - [[30. Notes/Circuit/Pull-Up|Pull-Up]]

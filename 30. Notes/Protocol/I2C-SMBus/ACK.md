@@ -11,8 +11,8 @@
 
 # 4. 헷갈리는 점
 - ACK는 해당 구간의 수신 응답이며 명령의 최종 실행 완료를 뜻하지는 않는다.
-- [[30. Notes/Protocol/NACK|NACK]]는 마지막 Read 바이트 뒤의 정상 종료 표시일 수도 있다.
+- [[30. Notes/Protocol/I2C-SMBus/NACK|NACK]]는 마지막 Read 바이트 뒤의 정상 종료 표시일 수도 있다.
 
 # 5. 관련 학습 노트
-- [[30. Notes/Protocol/I2C#4. ACK는 누가 보내는가?|I2C의 ACK 주체]]
-- [[30. Notes/Protocol/SMBus#7. ACK/NACK는 구간별로 해석|SMBus의 ACK 해석]]
+- [[30. Notes/Protocol/I2C-SMBus/I2C#4. ACK는 누가 보내는가?|I2C의 ACK 주체]]
+- [[30. Notes/Protocol/I2C-SMBus/SMBus#7. ACK/NACK는 구간별로 해석|SMBus의 ACK 해석]]

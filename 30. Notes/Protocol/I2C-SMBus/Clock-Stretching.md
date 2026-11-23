@@ -17,5 +17,5 @@
 
 # 5. 관련 학습 노트
 
-- [[30. Notes/Protocol/I2C#6. Clock Stretching과 Clock 동기화|I2C]]
-- [[30. Notes/Protocol/SMBus#8. CLK LOW를 네 가지로 구분|SMBus 시간 제한]]
+- [[30. Notes/Protocol/I2C-SMBus/I2C#6. Clock Stretching과 Clock 동기화|I2C]]
+- [[30. Notes/Protocol/I2C-SMBus/SMBus#8. CLK LOW를 네 가지로 구분|SMBus 시간 제한]]

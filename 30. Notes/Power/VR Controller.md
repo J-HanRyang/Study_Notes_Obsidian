@@ -39,7 +39,7 @@
 - 각 Phase의 전류 분담과 전환 순간의 출력 변화를 함께 본다.
 
 # 7. DV에서 보는 경계
-- [[30. Notes/Protocol/SVI3|SVI3]] 명령 디코드와 목표 Register 갱신을 먼저 확인한다.
+- [[30. Notes/Protocol/Power Management/SVI3|SVI3]] 명령 디코드와 목표 Register 갱신을 먼저 확인한다.
 - 다음으로 PWM·Phase 상태가 목표값과 감지값에 맞게 바뀌는지 확인한다.
 - 실제 전압·전류 파형은 아날로그 모델이나 측정 범위에서 확인한다.
 - VID 변경과 Phase 추가·제거가 겹칠 때 응답 순서와 출력 허용 범위를 검증한다.

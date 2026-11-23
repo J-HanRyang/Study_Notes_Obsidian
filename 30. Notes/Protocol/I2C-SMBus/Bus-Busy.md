@@ -9,9 +9,9 @@
 - Repeated START 전의 HIGH 구간은 이전 전송이 끝났음을 뜻하지 않는다.
 
 # 4. 헷갈리는 점
-- [[30. Notes/Protocol/tBUF|tBUF]]는 STOP 뒤 다음 START까지의 최소 간격이다.
+- [[30. Notes/Protocol/I2C-SMBus/tBUF|tBUF]]는 STOP 뒤 다음 START까지의 최소 간격이다.
 - SMBus의 Idle 판정 조건은 I2C의 Busy 설명과 구분해서 읽는다.
 
 # 5. 관련 학습 노트
-- [[30. Notes/Protocol/I2C#8. Bus Busy와 tBUF|I2C의 Bus Busy]]
-- [[30. Notes/Protocol/SMBus#8. CLK LOW를 네 가지로 구분|SMBus의 시간 조건]]
+- [[30. Notes/Protocol/I2C-SMBus/I2C#8. Bus Busy와 tBUF|I2C의 Bus Busy]]
+- [[30. Notes/Protocol/I2C-SMBus/SMBus#8. CLK LOW를 네 가지로 구분|SMBus의 시간 조건]]
