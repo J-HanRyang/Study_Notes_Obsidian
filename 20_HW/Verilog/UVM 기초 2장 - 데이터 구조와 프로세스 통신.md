@@ -18,13 +18,13 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![데이터 구조와 프로세스 통신 구조](assets/uvm-book/chapter02.png)
+![데이터 구조와 프로세스 통신 구조](../../_Attachment/uvm-book/chapter02.png)
 
 # **3. 핵심 개념**
 
 ## **3.1. Packed array와 unpacked array**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter02-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter02-concept1.png)
 
 Dimension이 변수 이름 **앞**에 있으면 packed, **뒤**에 있으면 unpacked다.
 
@@ -112,7 +112,7 @@ int b = q.pop_back();  // b=20, q={10}
 
 ## **3.4. Associative array**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter02-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter02-concept2.png)
 
 사용한 key에 대해서만 element가 존재하는 sparse 자료구조다.
 
@@ -270,7 +270,7 @@ bus_lock.put(1); // key 반환
 
 ## **3.9. Mailbox**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter02-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter02-concept3.png)
 
 Mailbox는 producer와 consumer 사이에서 데이터를 안전하게 전달하는 synchronized communication 수단이다.
 
@@ -336,7 +336,7 @@ sent.data = 9;
 - Mailbox가 전달하는 것은 Packet의 handle이다.
 - 수신 후에도 두 handle은 같은 객체를 가리킨다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter02-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter02-example.png)
 
 # **5. 주의점**
 

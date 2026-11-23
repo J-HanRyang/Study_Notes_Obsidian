@@ -18,7 +18,7 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![Interface와 Simulation Timing 구조](assets/uvm-book/chapter04.png)
+![Interface와 Simulation Timing 구조](../../_Attachment/uvm-book/chapter04.png)
 
 # **3. 핵심 개념**
 
@@ -143,7 +143,7 @@ endinterface
 
 ## **3.5. Virtual interface**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter04-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter04-concept1.png)
 
 - 실제 interface instance는 module과 함께 elaboration 과정에서 정적으로 생성된다.
 - Class object는 simulation 중 `new()`로 동적으로 생성된다.
@@ -271,7 +271,7 @@ data  = 8'hA5;
 
 ## **3.10. Blocking과 nonblocking assignment**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter04-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter04-concept2.png)
 
 Blocking assignment는 statement가 실행되는 즉시 왼쪽 값을 갱신한다.
 
@@ -295,7 +295,7 @@ NBA region    → 왼쪽 값 실제 갱신
 
 ## **3.11. Driver의 구동 시점**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter04-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter04-concept3.png)
 
 - Driver가 clocking block의 `output #0`으로 edge에서 값을 구동하면 DUT가 같은 edge에서 새 값을 받아야 하는 것으로 해석하지 않는다.
 - Driver는 다음 sampling edge에서 사용할 값을 준비한다.
@@ -440,7 +440,7 @@ endinterface
 - Driver는 ready의 sampling과 valid/data 구동을 clocking 규칙으로 표현한다.
 - DUT가 값을 수락하는 에지는 별도의 프로토콜 계약에 따른다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter04-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter04-example.png)
 
 # **5. 주의점**
 

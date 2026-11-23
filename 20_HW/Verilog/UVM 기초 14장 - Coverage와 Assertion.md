@@ -19,13 +19,13 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![Coverage와 Assertion 구조](assets/uvm-book/chapter14.png)
+![Coverage와 Assertion 구조](../../_Attachment/uvm-book/chapter14.png)
 
 # **3. 핵심 개념**
 
 ## **3.1. 왜 coverage가 필요한가**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter14-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter14-concept1.png)
 
 - 모든 비교가 통과했더라도 중요한 상황을 시험하지 않았다면 그 기능을 검증했다고 말할 수 없다.
 - FIFO의 일반 쓰기·읽기 100건을 통과해도 full 추가 쓰기나 empty 읽기를 하지 않았다면 해당 경계 동작을 검증했다고 볼 수 없다.
@@ -42,7 +42,7 @@ cssclasses:
 
 ## **3.2. Coverpoint와 cross**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter14-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter14-concept2.png)
 
 - Coverpoint는 특정 값이나 범위를 관찰하는 측정 지점이다.
 - Bin은 측정할 값·범위를 구분하는 항목이다.
@@ -113,7 +113,7 @@ assert property (@(posedge clk) disable iff (!rst_n)
 
 ## **3.5. Vacuous success**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter14-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter14-concept3.png)
 
 - 앞 조건이 성립하지 않으면 implication은 뒤 조건 검사를 요구하지 않는다.
 - Empty 읽기를 한 번도 하지 않았어도 위 assertion에서 failure가 없을 수 있다.
@@ -186,7 +186,7 @@ cg.sample(empty_before, read_request);
 - 두 bit coverpoint의 기본 bins와 cross로 네 조합을 측정한다.
 - 거부된 empty 읽기 요청도 관찰해야 해당 조합을 기록할 수 있다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter14-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter14-example.png)
 
 # **5. 주의점**
 

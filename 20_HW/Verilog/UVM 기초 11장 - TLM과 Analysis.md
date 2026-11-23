@@ -19,7 +19,7 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![TLM과 Analysis 구조](assets/uvm-book/chapter11.png)
+![TLM과 Analysis 구조](../../_Attachment/uvm-book/chapter11.png)
 
 # **3. 핵심 개념**
 
@@ -67,7 +67,7 @@ seq_item_port.item_done();
 
 ## **3.3. Port, export, imp**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter11-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter11-concept1.png)
 
 | 타입 계열 | 역할 |
 |---|---|
@@ -117,7 +117,7 @@ producer.put_port.connect(consumer.put_imp);
 
 ## **3.5. Analysis의 1:N 전달**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter11-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter11-concept2.png)
 
 ```text
                     ┌→ scoreboard.write(tr)
@@ -205,7 +205,7 @@ endfunction
 
 ## **3.8. Analysis FIFO**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter11-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter11-concept3.png)
 
 수신 즉시 처리하기 어렵거나 task에서 기다리며 비교하려면 uvm_tlm_analysis_fifo를 중간에 둘 수 있다.
 
@@ -316,7 +316,7 @@ endfunction
 - Write는 연결된 수신 메서드를 호출한다.
 - 느린 시간 동작이 필요하면 analysis FIFO 등에 넘기고 별도의 task에서 처리한다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter11-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter11-example.png)
 
 # **5. 주의점**
 

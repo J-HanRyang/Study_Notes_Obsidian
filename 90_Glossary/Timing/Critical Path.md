@@ -8,11 +8,11 @@
 
 - 같은 클록의 한 주기 경로에서 Skew와 Uncertainty를 제외하면 $T_{clk(min)}=t_{CQ}+t_{logic}+t_{setup}$이다.
 - $t_{CQ}$는 출발 레지스터의 Clock-to-Q 지연이다.
-- $t_{logic}$은 조합논리와 배선의 [[30. Notes/Circuit/Propagation Delay|전파 지연]]을 합친 값이다.
+- $t_{logic}$은 조합논리와 배선의 [[90_Glossary/Circuit/Propagation Delay|전파 지연]]을 합친 값이다.
 - Setup Slack은 데이터가 도착해야 하는 시각에서 실제 도착 시각을 뺀 값이다.
 - Setup Slack이 음수면 주어진 조건에서 Setup 위반이다.
 - Hold는 데이터가 너무 일찍 바뀌지 않는지 별도의 조건으로 확인한다.
-- [[30. Notes/Timing/Setup and Hold Time|Setup과 Hold]]의 최소 지연 식에 [[30. Notes/Timing/Clock Skew|Clock Skew]]를 반영하면 수신 클록이 늦어질 때의 hold 여유를 계산할 수 있다.
+- [[90_Glossary/Timing/Setup and Hold Time|Setup과 Hold]]의 최소 지연 식에 [[90_Glossary/Timing/Clock Skew|Clock Skew]]를 반영하면 수신 클록이 늦어질 때의 hold 여유를 계산할 수 있다.
 
 # 3. 계산 예시
 

@@ -20,7 +20,7 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![UVM 개요와 전체 구조 구조](assets/uvm-book/chapter05.png)
+![UVM 개요와 전체 구조 구조](../../_Attachment/uvm-book/chapter05.png)
 
 # **3. 핵심 개념**
 
@@ -77,7 +77,7 @@ Constrained-random → 합법 공간을 정의하고 여러 조합 탐색
 
 ## **3.3. Transaction-level verification**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter05-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter05-concept1.png)
 
 Transaction은 여러 pin 변화로 이루어진 protocol 동작을 의미 있는 작업 하나로 표현한다.
 
@@ -129,7 +129,7 @@ Coverage      → 어떤 값과 조합이 검증됐는지 측정한다.
 
 ## **3.5. Test, environment, agent**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter05-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter05-concept2.png)
 
 일반적인 구성과 생성 관계는 다음과 같다.
 
@@ -209,7 +209,7 @@ monitor ── analysis ─────┼─> coverage subscriber
 
 ## **3.9. Reference model, scoreboard, coverage**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter05-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter05-concept3.png)
 
 ```text
 입력 monitor → reference model → expected ─┐
@@ -324,7 +324,7 @@ agent.mon.ap.connect(cov.analysis_export);
 - 요청 전달 경로와 관찰 결과의 방송 경로를 각각 연결한다.
 - 연결만으로 sequence가 시작되거나 transaction이 발행되지는 않는다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter05-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter05-example.png)
 
 # **5. 주의점**
 

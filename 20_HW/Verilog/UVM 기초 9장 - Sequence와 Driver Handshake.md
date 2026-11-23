@@ -18,7 +18,7 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![Sequence와 Driver Handshake 구조](assets/uvm-book/chapter09.png)
+![Sequence와 Driver Handshake 구조](../../_Attachment/uvm-book/chapter09.png)
 
 # **3. 핵심 개념**
 
@@ -68,7 +68,7 @@ phase.drop_objection(this);
 
 ## **3.3. Item 한 개의 준비와 전달**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter09-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter09-concept1.png)
 
 ```systemverilog
 virtual task body();
@@ -127,7 +127,7 @@ finish_item(req) 반환 <------------ 완료 통지
 
 ## **3.5. 완료 통지의 의미**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter09-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter09-concept2.png)
 
 - `item_done()`은 driver가 현재 요청에 대한 handshake 완료를 알리는 API다.
 - DUT 결과의 정확성을 증명하지는 않는다.
@@ -246,7 +246,7 @@ end
 
 ## **3.10. Arbitration은 한 sequence 내부 순서를 뒤집지 않는다**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter09-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter09-concept3.png)
 
 - Sequence가 A 쓰기 → B 쓰기 → 읽기를 순차 작성하고 다른 sequence가 없다면 그대로 진행된다.
 - 앞 finish_item이 끝나야 다음 start_item에 도달한다.
@@ -346,7 +346,7 @@ seq_item_port.item_done();
 - 요청 준비는 finish_item 전에 수행한다.
 - Driver가 item_done을 빠뜨리면 sequence가 완료를 기다리며 멈출 수 있다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter09-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter09-example.png)
 
 # **5. 주의점**
 

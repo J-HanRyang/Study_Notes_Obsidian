@@ -18,7 +18,7 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![Randomization과 Constraint 구조](assets/uvm-book/chapter03.png)
+![Randomization과 Constraint 구조](../../_Attachment/uvm-book/chapter03.png)
 
 # **3. 핵심 개념**
 
@@ -70,7 +70,7 @@ randc bit [1:0] b;
 
 ## **3.3. Constraint는 대입문이 아니라 조건이다**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter03-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter03-concept1.png)
 
 ```systemverilog
 constraint c_addr {
@@ -137,7 +137,7 @@ endclass
 
 ## **3.5. dist와 가중치**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter03-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter03-concept2.png)
 
 ```systemverilog
 mode dist {
@@ -240,7 +240,7 @@ p.randomize() with { addr inside {[4:11]}; };
 
 ## **3.9. rand_mode와 constraint_mode**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter03-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter03-concept3.png)
 
 ```systemverilog
 p.addr.rand_mode(0);          // addr 값을 새로 뽑지 않음
@@ -374,7 +374,7 @@ if (!tr.randomize() with { data > 5; })
 
 기존 범위 1~10과 inline 조건 data > 5를 함께 만족해야 하므로 최종 허용 범위는 6~10이다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter03-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter03-example.png)
 
 # **5. 주의점**
 

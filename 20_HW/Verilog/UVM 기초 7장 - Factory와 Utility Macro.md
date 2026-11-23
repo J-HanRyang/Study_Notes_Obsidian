@@ -18,7 +18,7 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![Factory와 Utility Macro 구조](assets/uvm-book/chapter07.png)
+![Factory와 Utility Macro 구조](../../_Attachment/uvm-book/chapter07.png)
 
 # **3. 핵심 개념**
 
@@ -71,7 +71,7 @@ drv = fifo_driver::type_id::create("driver", this);
 
 ## **3.3. Type override와 적용 시점**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter07-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter07-concept1.png)
 
 tagged_item이 fifo_item을 상속하고 두 class가 등록돼 있다고 가정한다.
 
@@ -122,7 +122,7 @@ fifo_driver::type_id::set_inst_override(
 
 ## **3.5. Utils와 field 자동화**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter07-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter07-concept2.png)
 
 | 매크로 | 핵심 역할 |
 |---|---|
@@ -283,7 +283,7 @@ SHALLOW와 comparer/packer의 구체 정책은 사용하는 UVM 구현의 API �
 
 ## **3.11. Factory 디버깅과 API 구분**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter07-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter07-concept3.png)
 
 - 확인 순서: 등록 여부 → 생성이 create인지 → override 설정 시점 → 실제 검색 경로 → 적용 규칙.
 - Factory의 print()는 등록과 override 상태, debug_create_by_type()는 생성 없이 선택 규칙을 추적한다.
@@ -334,7 +334,7 @@ c = new("c");
 
 tagged_item이 fifo_item을 상속하고 등록돼 있다면 a와 c의 실제 타입은 fifo_item, b는 tagged_item이다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter07-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter07-example.png)
 
 # **5. 주의점**
 

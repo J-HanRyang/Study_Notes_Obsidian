@@ -19,7 +19,7 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![Register Abstraction Layer 구조](assets/uvm-book/chapter16.png)
+![Register Abstraction Layer 구조](../../_Attachment/uvm-book/chapter16.png)
 
 # **3. 핵심 개념**
 
@@ -50,7 +50,7 @@ model.CTRL.write(status, 32'h1, UVM_FRONTDOOR);
 
 ## **3.2. Desired·mirrored·actual**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter16-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter16-concept1.png)
 
 | 값 | 의미 | 대표 조회 |
 |---|---|---|
@@ -110,7 +110,7 @@ model.CTRL.mirror(status, UVM_CHECK);
 
 ## **3.5. Block·register·field·map**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter16-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter16-concept2.png)
 
 ```text
 device_reg_block : uvm_reg_block
@@ -250,7 +250,7 @@ endfunction
 
 ## **3.9. Prediction과 환경 연결**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter16-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter16-concept3.png)
 
 - Auto prediction은 해당 map을 거친 RAL 접근 결과를 모델에 반영한다.
 - Monitor 기반 predictor는 실제 관찰한 bus 접근을 받아 모델에 반영하므로 RAL 밖에서 시작된 접근도 관찰 범위 안이면 처리할 수 있다.
@@ -355,7 +355,7 @@ model.CTRL.update(status);
 
 Reset 후 모두 0인 단순 RW 모델에서 성공한 update와 prediction이 끝나면 desired·mirrored·actual은 모두 1이다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter16-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter16-example.png)
 
 # **5. 주의점**
 

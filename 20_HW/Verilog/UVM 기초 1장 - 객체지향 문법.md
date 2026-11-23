@@ -17,7 +17,7 @@ cssclasses:
 - 설계도인 class, 생성된 object, 이를 참조하는 handle을 구분하면 상속과 UVM의 객체 전달을 이해할 수 있다.
 
 # **2. 구조와 흐름**
-![객체지향 문법 구조](assets/uvm-book/chapter01.png)
+![객체지향 문법 구조](../../_Attachment/uvm-book/chapter01.png)
 
 # **3. 핵심 개념**
 
@@ -67,7 +67,7 @@ foreach (packets[i]) packets[i] = new();
 
 ## **3.2. handle assignment와 object copy**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter01-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter01-concept1.png)
 
 ```systemverilog
 Packet a, b;
@@ -117,7 +117,7 @@ y.hdr.id = x.hdr.id; // int 값 복사; Header handle은 변경되지 않음
 
 ## **3.3. inheritance, overriding, polymorphism**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter01-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter01-concept2.png)
 
 ```systemverilog
 class Transaction;
@@ -206,7 +206,7 @@ Box          default_box; // T의 기본값 int 사용
 
 ## **3.5. static property와 static method**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter01-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter01-concept3.png)
 
 ```systemverilog
 class Packet;
@@ -296,7 +296,7 @@ a = new(30);
 - 첫 new() 뒤에는 객체 하나를 공유한다.
 - 두 번째 new()는 새 객체를 만들고 a만 그 객체를 참조하게 한다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter01-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter01-example.png)
 
 # **5. 주의점**
 

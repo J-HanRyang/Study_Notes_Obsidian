@@ -18,7 +18,7 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![Monitor와 Scoreboard 구조](assets/uvm-book/chapter12.png)
+![Monitor와 Scoreboard 구조](../../_Attachment/uvm-book/chapter12.png)
 
 # **3. 핵심 개념**
 
@@ -61,7 +61,7 @@ DUT 신호 → monitor → transaction → analysis → scoreboard
 
 ## **3.3. 요청과 수락을 구분한다**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter12-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter12-concept1.png)
 
 ```text
 Driver: 쓰기 요청 구동
@@ -142,7 +142,7 @@ if (actual !== expected)
 
 ## **3.7. 수락 시점과 출력 유효 시점**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter12-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter12-concept2.png)
 
 | 에지 | 새로 수락한 읽기의 예상값 | 그때 유효한 출력 |
 |---|---|---|
@@ -194,7 +194,7 @@ if (actual !== expected)
 
 ## **3.10. Reset 처리**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter12-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter12-concept3.png)
 
 Reset이 저장 데이터와 진행 중인 읽기를 취소하는 계약이라면 다음 상태를 모두 초기화한다.
 
@@ -265,7 +265,7 @@ end
 - 수락 여부는 pre-state와 사양으로 먼저 결정한다.
 - 실제 구현에서는 pop 전 queue 크기, reset 취소와 관찰 순서를 함께 검사한다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter12-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter12-example.png)
 
 # **5. 주의점**
 

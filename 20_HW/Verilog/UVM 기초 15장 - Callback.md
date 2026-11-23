@@ -18,13 +18,13 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![Callback 구조](assets/uvm-book/chapter15.png)
+![Callback 구조](../../_Attachment/uvm-book/chapter15.png)
 
 # **3. 핵심 개념**
 
 ## **3.1. Callback의 필요성**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter15-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter15-concept1.png)
 
 - 기본 driver가 요청 수신 → 신호 구동 → 요청 완료 순서로 동작한다고 가정하자.
 - 특정 테스트에서만 구동 직전에 데이터를 변조하거나 추가 로그를 남기고 싶을 때, 매번 driver 자식 클래스를 늘리는 대신 별도 callback 객체로 추가 동작을 구성할 수 있다.
@@ -69,7 +69,7 @@ endclass
 
 ## **3.3. 대상 타입 등록과 hook 호출**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter15-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter15-concept2.png)
 
 ```systemverilog
 class fifo_driver extends uvm_driver#(fifo_item);
@@ -161,7 +161,7 @@ tr.data = tr.data ^ 8'hFF;
 
 ## **3.7. Factory override와 비교**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter15-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter15-concept3.png)
 
 | 관점 | Factory override | Callback |
 |---|---|---|
@@ -201,7 +201,7 @@ drive_item(req);
 - Callback의 pre_drive가 req.data를 FF로 바꾸면 driver는 변경된 값을 사용한다.
 - Add만 있고 hook 호출이 없으면 실행되지 않는다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter15-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter15-example.png)
 
 # **5. 주의점**
 

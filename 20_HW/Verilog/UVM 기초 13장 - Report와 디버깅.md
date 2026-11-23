@@ -18,7 +18,7 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![Report와 디버깅 구조](assets/uvm-book/chapter13.png)
+![Report와 디버깅 구조](../../_Attachment/uvm-book/chapter13.png)
 
 # **3. 핵심 개념**
 
@@ -52,7 +52,7 @@ if (actual !== expected)
 
 ## **3.2. Severity와 verbosity**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter13-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter13-concept1.png)
 
 - Severity는 메시지 종류이고 verbosity는 정보 로그의 상세도다.
 - 메시지 verbosity가 해당 reporter의 출력 설정 이하일 때 info가 출력된다.
@@ -100,7 +100,7 @@ if (actual !== expected)
 
 ## **3.4. 최초 오류와 config DB 디버깅**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter13-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter13-concept2.png)
 
 ```text
 0 ns   driver     [NO_VIF]   Virtual interface not found
@@ -161,7 +161,7 @@ driver_h = fifo_driver::type_id::create("drv", this);
 
 ## **3.6. TLM 연결과 데이터 흐름 디버깅**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter13-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter13-concept3.png)
 
 ```systemverilog
 // env connect_phase
@@ -237,7 +237,7 @@ uvm_top.print_topology();
 - ID는 같은 종류의 메시지에 재사용하고 매번 달라지는 값은 본문에 넣는다.
 - Topology 출력은 구조 구성 이후 phase에 배치한다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter13-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter13-example.png)
 
 # **5. 주의점**
 

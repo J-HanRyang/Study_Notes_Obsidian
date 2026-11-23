@@ -19,7 +19,7 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![Phase와 Objection 구조](assets/uvm-book/chapter08.png)
+![Phase와 Objection 구조](../../_Attachment/uvm-book/chapter08.png)
 
 # **3. 핵심 개념**
 
@@ -31,7 +31,7 @@ cssclasses:
 
 ## **3.2. Common phase 순서와 책임**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter08-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter08-concept1.png)
 
 | Phase | 형식 | hierarchy 방향 | 주요 책임 |
 |---|---|---|---|
@@ -81,7 +81,7 @@ join         // 전체 20ns
 
 ## **3.4. Objection이 필요한 이유**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter08-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter08-concept2.png)
 
 - Driver/monitor는 보통 forever loop다.
 - 모든 run_phase의 반환을 기다리는 방식으로는 정상 종료할 수 없다.
@@ -118,7 +118,7 @@ endtask
 
 ## **3.6. 완료 조건과 wait/if**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter08-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter08-concept3.png)
 
 - Stimulus 종료와 DUT 출력 관찰·scoreboard 비교 완료는 다를 수 있다.
 - 더 들어올 요청이 없고 남은 처리가 끝났다는 조건을 함께 사용한다.
@@ -241,7 +241,7 @@ phase.drop_objection(this);
 - Stimulus 완료와 미래 입력이 없다는 조건을 함께 정의해야 한다.
 - 이 코드의 상태 변수는 환경의 완료 계약을 표현한다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter08-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter08-example.png)
 
 # **5. 주의점**
 

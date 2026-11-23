@@ -60,7 +60,7 @@
 ## Full / Empty 판별
 
 - 깊이 4이고 포인터가 3비트이면 이진 포인터 000과 100은 같은 주소에서 한 바퀴 차이가 난다.
-- 두 포인터의 [[30. Notes/CDC/Gray Code|Gray Code]]는 각각 000과 110이다.
+- 두 포인터의 [[90_Glossary/CDC/Gray Code|Gray Code]]는 각각 000과 110이다.
 - 다음 상태의 Full을 등록하는 설계에서는 허용된 write를 반영한 다음 write Gray 포인터와 동기화한 read Gray 포인터의 상위 두 비트를 반전한 값을 비교한다.
 - Read 쪽에서 공간을 비워도 새 포인터가 Write 클록으로 넘어올 때까지 Full이 잠시 유지될 수 있다.
 

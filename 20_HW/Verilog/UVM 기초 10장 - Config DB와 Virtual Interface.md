@@ -17,7 +17,7 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![Config DB와 Virtual Interface 구조](assets/uvm-book/chapter10.png)
+![Config DB와 Virtual Interface 구조](../../_Attachment/uvm-book/chapter10.png)
 
 # **3. 핵심 개념**
 
@@ -64,7 +64,7 @@ virtual fifo_if vif;
 
 ## **3.3. Top의 set과 driver의 get**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter10-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter10-concept1.png)
 
 ```systemverilog
 // top module 내부
@@ -136,7 +136,7 @@ driver_h = fifo_driver::type_id::create("fifo_drv", this);
 
 ## **3.6. 이름·타입·경로를 맞춘다**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter10-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter10-concept2.png)
 
 - vif로 등록하고 fifo_vif로 찾으면 매칭되지 않는다.
 - int로 등록하고 string으로 찾으면 같은 설정을 가져올 수 없다.
@@ -234,7 +234,7 @@ if (cfg == null)
 
 ## **3.10. 객체 공유와 handle 교체**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter10-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter10-concept3.png)
 
 - Config DB는 자동 clone을 하지 않는다.
 - Object handle을 주고받으면 기본적으로 같은 객체를 공유한다.
@@ -345,7 +345,7 @@ if (vif == null)
 - 타입·key·대상 경로가 일치해야 한다.
 - DB에서 찾았다는 것과 유효한 참조를 얻었다는 것은 별도 조건이다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter10-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter10-example.png)
 
 # **5. 주의점**
 

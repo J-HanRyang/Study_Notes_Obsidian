@@ -18,7 +18,7 @@ cssclasses:
 
 # **2. 구조와 흐름**
 
-![uvm_object와 uvm_component 구조](assets/uvm-book/chapter06.png)
+![uvm_object와 uvm_component 구조](../../_Attachment/uvm-book/chapter06.png)
 
 # **3. 핵심 개념**
 
@@ -55,7 +55,7 @@ uvm_object
 
 ## **3.2. `uvm_object` 계열**
 
-![핵심 개념 그림 1](assets/uvm-book/chapter06-concept1.png)
+![핵심 개념 그림 1](../../_Attachment/uvm-book/chapter06-concept1.png)
 
 대표적인 object 계열 class는 다음과 같다.
 
@@ -127,7 +127,7 @@ item = fifo_item::type_id::create("item", this);
 
 ## **3.3. `uvm_component` 계열**
 
-![핵심 개념 그림 2](assets/uvm-book/chapter06-concept2.png)
+![핵심 개념 그림 2](../../_Attachment/uvm-book/chapter06-concept2.png)
 
 - 대표적인 component 계열 class는 다음과 같다.
 - 아래 목록은 계열을 보여주기 위한 것으로 중간 상속 class를 생략했다.
@@ -173,7 +173,7 @@ Component는 보통 환경 구성 중 생성되어 simulation 동안 유지되�
 
 ## **3.4. 상속 관계와 hierarchy 배치 관계**
 
-![핵심 개념 그림 3](assets/uvm-book/chapter06-concept3.png)
+![핵심 개념 그림 3](../../_Attachment/uvm-book/chapter06-concept3.png)
 
 이 둘은 서로 다른 관계다.
 
@@ -337,7 +337,7 @@ seq.start(sqr);
 - 같은 create 호출 모양이어도 registry 계열에 따라 parent의 의미가 다르다.
 - Sequence의 실행에는 start가 추가로 필요하다.
 
-![핵심 예제의 동작](assets/uvm-book/chapter06-example.png)
+![핵심 예제의 동작](../../_Attachment/uvm-book/chapter06-example.png)
 
 # **5. 주의점**
 

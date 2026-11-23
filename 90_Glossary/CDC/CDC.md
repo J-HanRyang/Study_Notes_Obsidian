@@ -5,10 +5,10 @@
 
 # 2. 신호에 맞는 전달 방식
 
-- [[30. Notes/CDC/Metastability|Metastability]]
+- [[90_Glossary/CDC/Metastability|Metastability]]
 - [[30. Notes/CDC/Pulse CDC|Pulse CDC]]
 - [[30. Notes/CDC/Handshake CDC|Handshake CDC]]
-- [[30. Notes/CDC/Gray Code|Gray Code]]
+- [[90_Glossary/CDC/Gray Code|Gray Code]]
 
 - 충분히 오래 유지되는 단일 비트 상태는 수신 도메인의 동기화기를 거쳐 사용한다.
 - 짧은 이벤트는 폭과 최소 간격을 보고 Pulse CDC나 수신 확인이 있는 Handshake CDC를 선택한다.
